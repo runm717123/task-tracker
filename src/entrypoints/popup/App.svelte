@@ -1,6 +1,7 @@
 <script lang="ts">
   import svelteLogo from '../../assets/svelte.svg'
   import Counter from '../../lib/Counter.svelte'
+  import TestButton from '../../lib/TestButton.svelte'
 </script>
 
 <main>
@@ -21,6 +22,8 @@
   <p class="read-the-docs">
     Click on the WXT and Svelte logos to learn more
   </p>
+
+  <TestButton />
 </main>
 
 <style>

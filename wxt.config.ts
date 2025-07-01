@@ -10,4 +10,7 @@ export default defineConfig({
 		// inside vite.config.ts files
 		plugins: [tailwindcss() as any],
 	}),
+	manifest: {
+		permissions: ['storage'],
+	},
 });

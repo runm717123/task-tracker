@@ -1,7 +1,7 @@
 <script lang="ts">
   import svelteLogo from '../../assets/svelte.svg'
   import Counter from '../../lib/Counter.svelte'
-  import { Button } from '@bios-ui/svelte';
+  import TestButton from '../../lib/TestButton.svelte'
 </script>
 
 <main>
@@ -23,9 +23,7 @@
     Click on the WXT and Svelte logos to learn more
   </p>
 
-  <Button on:click={() => console.log('Button clicked!')}>
-    Test
-  </Button>
+  <TestButton />
 </main>
 
 <style>
