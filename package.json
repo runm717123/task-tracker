@@ -22,5 +22,11 @@
     "tslib": "^2.8.1",
     "typescript": "^5.8.3",
     "wxt": "^0.20.6"
+  },
+  "dependencies": {
+    "@bios-ui/core": "^0.0.10",
+    "@bios-ui/svelte": "^0.0.1",
+    "@tailwindcss/vite": "^4.1.11",
+    "tailwindcss": "^4.1.11"
   }
 }
