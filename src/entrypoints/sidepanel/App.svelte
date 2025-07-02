@@ -2,6 +2,7 @@
   import svelteLogo from '../../assets/svelte.svg'
   import Counter from '../../lib/Counter.svelte'
   import TestButton from '../../lib/TestButton.svelte'
+  import '@bios-ui/core/css';
 </script>
 
 <main>

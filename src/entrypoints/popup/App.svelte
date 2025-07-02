@@ -2,6 +2,7 @@
   import svelteLogo from '../../assets/svelte.svg'
   import Counter from '../../lib/Counter.svelte'
   import TestButton from '../../lib/TestButton.svelte'
+  import '@bios-ui/core/css';
 </script>
 
 <main>
@@ -19,7 +20,7 @@
     <Counter />
   </div>
 
-  <p class="read-the-docs">
+  <p class="read-the-docs text-red-500">
     Click on the WXT and Svelte logos to learn more
   </p>
 

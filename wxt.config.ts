@@ -8,7 +8,7 @@ export default defineConfig({
 	vite: () => ({
 		// Override config here, same as `defineConfig({ ... })`
 		// inside vite.config.ts files
-		plugins: [tailwindcss() as any],
+		plugins: [tailwindcss()],
 	}),
 	manifest: {
 		permissions: ['storage'],

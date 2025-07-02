@@ -40,6 +40,6 @@
   };
 </script>
 
-<button onclick={tokage}>
-  Test sadfsadf ({testValue})
-</button>
+<Button onclick={tokage}>
+  Test 123 ({testValue})
+</Button>
