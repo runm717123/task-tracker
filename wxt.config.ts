@@ -11,6 +11,22 @@ export default defineConfig({
 		plugins: [tailwindcss()],
 	}),
 	manifest: {
-		permissions: ['storage'],
+		permissions: ['scripting', 'activeTab', 'tabs', 'commands', 'sidePanel', 'contextMenus', 'storage'],
+
+		commands: {
+			'open-popup': {
+				suggested_key: {
+					default: 'Ctrl+Shift+Y',
+					mac: 'Command+Shift+X',
+				},
+				description: 'Open task tracker popup',
+			},
+			_execute_action: {
+				suggested_key: {
+					default: 'Ctrl+Shift+X',
+					mac: 'Command+Shift+Y',
+				},
+			},
+		},
 	},
 });

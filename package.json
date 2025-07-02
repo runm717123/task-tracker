@@ -16,6 +16,7 @@
   },
   "devDependencies": {
     "@tsconfig/svelte": "^5.0.4",
+    "@types/chrome": "^0.0.329",
     "@wxt-dev/module-svelte": "^2.0.3",
     "svelte": "^5.28.2",
     "svelte-check": "^4.1.6",

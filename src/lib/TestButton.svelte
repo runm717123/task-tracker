@@ -1,6 +1,8 @@
 <script lang="ts">
+  import { onMount, onDestroy } from 'svelte';
   import { Button } from '@bios-ui/svelte';
   import { storage } from '#imports';
+  import { incrementStorageValue } from '../utils/storage';
 
   const key = 'local:test';
   let testValue = $state(0);
@@ -32,14 +34,11 @@
     if (unwatch) unwatch();
   });
 
-  const tokage = async () => {
-      const prevValue = await storage.getItem<number>(key);
-      const newValue = (prevValue ?? 0) + 1;
-      await storage.setItem(key, newValue );
-      // testValue = newValue;
+  const incrementLocalStorage = async () => {
+    await incrementStorageValue(key);
   };
 </script>
 
-<Button onclick={tokage}>
+<Button onclick={incrementLocalStorage}>
   Test 123 ({testValue})
 </Button>
