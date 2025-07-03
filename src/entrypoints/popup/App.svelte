@@ -25,6 +25,24 @@
 		unwatch = taskStore.watchTasks((newTasks) => {
 			tasks = newTasks;
 		});
+
+		// Add keydown event listener for ESC key
+		const handleKeydown = (event: KeyboardEvent) => {
+			if (event.key === 'Escape') {
+				if (currentView === 'edit') {
+					cancelEdit();
+				} else {
+					window.close();
+				}
+			}
+		};
+
+		document.addEventListener('keydown', handleKeydown);
+
+		// Cleanup function
+		return () => {
+			document.removeEventListener('keydown', handleKeydown);
+		};
 	});
 
 	onDestroy(() => {
