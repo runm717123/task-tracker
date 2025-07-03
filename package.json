@@ -23,7 +23,7 @@
 		"watch": [
 			"src"
 		],
-		"ext": "ts,js,svelte,json",
+		"ext": "ts,js,svelte,json,css",
 		"delay": 1000
 	},
 	"devDependencies": {
