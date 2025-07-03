@@ -1,6 +1,6 @@
 export default {
   content: [
     './src/**/*.{html,svelte,ts,js}',
-    './node_modules/@bios-ui/**/*.{svelte}',
+    './node_modules/@bios-ui/**/*.{svelte,js,ts}',
   ],
 }
