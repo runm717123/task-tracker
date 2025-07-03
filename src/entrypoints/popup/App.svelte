@@ -13,18 +13,22 @@
 
 	let unwatch: () => void;
 
-	onMount(async () => {
-		// Initialize storage with mock data if needed
-		await taskStore.initializeStorage();
-		
-		// Load initial tasks
-		tasks = await taskStore.getTasks();
-		isLoading = false;
+	onMount(() => {
+		const initializeStorage = async () => {
+			// Initialize storage with mock data if needed
+			await taskStore.initializeStorage();
 
-		// Watch for changes in storage
-		unwatch = taskStore.watchTasks((newTasks) => {
-			tasks = newTasks;
-		});
+			// Load initial tasks
+			tasks = await taskStore.getTasks();
+			isLoading = false;
+
+			// Watch for changes in storage
+			unwatch = taskStore.watchTasks((newTasks) => {
+				tasks = newTasks;
+			});
+		};
+
+		initializeStorage();
 
 		// Add keydown event listener for ESC key
 		const handleKeydown = (event: KeyboardEvent) => {
