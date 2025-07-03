@@ -4,7 +4,7 @@ export default defineBackground(async () => {
 	console.log('Hello background!', { id: browser.runtime.id });
 
 	const width = 700;
-	const height = 300;
+	const height = 350;
 	const screen = await browser.windows.getCurrent({ populate: false });
 	const left = screen.width! / 2 - width / 2;
 	const top = screen.height! / 2 - height / 2;
