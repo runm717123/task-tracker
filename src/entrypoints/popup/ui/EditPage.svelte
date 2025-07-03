@@ -1,7 +1,7 @@
 <script lang="ts">
-	import { ArrowLeftIcon, SaveIcon } from '@lucide/svelte';
-	import { Button, Input, InputLabel, TextArea } from '@bios-ui/svelte';
 	import '@bios-ui/core/css';
+	import { Button, Input, InputLabel, TextArea } from '@bios-ui/svelte';
+	import { ArrowLeftIcon } from '@lucide/svelte';
 	import dayjs from 'dayjs';
 
 	interface Props {
@@ -21,7 +21,7 @@
 			...task,
 			title,
 			description,
-			createdAt: new Date(createdAt),
+			createdAt: dayjs(createdAt).toISOString(),
 		};
 		onSave(updatedTask);
 	};
@@ -55,8 +55,8 @@
 		</InputLabel>
 
 		<div class="flex gap-2 pt-2">
-			<Button onclick={onCancel} size="small" className="flex-1">Cancel</Button>
-			<Button onclick={handleSave} size="small" disabled={!canSave} className="flex-1">Save</Button>
+			<Button onclick={onCancel} size="md" className="flex-1">Cancel</Button>
+			<Button onclick={handleSave} size="md" disabled={!canSave} className="flex-1">Save</Button>
 		</div>
 	</div>
 </main>

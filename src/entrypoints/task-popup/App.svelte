@@ -1,6 +1,6 @@
 <script lang="ts">
   import { Button, TextArea } from '@bios-ui/svelte';
-  import { storage } from '#imports';
+  import { taskStore } from '../../lib/stores/taskStore';
 
   let taskInput = $state('');
   let isLoading = $state(false);
@@ -8,19 +8,17 @@
   const handleSave = async () => {
     if (!taskInput.trim()) return;
     
-    console.log(taskInput, 'value')
-    
-    return
     isLoading = true;
     try {
-      // Get existing tasks
-      const existingTasks = await storage.getItem<string[]>('local:tasks') || [];
+      const newTask: ITrackedTask = {
+        id: crypto.randomUUID(),
+        title: taskInput.trim(),
+        description: '',
+        status: 'pending',
+        createdAt: new Date().toISOString(),
+      };
       
-      // Add new task
-      const updatedTasks = [...existingTasks, taskInput.trim()];
-      
-      // Save updated tasks
-      await storage.setItem('local:tasks', updatedTasks);
+      await taskStore.addTask(newTask);
       
       // Clear input and close
       taskInput = '';
