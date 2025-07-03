@@ -1,46 +1,45 @@
 <script lang="ts">
-  import svelteLogo from '../../assets/svelte.svg'
-  import Counter from '../../lib/Counter.svelte'
-  import TestButton from '../../lib/TestButton.svelte'
-  import '@bios-ui/core/css';
+	import { XIcon } from '@lucide/svelte';
+	import { mockTasks } from '../../mocks/tasks';
+	import '@bios-ui/core/css';
+	import dayjs from 'dayjs';
+
+	let tasks: ITrackedTask[] = mockTasks;
+
+	const deleteTask = (taskId: string) => {
+		tasks = tasks.filter((task) => task.id !== taskId);
+	};
+
 </script>
 
-<main>
-  <div>
-    <a href="https://wxt.dev" target="_blank" rel="noreferrer">
-      <img src="/wxt.svg" class="logo" alt="WXT Logo" />
-    </a>
-    <a href="https://svelte.dev" target="_blank" rel="noreferrer">
-      <img src={svelteLogo} class="logo svelte" alt="Svelte Logo" />
-    </a>
-  </div>
-  <h1>WXT + Svelte</h1>
+<main class="w-80 p-4 bg-bg-dark">
+	<h1 class="text-xl font-bold mb-4 text-fg-dark">Task Tracker</h1>
 
-  <div class="card">
-    <Counter />
-  </div>
+	<div class="space-y-1 max-h-96 overflow-y-auto">
+		{#each tasks as task (task.id)}
+			<div class="border border-border rounded-md p-2 bg-bg-darker hover:bg-bg-light transition-colors">
+				<div class="flex items-center justify-between">
+					<div class="flex-1 min-w-0 mr-3">
+						<h3 class="font-medium text-sm text-left text-fg-dark truncate">{task.title}</h3>
+					</div>
+					<div class="flex items-center gap-2 flex-shrink-0">
+						<span class="text-xs text-fg-muted">
+							{dayjs(task.createdAt).format('HH:mm')}
+						</span>
+						<XIcon 
+							size={16} 
+							class="text-fg-muted hover:text-fg-dark cursor-pointer" 
+							onclick={() => deleteTask(task.id)} 
+						/>
+					</div>
+				</div>
+			</div>
+		{/each}
+	</div>
 
-  <p class="read-the-docs text-red-500">
-    Click on the WXT and Svelte logos to learn more
-  </p>
-
-  <TestButton />
+	{#if tasks.length === 0}
+		<div class="text-center py-8 text-fg-dark">
+			<p class="text-sm">No tasks found</p>
+		</div>
+	{/if}
 </main>
-
-<style>
-  .logo {
-    height: 6em;
-    padding: 1.5em;
-    will-change: filter;
-    transition: filter 300ms;
-  }
-  .logo:hover {
-    filter: drop-shadow(0 0 2em #54bc4ae0);
-  }
-  .logo.svelte:hover {
-    filter: drop-shadow(0 0 2em #ff3e00aa);
-  }
-  .read-the-docs {
-    color: #888;
-  }
-</style>
