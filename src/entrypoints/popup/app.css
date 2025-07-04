@@ -1,9 +1,5 @@
 @import '../global.css';
 
-main {
-	padding: 0.75rem 0.5rem;
-}
-
 body {
 	margin: 0;
 	display: flex;

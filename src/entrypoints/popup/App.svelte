@@ -1,7 +1,7 @@
 <script lang="ts">
 	import '@bios-ui/core/css';
 	import { Button } from '@bios-ui/svelte';
-	import { XIcon } from '@lucide/svelte';
+	import { ListCheckIcon, XIcon } from '@lucide/svelte';
 	import dayjs from 'dayjs';
 	import { onMount, onDestroy } from 'svelte';
 	import { taskStore } from '../../lib/stores/taskStore';
@@ -97,53 +97,63 @@
 </script>
 
 {#if currentView === 'list'}
-	<main class="w-80 p-4 bg-bg-dark">
-		<h1 class="text-xl font-bold mb-4 text-fg-dark">Task Tracker</h1>
+	<main class="w-80 bg-bg-dark max-h-[480px] flex flex-col">
+		<h1 class="text-xl font-bold mb-4 text-fg-dark flex flex-row gap-1 border-b border-[##979797] pb-1 pt-2 ml-3 flex-shrink-0">
+			<ListCheckIcon />
+			Task Tracker
+		</h1>
 
-		{#if isLoading}
-			<div class="flex items-center justify-center py-8">
-				<div class="w-6 h-6 border-2 border-fg-dark border-t-transparent rounded-full animate-spin"></div>
-			</div>
-		{:else}
-			<div class="space-y-1 overflow-y-auto" role="list">
-				{#each tasks as task (task.id)}
-					<!-- svelte-ignore a11y_click_events_have_key_events -->
-					<!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
-					<div role="listitem" class="border border-border rounded-md p-2 bg-bg-darker hover:bg-bg-light transition-colors cursor-pointer" onclick={() => editTask(task)}>
-						<div class="flex items-center justify-between">
-							<div class="flex-1 min-w-0 mr-3">
-								<h3 class="font-medium text-sm text-left text-fg-dark truncate">{task.title}</h3>
-							</div>
-							<div class="flex items-center gap-2 flex-shrink-0">
-								<span class="text-xs text-fg-muted">
-									{dayjs(task.start).format('HH:mm')} -
-									{dayjs(task.end).format('HH:mm')}
-								</span>
-								<XIcon
-									role="button"
-									size={16}
-									class="text-fg-muted hover:text-fg-dark cursor-pointer"
-									onclick={(e) => {
-										e.stopPropagation();
-										deleteTask(task.id);
-									}}
-								/>
+		<div class="px-3 flex-1 flex flex-col min-h-0 mb-2">
+			{#if isLoading}
+				<div class="flex items-center justify-center py-8">
+					<div class="w-6 h-6 border-2 border-fg-dark border-t-transparent rounded-full animate-spin"></div>
+				</div>
+			{:else}
+				<div class="overflow-y-auto flex-1 min-h-0" role="list">
+					{#each tasks as task (task.id)}
+						<!-- svelte-ignore a11y_click_events_have_key_events -->
+						<!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
+						<div role="listitem" class="border-b border-border py-3 px-1 hover:bg-bg-light cursor-pointer group" onclick={() => editTask(task)}>
+							<div class="flex items-center justify-between">
+								<div class="flex-1 min-w-0 mr-3">
+									<h3 class="font-medium text-sm text-left text-fg-dark group-hover:text-white truncate">{task.title}</h3>
+								</div>
+								<div class="flex items-center gap-2 flex-shrink-0">
+									<span class="text-xs text-fg-muted group-hover:text-white">
+										{dayjs(task.start).format('HH:mm')} -
+										{dayjs(task.end).format('HH:mm')}
+									</span>
+									<XIcon
+										role="button"
+										size={16}
+										class="text-fg-muted hover:text-red-500 cursor-pointer"
+										onclick={(e) => {
+											e.stopPropagation();
+											deleteTask(task.id);
+										}}
+									/>
+								</div>
 							</div>
 						</div>
-					</div>
-				{/each}
-			</div>
+					{/each}
 
-			{#if tasks.length === 0}
-				<div class="text-center py-8 text-fg-dark">
-					<p class="text-sm">No tasks found</p>
+					{#if tasks.length === 0}
+						<div class="text-center py-8 text-fg-dark">
+							<p class="text-sm">No tasks found</p>
+						</div>
+					{/if}
 				</div>
 			{/if}
 
-			<div class="mt-4 pt-4 border-t border-border">
-				<Button class="w-full" onclick={toggleSidepanel}>Open Sidepanel</Button>
+			<div class="mt-4 flex flex-row justify-between items-center flex-shrink-0">
+				{#if tasks.length > 0}
+					<p class="text-sm text-fg-muted">
+						Total Tasks: <span class="text-fg-dark">{tasks.length}</span>
+					</p>
+				{/if}
+				<Button size="sm" onclick={toggleSidepanel}>Open Sidepanel</Button>
 			</div>
-		{/if}
+		</div>
 	</main>
 {:else if currentView === 'edit' && editingTask}
 	<EditPage task={editingTask} onSave={saveTask} onCancel={cancelEdit} />
