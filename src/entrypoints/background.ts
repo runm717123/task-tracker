@@ -7,7 +7,7 @@ export default defineBackground(async () => {
 
 	// Listen for keyboard commands
 	browser.commands.onCommand.addListener(async (command) => {
-		if (command === 'open-popup') {
+		if (command === 'open-new-task-popup') {
 			await openTaskPopup();
 		}
 	});

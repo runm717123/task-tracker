@@ -14,19 +14,19 @@ export default defineConfig({
 		permissions: ['scripting', 'activeTab', 'tabs', 'commands', 'sidePanel', 'contextMenus', 'storage'],
 
 		commands: {
-			'open-popup': {
+			'open-new-task-popup': {
 				suggested_key: {
-					default: 'Ctrl+Shift+Y',
-					mac: 'Command+Shift+X',
+					default: 'Alt+Up',
+					mac: 'Command+Up',
 				},
-				description: 'Open task tracker popup',
+				description: 'Open add new Task popup',
 			},
-			_execute_action: {
-				suggested_key: {
-					default: 'Ctrl+Shift+X',
-					mac: 'Command+Shift+Y',
-				},
-			},
+			// _execute_action: {
+			// 	suggested_key: {
+			// 		default: 'Ctrl+Shift+X',
+			// 		mac: 'Command+Shift+Y',
+			// 	},
+			// },
 		},
 	},
 });

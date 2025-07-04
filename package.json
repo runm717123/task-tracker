@@ -21,7 +21,8 @@
 			"**/docs/**"
 		],
 		"watch": [
-			"src"
+			"src",
+			"wxt.config.ts"
 		],
 		"ext": "ts,js,svelte,json,css",
 		"delay": 1000
