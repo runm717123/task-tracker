@@ -1,11 +1,11 @@
 <script lang="ts">
 	import '@bios-ui/core/css';
-	import { ClockAlert, FileWarningIcon, XIcon, Download } from '@lucide/svelte';
+	import { Button } from '@bios-ui/svelte';
+	import { ClockAlert, Download, Trash2, XIcon } from '@lucide/svelte';
 	import dayjs from 'dayjs';
 	import relativeTime from 'dayjs/plugin/relativeTime';
-	import { onMount, onDestroy } from 'svelte';
+	import { onDestroy, onMount } from 'svelte';
 	import { taskStore } from '../../lib/stores/taskStore';
-	import { Button } from '@bios-ui/svelte';
 
 	dayjs.extend(relativeTime);
 
@@ -80,6 +80,12 @@
 		linkElement.setAttribute('download', exportFileDefaultName);
 		linkElement.click();
 	};
+
+	const clearAllTasks = async () => {
+		if (confirm('Are you sure you want to clear all task data? This action cannot be undone.')) {
+			await taskStore.saveTasks([]);
+		}
+	};
 </script>
 
 <main class="min-h-screen overflow-y-auto bg-bg-dark p-2">
@@ -93,10 +99,14 @@
 			<div class="w-6 h-6 border-2 border-fg-dark border-t-transparent rounded-full animate-spin"></div>
 		</div>
 	{:else}
-		<div class="mb-3 flex justify-end">
+		<div class="mb-3 flex justify-end gap-2">
 			<Button size="sm" onclick={downloadTasks} className="flex items-center gap-2 px-3 py-2" title="Download tasks as JSON">
 				<Download size={16} />
 				Download as JSON
+			</Button>
+			<Button size="sm" onclick={clearAllTasks} className="flex items-center gap-2 px-3 py-2" variant="destructive" title="Clear all task data">
+				<Trash2 size={16} />
+				Clear All
 			</Button>
 		</div>
 
