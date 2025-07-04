@@ -1,7 +1,7 @@
 <script lang="ts">
 	import '@bios-ui/core/css';
-	import { Button, TextArea, InputLabel, Input } from '@bios-ui/svelte';
-	import { PlusIcon } from '@lucide/svelte';
+	import { Button, Input, InputLabel, TextArea } from '@bios-ui/svelte';
+	import { NotebookPenIcon } from '@lucide/svelte';
 	import { taskStore } from '../../lib/stores/taskStore';
 
 	let taskTitle = $state('');
@@ -51,11 +51,11 @@
 	};
 </script>
 
-<main class="h-full w-full p-4 bg-bg-dark">
+<main class="!px-3 !py-2 bg-bg-dark">
 	<div class="flex flex-col h-full">
 		<div class="flex items-center gap-3 mb-4">
 			<div class="w-8 h-8 bg-accent-primary rounded-full flex items-center justify-center">
-				<PlusIcon size={16} class="text-fg-on-accent" />
+				<NotebookPenIcon class="" />
 			</div>
 			<div>
 				<h1 class="text-lg font-semibold text-fg-dark">Add New Task</h1>
