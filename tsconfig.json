@@ -2,8 +2,5 @@
   "extends": "./.wxt/tsconfig.json",
   "compilerOptions": {
     "useDefineForClassFields": true,
-    "typeRoots": [
-      "./src/types"
-    ],
   }
 }

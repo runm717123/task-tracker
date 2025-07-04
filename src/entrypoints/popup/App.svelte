@@ -1,5 +1,6 @@
 <script lang="ts">
 	import '@bios-ui/core/css';
+	import { Button } from '@bios-ui/svelte';
 	import { XIcon } from '@lucide/svelte';
 	import dayjs from 'dayjs';
 	import { onMount, onDestroy } from 'svelte';
@@ -72,6 +73,27 @@
 		currentView = 'list';
 		editingTask = null;
 	};
+
+	let sidepanelOpen = $state(false);
+
+	const toggleSidepanel = async () => {
+		try {
+			const currentWindow = await browser.windows.getCurrent();
+			// Try to get current sidepanel state and toggle
+
+			if (!sidepanelOpen && currentWindow.id) {
+				await browser.sidePanel.open({ windowId: currentWindow.id });
+				sidepanelOpen = true;
+			} else {
+				// not work yet, follow this issue to track:
+				// https://github.com/w3c/webextensions/issues/521
+				chrome.runtime.sendMessage('closeSidePanel');
+				sidepanelOpen = false;
+			}
+		} catch (error) {
+			console.error('Failed to toggle sidepanel:', error);
+		}
+	};
 </script>
 
 {#if currentView === 'list'}
@@ -94,7 +116,8 @@
 							</div>
 							<div class="flex items-center gap-2 flex-shrink-0">
 								<span class="text-xs text-fg-muted">
-									{dayjs(task.createdAt).format('HH:mm')}
+									{dayjs(task.start).format('HH:mm')} -
+									{dayjs(task.end).format('HH:mm')}
 								</span>
 								<XIcon
 									role="button"
@@ -116,6 +139,10 @@
 					<p class="text-sm">No tasks found</p>
 				</div>
 			{/if}
+
+			<div class="mt-4 pt-4 border-t border-border">
+				<Button class="w-full" onclick={toggleSidepanel}>Open Sidepanel</Button>
+			</div>
 		{/if}
 	</main>
 {:else if currentView === 'edit' && editingTask}
