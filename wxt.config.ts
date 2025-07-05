@@ -1,5 +1,6 @@
 import { defineConfig } from 'wxt';
 import tailwindcss from '@tailwindcss/vite';
+import pkg from './package.json';
 
 // See https://wxt.dev/api/config.html
 export default defineConfig({
@@ -12,8 +13,9 @@ export default defineConfig({
 	}),
 	manifest: {
 		name: 'NDEV: Task Tracker',
-		description: 'A task tracker extension, designed for quick task tracking',
-		version: '0.1.0-beta1',
+		description: pkg.description,
+		version: pkg.version.replace(/-.*$/, ''), // Remove pre-release suffix
+		version_name: pkg.version,
 		permissions: ['commands', 'sidePanel', 'storage'],
 		commands: {
 			'open-new-task-popup': {
