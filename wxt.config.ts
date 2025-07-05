@@ -11,8 +11,10 @@ export default defineConfig({
 		plugins: [tailwindcss()],
 	}),
 	manifest: {
-		permissions: ['scripting', 'activeTab', 'tabs', 'commands', 'sidePanel', 'contextMenus', 'storage'],
-
+		name: 'NDEV: Task Tracker',
+		description: 'A task tracker extension, designed for quick task tracking',
+		version: '0.1.0-beta1',
+		permissions: ['commands', 'sidePanel', 'storage'],
 		commands: {
 			'open-new-task-popup': {
 				suggested_key: {
