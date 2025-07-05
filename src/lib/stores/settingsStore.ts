@@ -23,7 +23,6 @@ export class SettingsStore {
 				title: 'No title',
 				description: '',
 			},
-			clickCardToCopy: null,
 		};
 	}
 

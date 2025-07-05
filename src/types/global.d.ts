@@ -21,5 +21,4 @@ interface ISettings {
 	startTime: string; // ISO 8601 date string
 	autoFocusDescription?: boolean;
 	taskCreateDefaultValue?: Partial<ICreateTask>;
-	clickCardToCopy?: keyof ICreateTask | null;
 }

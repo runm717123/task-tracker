@@ -22,14 +22,6 @@
 	let autoFocusDescription = $state(false);
 	let taskTitle = $state('');
 	let taskDescription = $state('');
-	let clickCardToCopy = $state<string>('');
-
-	// Select options for clickCardToCopy
-	const copyOptions = [
-		{ value: '', label: 'None' },
-		{ value: 'title', label: 'Title' },
-		{ value: 'description', label: 'Description' },
-	];
 
 	onMount(async () => {
 		isLoading = true;
@@ -41,7 +33,6 @@
 			autoFocusDescription = settings.autoFocusDescription ?? false;
 			taskTitle = settings.taskCreateDefaultValue?.title ?? '';
 			taskDescription = settings.taskCreateDefaultValue?.description ?? '';
-			clickCardToCopy = settings.clickCardToCopy ?? '';
 		} catch (error) {
 			console.error('Failed to load settings:', error);
 		} finally {
@@ -66,7 +57,6 @@
 					title: taskTitle,
 					description: taskDescription,
 				},
-				clickCardToCopy: clickCardToCopy === '' ? null : (clickCardToCopy as keyof ICreateTask),
 			};
 
 			await settingsStore.saveSettings(updatedSettings);
@@ -85,7 +75,6 @@
 			autoFocusDescription = defaultSettings.autoFocusDescription ?? false;
 			taskTitle = defaultSettings.taskCreateDefaultValue?.title ?? '';
 			taskDescription = defaultSettings.taskCreateDefaultValue?.description ?? '';
-			clickCardToCopy = defaultSettings.clickCardToCopy ?? '';
 		}
 	};
 </script>
@@ -145,19 +134,6 @@
 							<TextArea bind:value={taskDescription} placeholder="Enter default task description..." rows={2} className="w-full resize-none" />
 						</InputLabel>
 					</div>
-				</div>
-
-				<!-- Click Card to Copy Setting -->
-				<div class="bg-bg-light rounded-md p-3 border border-border">
-					<InputLabel size="sm" className="flex flex-col gap-1">
-						<span class="text-sm font-medium text-fg-dark">Click Card to Copy</span>
-						<select bind:value={clickCardToCopy} class="w-full px-3 py-2 bg-bg-light border border-border rounded-md text-fg-dark focus:outline-none focus:ring-2 focus:ring-accent-primary focus:border-accent-primary">
-							{#each copyOptions as option}
-								<option value={option.value}>{option.label}</option>
-							{/each}
-						</select>
-						<p class="text-xs text-fg-muted">Choose which field to copy when clicking on a task card</p>
-					</InputLabel>
 				</div>
 			{/if}
 		</div>
