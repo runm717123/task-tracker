@@ -10,18 +10,16 @@
 	let tasks: ITrackedTask[] = $state([]);
 	let currentView: 'list' | 'edit' = $state('list');
 	let editingTask: ITrackedTask | null = $state(null);
-	let isLoading = $state(true);
 
 	let unwatch: () => void;
 
 	onMount(() => {
 		const initializeStorage = async () => {
 			// Initialize storage with mock data if needed
-			await taskStore.initializeStorage();
+			// await taskStore.initializeStorage();
 
 			// Load initial tasks
 			tasks = await taskStore.getTasks();
-			isLoading = false;
 
 			// Watch for changes in storage
 			unwatch = taskStore.watchTasks((newTasks) => {
@@ -104,46 +102,45 @@
 		</h1>
 
 		<div class="px-3 flex-1 flex flex-col min-h-0 mb-2">
-			{#if isLoading}
-				<div class="flex items-center justify-center py-8">
-					<div class="w-6 h-6 border-2 border-fg-dark border-t-transparent rounded-full animate-spin"></div>
-				</div>
-			{:else}
-				<div class="overflow-y-auto flex-1 min-h-0" role="list">
-					{#each tasks as task (task.id)}
-						<!-- svelte-ignore a11y_click_events_have_key_events -->
-						<!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
-						<div role="listitem" class="border-b border-border py-3 px-1 hover:bg-bg-light cursor-pointer group" onclick={() => editTask(task)}>
-							<div class="flex items-center justify-between">
-								<div class="flex-1 min-w-0 mr-3">
-									<h3 class="font-medium text-sm text-left text-fg-dark group-hover:text-white truncate">{task.title}</h3>
-								</div>
-								<div class="flex items-center gap-2 flex-shrink-0">
-									<span class="text-xs text-fg-muted group-hover:text-white">
-										{dayjs(task.start).format('HH:mm')} -
-										{dayjs(task.end).format('HH:mm')}
-									</span>
-									<XIcon
-										role="button"
-										size={16}
-										class="text-fg-muted hover:text-red-500 cursor-pointer"
-										onclick={(e) => {
-											e.stopPropagation();
-											deleteTask(task.id);
-										}}
-									/>
-								</div>
+			<div class="overflow-y-auto flex-1 min-h-0" role="list">
+				{#each tasks as task (task.id)}
+					<!-- svelte-ignore a11y_click_events_have_key_events -->
+					<!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
+					<div role="listitem" class="border-b border-border py-3 px-1 hover:bg-bg-light cursor-pointer group" onclick={() => editTask(task)}>
+						<div class="flex items-center justify-between">
+							<div class="flex-1 min-w-0 mr-3">
+								<h3 class="font-medium text-sm text-left text-fg-dark group-hover:text-white truncate">{task.title}</h3>
+							</div>
+							<div class="flex items-center gap-2 flex-shrink-0">
+								<span class="text-xs text-fg-muted group-hover:text-white">
+									{dayjs(task.start).format('HH:mm')} -
+									{dayjs(task.end).format('HH:mm')}
+								</span>
+								<XIcon
+									role="button"
+									size={16}
+									class="text-fg-muted hover:text-red-500 cursor-pointer"
+									onclick={(e) => {
+										e.stopPropagation();
+										deleteTask(task.id);
+									}}
+								/>
 							</div>
 						</div>
-					{/each}
+					</div>
+				{/each}
 
-					{#if tasks.length === 0}
-						<div class="text-center py-8 text-fg-dark">
-							<p class="text-sm">No tasks found</p>
+				{#if tasks.length === 0}
+					<div class="text-center py-8 text-fg-dark">
+						<p class="text-sm mb-2">No tasks recorded yet</p>
+						<p class="text-xs text-fg-muted mb-4">Create your first task to get started!</p>
+						<div class="text-xs text-fg-muted space-y-1">
+							<p>• Open sidepanel below</p>
+							<p>• Use keyboard shortcut: <kbd class="bg-bg-light px-1 py-0.5 rounded text-xs">Alt+Up</kbd></p>
 						</div>
-					{/if}
-				</div>
-			{/if}
+					</div>
+				{/if}
+			</div>
 
 			<div class="mt-4 flex flex-row justify-between items-center flex-shrink-0">
 				{#if tasks.length > 0}

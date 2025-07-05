@@ -8,7 +8,7 @@
 		"dev": "wxt",
 		"dev:firefox": "wxt -b firefox",
 		"build": "wxt build",
-		"build:prod": "wxt build --mode production",
+		"build:prod": "wxt build --mode production && wxt zip",
 		"build:firefox": "wxt build -b firefox",
 		"zip": "wxt zip",
 		"zip:firefox": "wxt zip -b firefox",

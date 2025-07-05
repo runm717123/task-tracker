@@ -29,7 +29,7 @@
 	const canSave = $derived(title.trim().length > 0);
 </script>
 
-<main class="w-80 p-4 bg-bg-dark">
+<main class="w-80 !p-3 bg-bg-dark">
 	<div class="flex flex-col items-start mb-4">
 		<button class="flex items-center gap-2 text-fg-muted hover:text-fg-dark transition-colors flex-1" onclick={onCancel}>
 			<ArrowLeftIcon size={16} />

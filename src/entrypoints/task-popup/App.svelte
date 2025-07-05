@@ -51,7 +51,7 @@
 	};
 </script>
 
-<main class="!px-3 !py-2 bg-bg-dark">
+<main class="!px-3 !py-2 bg-bg-dark h-screen">
 	<div class="flex flex-col h-full">
 		<div class="flex items-center gap-3 mb-4">
 			<div class="w-8 h-8 bg-accent-primary rounded-full flex items-center justify-center">

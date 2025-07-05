@@ -23,8 +23,8 @@ export const mockTasks: ITrackedTask[] = [
 		description: 'Add API documentation for new endpoints',
 		status: 'pending',
 		createdAt: '2025-07-02T08:15:00Z',
-		start: null,
-		end: null,
+		start: '2025-07-01T14:45:00Z',
+		end: '2025-07-01T16:20:00Z',
 	},
 	{
 		id: '4',
@@ -59,8 +59,8 @@ export const mockTasks: ITrackedTask[] = [
 		description: 'Add theme toggle functionality',
 		status: 'in-progress',
 		createdAt: '2025-07-03T10:30:00Z',
-		start: '2025-07-03T11:00:00Z',
-		end: '2025-07-03T14:30:00Z',
+		start: null,
+		end: null,
 	},
 	{
 		id: '8',
@@ -68,8 +68,8 @@ export const mockTasks: ITrackedTask[] = [
 		description: 'Review pull requests for feature branch',
 		status: 'pending',
 		createdAt: '2025-07-03T13:15:00Z',
-		start: null,
-		end: null,
+		start: '2025-07-03T16:00:00Z',
+		end: '2025-07-03T17:30:00Z',
 	},
 	{
 		id: '9',
@@ -86,7 +86,7 @@ export const mockTasks: ITrackedTask[] = [
 		description: 'Conduct usability testing with 5 users',
 		status: 'pending',
 		createdAt: '2025-07-03T17:00:00Z',
-		start: null,
-		end: null,
+		start: '2025-07-01T14:45:00Z',
+		end: '2025-07-01T16:20:00Z',
 	},
 ];
