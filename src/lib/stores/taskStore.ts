@@ -2,78 +2,145 @@ import { storage } from '#imports';
 import { mockTasks } from '../../mocks/tasks';
 
 export class TaskStore {
-  private static instance: TaskStore;
-  private readonly storageKey = 'local:tasks';
+	private static instance: TaskStore;
+	private readonly storageKey = 'local:tasks';
+	private readonly lastTimeEndedTaskKey = 'local:lastTimeEndedTask';
 
-  static getInstance(): TaskStore {
-    if (!TaskStore.instance) {
-      TaskStore.instance = new TaskStore();
-    }
-    return TaskStore.instance;
-  }
+	static getInstance(): TaskStore {
+		if (!TaskStore.instance) {
+			TaskStore.instance = new TaskStore();
+		}
+		return TaskStore.instance;
+	}
 
-  /**
-   * Initialize storage with mock data if no tasks exist
-   */
-  async initializeStorage(): Promise<void> {
-    const existingTasks = await this.getTasks();
-    if (existingTasks.length === 0) {
-      await storage.setItem(this.storageKey, mockTasks);
-    }
-  }
+	/**
+	 * Initialize storage with mock data if no tasks exist
+	 */
+	async initializeStorage(): Promise<void> {
+		const existingTasks = await this.getTasks();
+		if (existingTasks.length === 0) {
+			await storage.setItem(this.storageKey, mockTasks);
 
-  /**
-   * Get all tasks from storage
-   */
-  async getTasks(): Promise<ITrackedTask[]> {
-    const tasks = await storage.getItem<ITrackedTask[]>(this.storageKey);
-    return tasks || [];
-  }
+			// Initialize lastTimeEndedTask with the latest end time from mock data
+			const latestEndTime = mockTasks
+				.filter((task) => task.end)
+				.map((task) => task.end!)
+				.sort((a, b) => new Date(b).getTime() - new Date(a).getTime())[0];
 
-  /**
-   * Save tasks to storage
-   */
-  async saveTasks(tasks: ITrackedTask[]): Promise<void> {
-    await storage.setItem(this.storageKey, tasks);
-  }
+			if (latestEndTime) {
+				await this.saveLastTimeEndedTask(latestEndTime);
+			}
+		}
+	}
 
-  /**
-   * Add a new task
-   */
-  async addTask(task: ITrackedTask): Promise<void> {
-    const tasks = await this.getTasks();
-    tasks.push(task);
-    await this.saveTasks(tasks);
-  }
+	/**
+	 * Get all tasks from storage
+	 */
+	async getTasks(): Promise<ITrackedTask[]> {
+		const tasks = await storage.getItem<ITrackedTask[]>(this.storageKey);
+		return tasks || [];
+	}
 
-  /**
-   * Update an existing task
-   */
-  async updateTask(updatedTask: ITrackedTask): Promise<void> {
-    const tasks = await this.getTasks();
-    const updatedTasks = tasks.map(task => 
-      task.id === updatedTask.id ? updatedTask : task
-    );
-    await this.saveTasks(updatedTasks);
-  }
+	/**
+	 * Save tasks to storage
+	 */
+	async saveTasks(tasks: ITrackedTask[]): Promise<void> {
+		await storage.setItem(this.storageKey, tasks);
+	}
 
-  /**
-   * Delete a task
-   */
-  async deleteTask(taskId: string): Promise<void> {
-    const tasks = await this.getTasks();
-    const filteredTasks = tasks.filter(task => task.id !== taskId);
-    await this.saveTasks(filteredTasks);
-  }
+	/**
+	 * Get the last time a task was ended
+	 */
+	async getLastTimeEndedTask(): Promise<string | null> {
+		const lastTime = await storage.getItem<string>(this.lastTimeEndedTaskKey);
+		return lastTime || null;
+	}
 
-  /**
-   * Watch for changes in task storage
-   */
-  watchTasks(callback: (tasks: ITrackedTask[]) => void): () => void {
-    return storage.watch<ITrackedTask[]>(this.storageKey, (newTasks) => {
-      callback(newTasks || []);
-    });
-  }
+	/**
+	 * Save the last time a task was ended
+	 */
+	async saveLastTimeEndedTask(endTime: string): Promise<void> {
+		await storage.setItem(this.lastTimeEndedTaskKey, endTime);
+	}
+
+	/**
+	 * Add a new task with proper timing logic
+	 */
+	async addTask(task: ICreateTask): Promise<void> {
+		const tasks = await this.getTasks();
+		const lastTimeEndedTask = await this.getLastTimeEndedTask();
+
+		const currentTime = new Date().toISOString();
+
+		// Create new task with proper timing
+		const newTask: ITrackedTask = {
+			...task,
+			id: crypto.randomUUID(),
+			start: lastTimeEndedTask, // Use lastTimeEndedTask as start time, or null if doesn't exist
+			end: currentTime, // Set end time to current time
+			createdAt: currentTime, // Set createdAt to current time
+		};
+
+		tasks.push(newTask);
+		await this.saveTasks(tasks);
+
+		// Update lastTimeEndedTask to current time
+		await this.saveLastTimeEndedTask(currentTime);
+	}
+
+	/**
+	 * Update an existing task
+	 */
+	async updateTask(updatedTask: ITrackedTask): Promise<void> {
+		const tasks = await this.getTasks();
+		const originalTask = tasks.find((task) => task.id === updatedTask.id);
+
+		const updatedTasks = tasks.map((task) => (task.id === updatedTask.id ? updatedTask : task));
+		await this.saveTasks(updatedTasks);
+
+		// If the task's end time was updated and it's the most recent end time, update lastTimeEndedTask
+		if (originalTask?.end !== updatedTask.end && updatedTask.end) {
+			const currentLastTimeEndedTask = await this.getLastTimeEndedTask();
+
+			// Update lastTimeEndedTask if this is the most recent end time
+			if (!currentLastTimeEndedTask || new Date(updatedTask.end) > new Date(currentLastTimeEndedTask)) {
+				await this.saveLastTimeEndedTask(updatedTask.end);
+			}
+		}
+	}
+
+	/**
+	 * Delete a task
+	 */
+	async deleteTask(taskId: string): Promise<void> {
+		const tasks = await this.getTasks();
+		const filteredTasks = tasks.filter((task) => task.id !== taskId);
+		await this.saveTasks(filteredTasks);
+	}
+
+	/**
+	 * Watch for changes in task storage
+	 */
+	watchTasks(callback: (tasks: ITrackedTask[]) => void): () => void {
+		return storage.watch<ITrackedTask[]>(this.storageKey, (newTasks) => {
+			callback(newTasks || []);
+		});
+	}
+
+	/**
+	 * Recalculate and update the lastTimeEndedTask based on all existing tasks
+	 */
+	async recalculateLastTimeEndedTask(): Promise<void> {
+		const tasks = await this.getTasks();
+		const latestEndTime = tasks
+			.filter((task) => task.end)
+			.map((task) => task.end!)
+			.sort((a, b) => new Date(b).getTime() - new Date(a).getTime())[0];
+
+		if (latestEndTime) {
+			await this.saveLastTimeEndedTask(latestEndTime);
+		}
+	}
 }
 
 export const taskStore = TaskStore.getInstance();

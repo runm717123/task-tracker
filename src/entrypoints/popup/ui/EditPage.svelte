@@ -14,14 +14,16 @@
 
 	let title = $state(task.title);
 	let description = $state(task.description);
-	let createdAt = $state(dayjs(task.createdAt).format('YYYY-MM-DDTHH:mm'));
+	let startTime = $state(task.start ? dayjs(task.start).format('YYYY-MM-DDTHH:mm') : '');
+	let endTime = $state(task.end ? dayjs(task.end).format('YYYY-MM-DDTHH:mm') : '');
 
 	const handleSave = () => {
 		const updatedTask: ITrackedTask = {
 			...task,
 			title,
 			description,
-			createdAt: dayjs(createdAt).toISOString(),
+			start: startTime ? dayjs(startTime).toISOString() : null,
+			end: endTime ? dayjs(endTime).toISOString() : null,
 		};
 		onSave(updatedTask);
 	};
@@ -50,8 +52,13 @@
 		</InputLabel>
 
 		<InputLabel size="sm" className="flex flex-col gap-1">
-			Date & Time
-			<Input id="createdAt" type="datetime-local" bind:value={createdAt} />
+			Start Time
+			<Input id="startTime" type="datetime-local" bind:value={startTime} />
+		</InputLabel>
+
+		<InputLabel size="sm" className="flex flex-col gap-1">
+			End Time
+			<Input id="endTime" type="datetime-local" bind:value={endTime} />
 		</InputLabel>
 
 		<div class="flex gap-2 pt-2">

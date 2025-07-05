@@ -13,15 +13,10 @@
 
 		isLoading = true;
 		try {
-			const currentTime = new Date().toISOString();
-			const newTask: ITrackedTask = {
-				id: crypto.randomUUID(),
+			const newTask: ICreateTask = {
 				title: taskTitle.trim(),
 				description: taskDescription.trim(),
 				status: 'pending',
-				createdAt: currentTime,
-				start: currentTime,
-				end: currentTime,
 			};
 
 			await taskStore.addTask(newTask);
