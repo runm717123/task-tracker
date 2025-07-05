@@ -2,11 +2,40 @@
 	import '@bios-ui/core/css';
 	import { Button, Input, InputLabel, TextArea } from '@bios-ui/svelte';
 	import { NotebookPenIcon } from '@lucide/svelte';
+	import { onMount } from 'svelte';
 	import { taskStore } from '../../lib/stores/taskStore';
+	import { settingsStore } from '../../lib/stores/settingsStore';
 
 	let taskTitle = $state('');
 	let taskDescription = $state('');
 	let isLoading = $state(false);
+	let autoFocusDescription = $state(false);
+
+	onMount(async () => {
+		try {
+			const settings = await settingsStore.getSettings();
+			autoFocusDescription = settings.autoFocusDescription ?? false;
+			
+			// Load default values if they exist
+			if (settings.taskCreateDefaultValue) {
+				taskTitle = settings.autoFocusDescription ? settings.taskCreateDefaultValue.title ?? '' : '';
+				taskDescription = !settings.autoFocusDescription ? settings.taskCreateDefaultValue.description ?? '' : '';
+			}
+
+			// Focus the appropriate input after settings are loaded
+			setTimeout(() => {
+				if (autoFocusDescription) {
+					const descriptionInput = document.getElementById('task-description-input');
+					descriptionInput?.focus();
+				} else {
+					const titleInput = document.getElementById('task-title-input');
+					titleInput?.focus();
+				}
+			}, 0);
+		} catch (error) {
+			console.error('Failed to load settings:', error);
+		}
+	});
 
 	const handleSave = async () => {
 		if (!taskTitle.trim()) return;
@@ -62,7 +91,7 @@
 			<div>
 				<InputLabel size="sm" className="flex flex-col gap-1">
 					Title
-					<Input autofocus required bind:value={taskTitle} onkeydown={handleKeydown} placeholder="Enter task title..." className="w-full" />
+					<Input id="task-title-input" required bind:value={taskTitle} onkeydown={handleKeydown} placeholder="Enter task title..." className="w-full" />
 				</InputLabel>
 			</div>
 

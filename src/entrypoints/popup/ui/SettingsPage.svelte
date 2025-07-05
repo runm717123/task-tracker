@@ -119,7 +119,7 @@
 				</div>
 
 				<!-- Auto Focus Description Setting -->
-				<!-- <div class="bg-bg-light rounded-md p-3 border border-border">
+				<div class="bg-bg-light rounded-md p-3 border border-border">
 					<InputLabel size="sm" className="flex flex-col gap-1">
 						<span class="text-sm font-medium text-fg-dark">Auto Focus Description</span>
 						<label class="flex items-center gap-2 cursor-pointer">
@@ -128,10 +128,10 @@
 						</label>
 						<p class="text-xs text-fg-muted">Automatically focus on description field when creating tasks</p>
 					</InputLabel>
-				</div> -->
+				</div>
 
 				<!-- Task Default Values -->
-				<!-- <div class="bg-bg-light rounded-md p-3 border border-border">
+				<div class="bg-bg-light rounded-md p-3 border border-border">
 					<h3 class="text-sm font-medium text-fg-dark mb-3">Task Default Values</h3>
 
 					<div class="space-y-3">
@@ -145,10 +145,10 @@
 							<TextArea bind:value={taskDescription} placeholder="Enter default task description..." rows={2} className="w-full resize-none" />
 						</InputLabel>
 					</div>
-				</div> -->
+				</div>
 
 				<!-- Click Card to Copy Setting -->
-				<!-- <div class="bg-bg-light rounded-md p-3 border border-border">
+				<div class="bg-bg-light rounded-md p-3 border border-border">
 					<InputLabel size="sm" className="flex flex-col gap-1">
 						<span class="text-sm font-medium text-fg-dark">Click Card to Copy</span>
 						<select bind:value={clickCardToCopy} class="w-full px-3 py-2 bg-bg-light border border-border rounded-md text-fg-dark focus:outline-none focus:ring-2 focus:ring-accent-primary focus:border-accent-primary">
@@ -158,7 +158,7 @@
 						</select>
 						<p class="text-xs text-fg-muted">Choose which field to copy when clicking on a task card</p>
 					</InputLabel>
-				</div> -->
+				</div>
 			{/if}
 		</div>
 	</div>
