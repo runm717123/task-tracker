@@ -1,5 +1,6 @@
 import { storage } from '#imports';
 import { mockTasks } from '../../mocks/tasks';
+import { settingsStore } from './settingsStore';
 
 export class TaskStore {
 	private static instance: TaskStore;
@@ -41,6 +42,12 @@ export class TaskStore {
 		return tasks || [];
 	}
 
+	async resetTasks(): Promise<void> {
+		const defaultStartTime = await settingsStore.getSettings();
+		await this.saveTasks([]);
+		await this.saveLastTimeEndedTask(defaultStartTime.startTime);
+	}
+
 	/**
 	 * Save tasks to storage
 	 */
@@ -51,9 +58,16 @@ export class TaskStore {
 	/**
 	 * Get the last time a task was ended
 	 */
-	async getLastTimeEndedTask(): Promise<string | null> {
+	async getLastTimeEndedTask(): Promise<string> {
 		const lastTime = await storage.getItem<string>(this.lastTimeEndedTaskKey);
-		return lastTime || null;
+
+		if (lastTime) {
+			return lastTime;
+		}
+
+		// Fallback to settings store's start time
+		const settings = await settingsStore.getSettings();
+		return settings.startTime;
 	}
 
 	/**
@@ -76,7 +90,7 @@ export class TaskStore {
 		const newTask: ITrackedTask = {
 			...task,
 			id: crypto.randomUUID(),
-			start: lastTimeEndedTask, // Use lastTimeEndedTask as start time, or null if doesn't exist
+			start: lastTimeEndedTask, // Use lastTimeEndedTask as start time, or settings start time as fallback
 			end: currentTime, // Set end time to current time
 			createdAt: currentTime, // Set createdAt to current time
 		};
@@ -103,7 +117,7 @@ export class TaskStore {
 			const currentLastTimeEndedTask = await this.getLastTimeEndedTask();
 
 			// Update lastTimeEndedTask if this is the most recent end time
-			if (!currentLastTimeEndedTask || new Date(updatedTask.end) > new Date(currentLastTimeEndedTask)) {
+			if (new Date(updatedTask.end) > new Date(currentLastTimeEndedTask)) {
 				await this.saveLastTimeEndedTask(updatedTask.end);
 			}
 		}

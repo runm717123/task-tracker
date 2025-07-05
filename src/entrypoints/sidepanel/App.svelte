@@ -83,7 +83,7 @@
 
 	const clearAllTasks = async () => {
 		if (confirm('Are you sure you want to clear all task data? This action cannot be undone.')) {
-			await taskStore.saveTasks([]);
+			await taskStore.resetTasks();
 		}
 	};
 </script>

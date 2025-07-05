@@ -35,7 +35,7 @@
 		isLoading = true;
 		try {
 			settings = await settingsStore.getSettings();
-			
+
 			// Initialize form values
 			startTime = settings.startTime ? dayjs(settings.startTime).format('HH:mm') : '';
 			autoFocusDescription = settings.autoFocusDescription ?? false;
@@ -55,13 +55,18 @@
 		isSaving = true;
 		try {
 			const updatedSettings: ISettings = {
-				startTime: startTime ? dayjs().set('hour', parseInt(startTime.split(':')[0])).set('minute', parseInt(startTime.split(':')[1])).toISOString() : settings.startTime,
+				startTime: startTime
+					? dayjs()
+							.set('hour', parseInt(startTime.split(':')[0]))
+							.set('minute', parseInt(startTime.split(':')[1]))
+							.toISOString()
+					: settings.startTime,
 				autoFocusDescription,
 				taskCreateDefaultValue: {
 					title: taskTitle,
 					description: taskDescription,
 				},
-				clickCardToCopy: clickCardToCopy === '' ? null : clickCardToCopy as keyof ICreateTask,
+				clickCardToCopy: clickCardToCopy === '' ? null : (clickCardToCopy as keyof ICreateTask),
 			};
 
 			await settingsStore.saveSettings(updatedSettings);
@@ -108,84 +113,59 @@
 				<div class="bg-bg-light rounded-md p-3 border border-border">
 					<InputLabel size="sm" className="flex flex-col gap-1">
 						<span class="text-sm font-medium text-fg-dark">Start Time</span>
-						<Input 
-							type="time" 
-							bind:value={startTime} 
-							placeholder="08:00" 
-							className="w-full"
-						/>
+						<Input type="time" bind:value={startTime} placeholder="08:00" className="w-full" />
 						<p class="text-xs text-fg-muted">Set your usual work start time</p>
 					</InputLabel>
 				</div>
 
 				<!-- Auto Focus Description Setting -->
-				<div class="bg-bg-light rounded-md p-3 border border-border">
+				<!-- <div class="bg-bg-light rounded-md p-3 border border-border">
 					<InputLabel size="sm" className="flex flex-col gap-1">
 						<span class="text-sm font-medium text-fg-dark">Auto Focus Description</span>
 						<label class="flex items-center gap-2 cursor-pointer">
-							<input 
-								type="checkbox" 
-								bind:checked={autoFocusDescription}
-								class="w-4 h-4 text-accent-primary bg-bg-light border-border rounded focus:ring-accent-primary focus:ring-2"
-							/>
+							<input type="checkbox" bind:checked={autoFocusDescription} class="w-4 h-4 text-accent-primary bg-bg-light border-border rounded focus:ring-accent-primary focus:ring-2" />
 							<span class="text-sm text-fg-dark">Enable auto focus on description field</span>
 						</label>
 						<p class="text-xs text-fg-muted">Automatically focus on description field when creating tasks</p>
 					</InputLabel>
-				</div>
+				</div> -->
 
 				<!-- Task Default Values -->
-				<div class="bg-bg-light rounded-md p-3 border border-border">
+				<!-- <div class="bg-bg-light rounded-md p-3 border border-border">
 					<h3 class="text-sm font-medium text-fg-dark mb-3">Task Default Values</h3>
-					
+
 					<div class="space-y-3">
 						<InputLabel size="sm" className="flex flex-col gap-1">
 							<span class="text-xs font-medium text-fg-dark">Default Title</span>
-							<Input 
-								bind:value={taskTitle} 
-								placeholder="Enter default task title..." 
-								className="w-full"
-							/>
+							<Input bind:value={taskTitle} placeholder="Enter default task title..." className="w-full" />
 						</InputLabel>
 
 						<InputLabel size="sm" className="flex flex-col gap-1">
 							<span class="text-xs font-medium text-fg-dark">Default Description</span>
-							<TextArea 
-								bind:value={taskDescription} 
-								placeholder="Enter default task description..." 
-								rows={2}
-								className="w-full resize-none"
-							/>
+							<TextArea bind:value={taskDescription} placeholder="Enter default task description..." rows={2} className="w-full resize-none" />
 						</InputLabel>
 					</div>
-				</div>
+				</div> -->
 
 				<!-- Click Card to Copy Setting -->
-				<div class="bg-bg-light rounded-md p-3 border border-border">
+				<!-- <div class="bg-bg-light rounded-md p-3 border border-border">
 					<InputLabel size="sm" className="flex flex-col gap-1">
 						<span class="text-sm font-medium text-fg-dark">Click Card to Copy</span>
-						<select 
-							bind:value={clickCardToCopy}
-							class="w-full px-3 py-2 bg-bg-light border border-border rounded-md text-fg-dark focus:outline-none focus:ring-2 focus:ring-accent-primary focus:border-accent-primary"
-						>
+						<select bind:value={clickCardToCopy} class="w-full px-3 py-2 bg-bg-light border border-border rounded-md text-fg-dark focus:outline-none focus:ring-2 focus:ring-accent-primary focus:border-accent-primary">
 							{#each copyOptions as option}
 								<option value={option.value}>{option.label}</option>
 							{/each}
 						</select>
 						<p class="text-xs text-fg-muted">Choose which field to copy when clicking on a task card</p>
 					</InputLabel>
-				</div>
+				</div> -->
 			{/if}
 		</div>
 	</div>
 
 	<div class="flex gap-2 pt-4 border-t border-border flex-shrink-0">
-		<Button onclick={handleReset} variant="secondary" size="md" className="flex-1" disabled={isLoading || isSaving}>
-			Reset
-		</Button>
-		<Button onclick={onCancel} variant="secondary" size="md" className="flex-1" disabled={isSaving}>
-			Cancel
-		</Button>
+		<Button onclick={handleReset} variant="secondary" size="md" className="flex-1" disabled={isLoading || isSaving}>Reset</Button>
+		<Button onclick={onCancel} variant="secondary" size="md" className="flex-1" disabled={isSaving}>Cancel</Button>
 		<Button onclick={handleSave} size="md" className="flex-1" disabled={isLoading || isSaving}>
 			{#if isSaving}
 				<div class="flex items-center justify-center gap-2">
