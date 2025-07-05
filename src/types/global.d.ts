@@ -14,3 +14,12 @@ interface ITrackedTask extends ITask {
 }
 
 interface ICreateTask extends ITask {}
+
+interface ISettings {
+	// when the user usually starts working
+	// this will initialize the local:lastTimeEndedTask
+	startTime: string; // ISO 8601 date string
+	autoFocusDescription?: boolean;
+	taskCreateDefaultValue?: Partial<ICreateTask>;
+	clickCardToCopy?: keyof ICreateTask | null;
+}

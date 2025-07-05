@@ -1,14 +1,15 @@
 <script lang="ts">
 	import '@bios-ui/core/css';
 	import { Button } from '@bios-ui/svelte';
-	import { ListCheckIcon, XIcon } from '@lucide/svelte';
+	import { ListCheckIcon, XIcon, Settings } from '@lucide/svelte';
 	import dayjs from 'dayjs';
 	import { onMount, onDestroy } from 'svelte';
 	import { taskStore } from '../../lib/stores/taskStore';
 	import EditPage from './ui/EditPage.svelte';
+	import SettingsPage from './ui/SettingsPage.svelte';
 
 	let tasks: ITrackedTask[] = $state([]);
-	let currentView: 'list' | 'edit' = $state('list');
+	let currentView: 'list' | 'edit' | 'settings' = $state('list');
 	let editingTask: ITrackedTask | null = $state(null);
 
 	let unwatch: () => void;
@@ -34,6 +35,8 @@
 			if (event.key === 'Escape') {
 				if (currentView === 'edit') {
 					cancelEdit();
+				} else if (currentView === 'settings') {
+					closeSettings();
 				} else {
 					window.close();
 				}
@@ -70,6 +73,14 @@
 	const cancelEdit = () => {
 		currentView = 'list';
 		editingTask = null;
+	};
+
+	const openSettings = () => {
+		currentView = 'settings';
+	};
+
+	const closeSettings = () => {
+		currentView = 'list';
 	};
 
 	let sidepanelOpen = $state(false);
@@ -147,11 +158,20 @@
 					<p class="text-sm text-fg-muted">
 						Total Tasks: <span class="text-fg-dark">{tasks.length}</span>
 					</p>
+				{:else}
+					<div></div>
 				{/if}
-				<Button size="sm" onclick={toggleSidepanel}>Open Sidepanel</Button>
+				<div class="flex gap-2">
+					<Button size="sm" onclick={toggleSidepanel}>Open Sidepanel</Button>
+					<Button size="sm" onclick={openSettings} className="flex items-center gap-1">
+						<Settings size={14} />
+					</Button>
+				</div>
 			</div>
 		</div>
 	</main>
 {:else if currentView === 'edit' && editingTask}
 	<EditPage task={editingTask} onSave={saveTask} onCancel={cancelEdit} />
+{:else if currentView === 'settings'}
+	<SettingsPage onCancel={closeSettings} />
 {/if}
