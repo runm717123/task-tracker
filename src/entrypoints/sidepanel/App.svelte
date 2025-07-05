@@ -119,20 +119,20 @@
 
 <main class="min-h-screen overflow-y-auto bg-bg-dark flex flex-col justify-between">
 	<div class="p-4">
-		<div class="text-center mb-3 font-family-heading">
+		<div class="text-center mb-4 mt-1 font-family-heading">
 			<h1 class="text-2xl font-bold text-fg-dark">Tracked Task Summary</h1>
 			<span class="text-fg-muted text-xs">Total Tasks: {tasks.length}</span>
 		</div>
 
 		<div class="mb-3 flex justify-end gap-2">
 			<Button size="sm" onclick={openTaskPopup} className="flex items-center gap-2 px-3 py-2" title="Add new task">
-				<Plus size={16} />
+				<Plus size={14} />
 			</Button>
 			<Button size="sm" onclick={downloadTasks} className="flex items-center gap-2 px-3 py-2" title="Download tasks as JSON">
-				<Download size={16} />
+				<Download size={14} />
 			</Button>
 			<Button size="sm" onclick={clearAllTasks} className="flex items-center gap-2 px-3 py-2" variant="destructive" title="Clear all task data">
-				<Trash2 size={16} />
+				<Trash2 size={14} />
 			</Button>
 		</div>
 
@@ -175,7 +175,7 @@
 						<div
 							role="button"
 							tabindex="0"
-							class="font-semibold text-base text-fg-dark truncate mr-4 mb-1 text-left w-full"
+							class="font-semibold text-base text-fg-dark truncate mr-4 text-left w-full"
 							onclick={() => handleCardClick(task, 'title')}
 							onkeydown={(e) => e.key === 'Enter' && handleCardClick(task, 'title')}
 							title="Click to copy title"
@@ -203,7 +203,7 @@
 								onkeydown={(e) => e.key === 'Enter' && copyToClipboard(getRelativeTime(task.createdAt), task.id, 'createdAt')}
 								title="Click to copy created time"
 							>
-								Created {getDisplayText(task, 'createdAt', getDisplayText(task, 'createdAt', task.createdAt))}
+								Created {getDisplayText(task, 'createdAt', getRelativeTime(task.createdAt))}
 							</div>
 						</div>
 					</div>
@@ -211,7 +211,7 @@
 			{/each}
 
 			<div class="mb-3 text-center">
-				<p class="text-xs text-fg-muted bg-bg-darker border border-border rounded-lg px-3 py-2">
+				<p class="text-xs text-fg-muted opacity-80 bg-bg-darker border border-border rounded-lg px-3 py-2">
 					💡 <strong>Tip:</strong> Click on any task content to copy it to your clipboard
 				</p>
 			</div>
@@ -232,7 +232,7 @@
 
 	<!-- Version and Copyright footer -->
 	<div class="mt-8 pt-4 border-t border-border text-center text-xs text-fg-muted">
-		<p>NDEV: Task Tracker v${pkg.version}</p>
-		<p>&copy; ${dayjs().year()} NDEV. All rights reserved.</p>
+		<p>NDEV: Task Tracker v{pkg.version}</p>
+		<p>&copy; {dayjs().year()} NDEV. All rights reserved.</p>
 	</div>
 </main>

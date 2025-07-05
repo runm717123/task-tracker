@@ -130,7 +130,7 @@
 								<XIcon
 									role="button"
 									size={16}
-									class="text-fg-muted hover:text-red-500 cursor-pointer"
+									class="text-fg-muted hover:text-fg-dark hover:bg-blue-50 cursor-pointer hover:p-0.5 rounded"
 									onclick={(e) => {
 										e.stopPropagation();
 										deleteTask(task.id);
