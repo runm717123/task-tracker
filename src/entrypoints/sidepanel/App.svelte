@@ -32,6 +32,14 @@
 		};
 
 		initializeStorage();
+
+		// close window on ESC key
+		const handleKeydown = (event: KeyboardEvent) => {
+			if (event.key === 'Escape') {
+				window.close();
+			}
+		};
+		document.addEventListener('keydown', handleKeydown);
 	});
 
 	onDestroy(() => {

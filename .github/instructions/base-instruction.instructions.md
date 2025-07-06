@@ -12,6 +12,7 @@ This is a chrome extension app, this will have 3 main sections:
 - use `src/lib/utils` for utility functions
 - use `src/types` for TypeScript types
 - use `src/mocks` for mock data used for development
+- unit tests should be placed in the same folder as the component or utility function, with a `.test.ts` suffix
 
 # Response Format
 - no need to include description, summary, or any additional text
