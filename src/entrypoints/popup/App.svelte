@@ -117,27 +117,24 @@
 				{#each tasks as task (task.id)}
 					<!-- svelte-ignore a11y_click_events_have_key_events -->
 					<!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
-					<div role="listitem" class="border-b border-border py-3 px-1 hover:bg-bg-light cursor-pointer group" onclick={() => editTask(task)}>
-						<div class="flex items-center justify-between">
-							<div class="flex-1 min-w-0 mr-3">
-								<h3 class="font-medium text-sm text-left text-fg-dark group-hover:text-white truncate">{task.title}</h3>
-							</div>
-							<div class="flex items-center gap-2 flex-shrink-0">
-								<span class="text-xs text-fg-muted group-hover:text-white">
-									{dayjs(task.start).format('HH:mm')} -
-									{dayjs(task.end).format('HH:mm')}
-								</span>
-								<XIcon
-									role="button"
-									size={16}
-									class="text-fg-muted hover:text-fg-dark hover:bg-blue-50 cursor-pointer hover:p-0.5 rounded"
-									onclick={(e) => {
-										e.stopPropagation();
-										deleteTask(task.id);
-									}}
-								/>
-							</div>
+					<div role="listitem" class="border-b border-border py-3 px-1 flex items-center justify-between flex-row gap-2" onclick={() => editTask(task)}>
+						<div class=" hover:text-white hover:bg-bg-light cursor-pointer flex-1 flex items-center justify-between" title="Click to edit task">
+							<span class="text-sm truncate">{task.title}</span>
+							<span class="text-xs text-fg-muted">
+								{dayjs(task.start).format('HH:mm')} -
+								{dayjs(task.end).format('HH:mm')}
+							</span>
 						</div>
+
+						<XIcon
+							role="button"
+							size={16}
+							class="text-fg-muted hover:text-fg-dark hover:bg-blue-50 cursor-pointer hover:p-0.5 rounded"
+							onclick={(e) => {
+								e.stopPropagation();
+								deleteTask(task.id);
+							}}
+						/>
 					</div>
 				{/each}
 
