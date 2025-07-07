@@ -152,21 +152,6 @@ export class TaskStore {
 			callback(newTasks || []);
 		});
 	}
-
-	/**
-	 * Recalculate and update the lastTimeEndedTask based on all existing tasks
-	 */
-	async recalculateLastTimeEndedTask(): Promise<void> {
-		const tasks = await this.getTasks();
-		const latestEndTime = tasks
-			.filter((task) => task.end)
-			.map((task) => task.end!)
-			.sort((a, b) => dayjs(b).diff(dayjs(a)))[0];
-
-		if (latestEndTime) {
-			await this.saveLastTimeEndedTask(latestEndTime);
-		}
-	}
 }
 
 export const taskStore = TaskStore.getInstance();

@@ -49,17 +49,6 @@ export class SettingsStore {
 		settings[key] = value;
 		await this.saveSettings(settings);
 	}
-
-	/**
-	 * Watch for changes in settings storage
-	 */
-	watchSettings(callback: (settings: ISettings) => void): () => void {
-		return storage.watch(this.storageKey, (changes: any) => {
-			if (changes[this.storageKey]) {
-				callback(changes[this.storageKey].newValue || this.getDefaultSettings());
-			}
-		});
-	}
 }
 
 export const settingsStore = SettingsStore.getInstance();
