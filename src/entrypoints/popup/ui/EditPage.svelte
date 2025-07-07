@@ -1,8 +1,8 @@
 <script lang="ts">
 	import '@bios-ui/core/css';
 	import { Button, Input, InputLabel, TextArea } from '@bios-ui/svelte';
-	import { ArrowLeftIcon } from '@lucide/svelte';
 	import dayjs from 'dayjs';
+	import FormHeader from '../../../lib/components/popup/FormHeader.svelte';
 
 	interface Props {
 		task: ITrackedTask;
@@ -32,13 +32,7 @@
 </script>
 
 <main class="w-80 !p-3 bg-bg-dark">
-	<div class="flex flex-col items-start mb-4">
-		<button class="flex items-center gap-2 text-fg-muted hover:text-fg-dark transition-colors flex-1" onclick={onCancel}>
-			<ArrowLeftIcon size={16} />
-			<span class="text-sm">Back</span>
-		</button>
-		<h1 class="text-xl font-semibold self-center text-fg-dark text-center font-family-heading">EDIT TASK</h1>
-	</div>
+	<FormHeader title="EDIT TASK" onBack={onCancel} />
 
 	<div class="flex flex-col gap-4">
 		<InputLabel size="sm" className="flex flex-col gap-1">

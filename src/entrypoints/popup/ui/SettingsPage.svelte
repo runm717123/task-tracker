@@ -1,10 +1,10 @@
 <script lang="ts">
 	import '@bios-ui/core/css';
 	import { Button, Input, InputLabel, TextArea } from '@bios-ui/svelte';
-	import { ArrowLeftIcon } from '@lucide/svelte';
 	import dayjs from 'dayjs';
 	import { onMount } from 'svelte';
 	import { settingsStore } from '../../../lib/stores/settingsStore';
+	import FormHeader from '../../../lib/components/popup/FormHeader.svelte';
 
 	interface Props {
 		onCancel: () => void;
@@ -80,13 +80,7 @@
 </script>
 
 <main class="w-80 !p-3 bg-bg-dark max-h-[480px] flex flex-col">
-	<div class="flex flex-col items-start mb-4 flex-shrink-0">
-		<button class="flex items-center gap-2 text-fg-muted hover:text-fg-dark transition-colors flex-1" onclick={onCancel}>
-			<ArrowLeftIcon size={16} />
-			<span class="text-sm">Back</span>
-		</button>
-		<h1 class="text-xl font-semibold self-center text-fg-dark text-center font-family-heading">SETTINGS</h1>
-	</div>
+	<FormHeader title="SETTINGS" onBack={onCancel} />
 
 	<div class="flex-1 overflow-y-auto min-h-0">
 		<div class="flex flex-col gap-4 pb-4">
