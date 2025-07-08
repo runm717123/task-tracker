@@ -25,6 +25,10 @@ applyTo: "**/*.svelte"
 ---
 # Coding Standards and Preferences for Svelte
 
+## Testing
+- use vitest for testing
+- use @testing-library/svelte for testing svelte components
+
 ## Coding Standards and Preferences
 - use latest svelte v5 syntax
 - use tailwindcss for styling
