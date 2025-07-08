@@ -29,35 +29,41 @@
 	};
 
 	const canSave = $derived(title.trim().length > 0);
+
+	const handleKeyDown = (event: KeyboardEvent) => {
+		if (event.key === 'Enter' && canSave) {
+			handleSave();
+		}
+	};
 </script>
 
 <main class="w-80 !p-3 bg-bg-dark">
 	<FormHeader title="EDIT TASK" onBack={onCancel} />
 
-	<div class="flex flex-col gap-4">
+	<form class="flex flex-col gap-4" onsubmit={(e) => { e.preventDefault(); if (canSave) handleSave(); }}>
 		<InputLabel size="sm" className="flex flex-col gap-1">
 			Title
-			<Input id="title" bind:value={title} placeholder="Enter task title" />
+			<Input id="title" bind:value={title} placeholder="Enter task title" onkeydown={handleKeyDown} />
 		</InputLabel>
 
 		<InputLabel size="sm" className="flex flex-col gap-1">
 			Description
-			<TextArea id="description" bind:value={description} rows={3} placeholder="Enter task description" />
+			<TextArea id="description" bind:value={description} rows={3} placeholder="Enter task description" onkeydown={handleKeyDown} />
 		</InputLabel>
 
 		<InputLabel size="sm" className="flex flex-col gap-1">
 			Start Time
-			<Input id="startTime" type="datetime-local" bind:value={startTime} />
+			<Input id="startTime" type="datetime-local" bind:value={startTime} onkeydown={handleKeyDown} />
 		</InputLabel>
 
 		<InputLabel size="sm" className="flex flex-col gap-1">
 			End Time
-			<Input id="endTime" type="datetime-local" bind:value={endTime} />
+			<Input id="endTime" type="datetime-local" bind:value={endTime} onkeydown={handleKeyDown} />
 		</InputLabel>
 
 		<div class="flex gap-2 pt-2">
 			<Button onclick={onCancel} size="md" className="flex-1">Cancel</Button>
-			<Button onclick={handleSave} size="md" disabled={!canSave} className="flex-1">Save</Button>
+			<Button type="submit" size="md" disabled={!canSave} className="flex-1">Save</Button>
 		</div>
-	</div>
+	</form>
 </main>
