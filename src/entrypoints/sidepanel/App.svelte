@@ -15,7 +15,7 @@
 	dayjs.extend(relativeTime);
 	dayjs.extend(isBetween);
 
-	let todayTasks: ITrackedTask[] = $state([]);
+	let trackedTasks: ITrackedTask[] = $state([]);
 	let copiedItems: Set<string> = new SvelteSet();
 	let timeRangeFilter: 'daily' | 'weekly' | 'monthly' | 'all' = $state('daily');
 	let editingTask: ITrackedTask | null = $state(null);
@@ -49,7 +49,7 @@
 	});
 
 	const loadTasksForTimeRange = async () => {
-		todayTasks = await taskStore.getTasks(timeRangeFilter);
+		trackedTasks = await taskStore.getTasks(timeRangeFilter);
 	};
 
 	const handleTimeRangeChange = async () => {
@@ -110,7 +110,7 @@
 	};
 
 	const downloadTasks = () => {
-		const dataStr = JSON.stringify(todayTasks, null, 2);
+		const dataStr = JSON.stringify(trackedTasks, null, 2);
 		const dataUri = 'data:application/json;charset=utf-8,' + encodeURIComponent(dataStr);
 
 		const exportFileDefaultName = `${timeRangeFilter}-tasks-${dayjs().format('YYYY-MM-DD-HH-mm-ss')}.json`;
@@ -158,13 +158,13 @@
 	const getHeaderText = () => {
 		switch (timeRangeFilter) {
 			case 'daily':
-				return `Today's Tasks: ${todayTasks.length}`;
+				return `Today's Tasks: ${trackedTasks.length}`;
 			case 'weekly':
-				return `This Week's Tasks: ${todayTasks.length}`;
+				return `This Week's Tasks: ${trackedTasks.length}`;
 			case 'monthly':
-				return `This Month's Tasks: ${todayTasks.length}`;
+				return `This Month's Tasks: ${trackedTasks.length}`;
 			case 'all':
-				return `All Tasks: ${todayTasks.length}`;
+				return `All Tasks: ${trackedTasks.length}`;
 		}
 	};
 </script>
@@ -205,13 +205,14 @@
 				</div>
 			</div>
 
-			<div class="space-y-2">
-				{#each todayTasks as task (task.id)}
-					<div class="bg-bg-darker border border-border rounded-lg p-3 hover:bg-bg-light transition-colors">
-						<div class="flex flex-col items-start justify-between">
-							<div class="flex items-center justify-between w-full mb-1">
-								<div class="flex items-center">
-									<!-- <div
+			{#if trackedTasks.length}
+				<div class="space-y-2">
+					{#each trackedTasks as task (task.id)}
+						<div class="bg-bg-darker border border-border rounded-lg p-3 hover:bg-bg-light transition-colors">
+							<div class="flex flex-col items-start justify-between">
+								<div class="flex items-center justify-between w-full mb-1">
+									<div class="flex items-center">
+										<!-- <div
 									role="button"
 									tabindex="0"
 									class="text-accent-primary font-medium bg-accent-primary/10 pr-2 py-0.5 rounded text-xs whitespace-nowrap"
@@ -221,77 +222,76 @@
 								>
 									{getDisplayText(task, 'status', task.status ? getStatusLabel(task.status) : '')}
 								</div> -->
-									{#if getTimeRange(task.start, task.end)}
-										<!-- svelte-ignore a11y_click_events_have_key_events -->
-										<div
-											role="button"
-											tabindex="0"
-											class="text-accent-primary text-sm font-medium bg-accent-primary/10 px-2 py-0.5 rounded whitespace-nowrap"
-											onclick={() => copyToClipboard(getTimeRange(task.start, task.end) || '', task.id, 'start')}
-											title="Click to copy time range"
-										>
-											{getDisplayText(task, 'start', getTimeRange(task.start, task.end) || '')}
-										</div>
-									{:else}
-										<ClockAlert class="text-fg-dark mr-4" size={16} />
-									{/if}
+										{#if getTimeRange(task.start, task.end)}
+											<!-- svelte-ignore a11y_click_events_have_key_events -->
+											<div
+												role="button"
+												tabindex="0"
+												class="text-accent-primary text-sm font-medium bg-accent-primary/10 px-2 py-0.5 rounded whitespace-nowrap"
+												onclick={() => copyToClipboard(getTimeRange(task.start, task.end) || '', task.id, 'start')}
+												title="Click to copy time range"
+											>
+												{getDisplayText(task, 'start', getTimeRange(task.start, task.end) || '')}
+											</div>
+										{:else}
+											<ClockAlert class="text-fg-dark mr-4" size={16} />
+										{/if}
+									</div>
+									<div class="flex items-center gap-1 flex-shrink-0">
+										<button class="p-1 text-fg-muted hover:text-fg-dark hover:bg-blue-50 rounded-md transition-colors" onclick={() => editTask(task)} title="Edit task">
+											<EditIcon size={16} />
+										</button>
+										<button class="p-1 text-fg-muted hover:text-red-600 hover:bg-red-50 rounded-md transition-colors" onclick={() => deleteTask(task.id)} title="Delete task">
+											<XIcon size={16} />
+										</button>
+									</div>
 								</div>
-								<div class="flex items-center gap-1 flex-shrink-0">
-									<button class="p-1 text-fg-muted hover:text-fg-dark hover:bg-blue-50 rounded-md transition-colors" onclick={() => editTask(task)} title="Edit task">
-										<EditIcon size={16} />
-									</button>
-									<button class="p-1 text-fg-muted hover:text-red-600 hover:bg-red-50 rounded-md transition-colors" onclick={() => deleteTask(task.id)} title="Delete task">
-										<XIcon size={16} />
-									</button>
-								</div>
-							</div>
 
-							<div
-								role="button"
-								tabindex="0"
-								class="font-semibold text-base text-fg-dark truncate mr-4 text-left w-full"
-								onclick={() => handleCardClick(task, 'title')}
-								onkeydown={(e) => e.key === 'Enter' && handleCardClick(task, 'title')}
-								title="Click to copy title"
-							>
-								{getDisplayText(task, 'title', task.title)}
-							</div>
-
-							<div
-								role="button"
-								tabindex="0"
-								class="text-fg-muted text-xs mb-1 leading-relaxed line-clamp-2 text-left w-full"
-								onclick={() => handleCardClick(task, 'description')}
-								onkeydown={(e) => e.key === 'Enter' && handleCardClick(task, 'description')}
-								title="Click to copy description"
-							>
-								{getDisplayText(task, 'description', task.description)}
-							</div>
-
-							<div class="text-xs text-fg-muted">
 								<div
 									role="button"
 									tabindex="0"
-									class="text-xs text-fg-muted"
-									onclick={() => copyToClipboard(getRelativeTime(task.createdAt), task.id, 'createdAt')}
-									onkeydown={(e) => e.key === 'Enter' && copyToClipboard(getRelativeTime(task.createdAt), task.id, 'createdAt')}
-									title="Click to copy created time"
+									class="font-semibold text-base text-fg-dark truncate mr-4 text-left w-full"
+									onclick={() => handleCardClick(task, 'title')}
+									onkeydown={(e) => e.key === 'Enter' && handleCardClick(task, 'title')}
+									title="Click to copy title"
 								>
-									Created {getDisplayText(task, 'createdAt', getRelativeTime(task.createdAt))}
+									{getDisplayText(task, 'title', task.title)}
+								</div>
+
+								<div
+									role="button"
+									tabindex="0"
+									class="text-fg-muted text-xs mb-1 leading-relaxed line-clamp-2 text-left w-full"
+									onclick={() => handleCardClick(task, 'description')}
+									onkeydown={(e) => e.key === 'Enter' && handleCardClick(task, 'description')}
+									title="Click to copy description"
+								>
+									{getDisplayText(task, 'description', task.description)}
+								</div>
+
+								<div class="text-xs text-fg-muted">
+									<div
+										role="button"
+										tabindex="0"
+										class="text-xs text-fg-muted"
+										onclick={() => copyToClipboard(getRelativeTime(task.createdAt), task.id, 'createdAt')}
+										onkeydown={(e) => e.key === 'Enter' && copyToClipboard(getRelativeTime(task.createdAt), task.id, 'createdAt')}
+										title="Click to copy created time"
+									>
+										Created {getDisplayText(task, 'createdAt', getRelativeTime(task.createdAt))}
+									</div>
 								</div>
 							</div>
 						</div>
+					{/each}
+
+					<div class="mb-3 text-center">
+						<p class="text-xs text-fg-muted opacity-80 bg-bg-darker border border-border rounded-lg px-3 py-2">
+							💡 <strong>Tip:</strong> Click on any task content to copy it to your clipboard
+						</p>
 					</div>
-				{/each}
-
-				<div class="mb-3 text-center">
-					<p class="text-xs text-fg-muted opacity-80 bg-bg-darker border border-border rounded-lg px-3 py-2">
-						💡 <strong>Tip:</strong> Click on any task content to copy it to your clipboard
-					</p>
 				</div>
-			</div>
-
-			{#if todayTasks.length === 0}
+			{:else}
 				<div class="text-center py-12">
 					<p class="text-fg-dark text-lg mb-2">No tasks recorded for {timeRangeFilter === 'daily' ? 'today' : timeRangeFilter === 'all' ? 'any period' : `this ${timeRangeFilter.replace('ly', '')}`}</p>
 					<p class="text-fg-muted text-sm mb-6">Start tracking your tasks to see them here!</p>
