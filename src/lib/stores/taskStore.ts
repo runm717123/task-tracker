@@ -35,30 +35,105 @@ export class TaskStore {
 	}
 
 	/**
-	 * Get all tasks from storage
+	 * Get tasks from storage with optional time range filtering
 	 */
-	async getTasks(): Promise<ITrackedTask[]> {
+	async getTasks(timeRange: 'all' | 'daily' | 'weekly' | 'monthly' = 'all'): Promise<ITrackedTask[]> {
 		const tasks = await storage.getItem<ITrackedTask[]>(this.storageKey);
-		return tasks || [];
+		const allTasks = tasks || [];
+
+		const now = dayjs();
+
+		switch (timeRange) {
+			case 'daily':
+				const today = now.startOf('day');
+				return allTasks.filter((task) => {
+					const taskDate = dayjs(task.createdAt).startOf('day');
+					return taskDate.isSame(today, 'day');
+				});
+			case 'weekly':
+				const startOfWeek = now.startOf('week');
+				const endOfWeek = now.endOf('week');
+				return allTasks.filter((task) => {
+					const taskDate = dayjs(task.createdAt);
+					return taskDate.isBetween(startOfWeek, endOfWeek, null, '[]');
+				});
+			case 'monthly':
+				const startOfMonth = now.startOf('month');
+				const endOfMonth = now.endOf('month');
+				return allTasks.filter((task) => {
+					const taskDate = dayjs(task.createdAt);
+					return taskDate.isBetween(startOfMonth, endOfMonth, null, '[]');
+				});
+			default:
+				return allTasks;
+		}
 	}
 
 	/**
-	 * Get today's tasks from storage
+	 * Reset tasks based on time range
 	 */
-	async getTodayTasks(): Promise<ITrackedTask[]> {
-		const tasks = await this.getTasks();
-		const today = dayjs().startOf('day');
+	async resetTasks(timeRange: 'all' | 'daily' | 'weekly' | 'monthly' = 'all'): Promise<void> {
+		const settings = await settingsStore.getSettings();
 
-		return tasks.filter((task) => {
-			const taskDate = dayjs(task.createdAt).startOf('day');
-			return taskDate.isSame(today, 'day');
-		});
+		if (timeRange === 'all') {
+			await this.saveTasks([]);
+			await this.saveLastTimeEndedTask(settings.startTime);
+			return;
+		}
+
+		const tasks = await this.getTasks();
+		const now = dayjs();
+
+		let tasksToKeep: ITrackedTask[] = [];
+
+		switch (timeRange) {
+			case 'daily':
+				const today = now.startOf('day');
+				tasksToKeep = tasks.filter((task) => {
+					const taskDate = dayjs(task.createdAt).startOf('day');
+					return !taskDate.isSame(today, 'day');
+				});
+				break;
+			case 'weekly':
+				const startOfWeek = now.startOf('week');
+				const endOfWeek = now.endOf('week');
+				tasksToKeep = tasks.filter((task) => {
+					const taskDate = dayjs(task.createdAt);
+					return !taskDate.isBetween(startOfWeek, endOfWeek, null, '[]');
+				});
+				break;
+			case 'monthly':
+				const startOfMonth = now.startOf('month');
+				const endOfMonth = now.endOf('month');
+				tasksToKeep = tasks.filter((task) => {
+					const taskDate = dayjs(task.createdAt);
+					return !taskDate.isBetween(startOfMonth, endOfMonth, null, '[]');
+				});
+				break;
+			default:
+				await this.saveTasks([]);
+				await this.saveLastTimeEndedTask(settings.startTime);
+		}
+
+		await this.saveTasks(tasksToKeep);
+
+		// Adjust lastTimeEndedTask based on remaining tasks
+		if (tasksToKeep.length > 0) {
+			const todayTasks = tasksToKeep.filter((task) => dayjs(task.createdAt).isSame(now, 'day'));
+			const latestTodayTask = todayTasks[todayTasks.length - 1];
+
+			await this.saveLastTimeEndedTask(latestTodayTask.end!);
+		} else {
+			await this.saveLastTimeEndedTask(settings.startTime);
+		}
 	}
 
-	async resetTasks(): Promise<void> {
-		const defaultStartTime = await settingsStore.getSettings();
-		await this.saveTasks([]);
-		await this.saveLastTimeEndedTask(defaultStartTime.startTime);
+	/**
+	 * Reset only today's tasks while keeping tasks from other days
+	 * @deprecated Use resetTasks('daily') instead
+	 */
+	async resetTodayTasks(): Promise<void> {
+		return this.resetTasks('daily');
 	}
 
 	/**

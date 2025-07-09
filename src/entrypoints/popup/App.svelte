@@ -20,11 +20,11 @@
 			// await taskStore.initializeStorage();
 
 			// Load initial today's tasks
-			todayTasks = await taskStore.getTodayTasks();
+			todayTasks = await taskStore.getTasks('daily');
 
 			// Watch for changes in storage
 			unwatch = taskStore.watchTasks(async () => {
-				todayTasks = await taskStore.getTodayTasks();
+				todayTasks = await taskStore.getTasks('daily');
 			});
 		};
 

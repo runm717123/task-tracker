@@ -4,6 +4,7 @@
 	import { ClockAlert, Download, Plus, Trash2, XIcon } from '@lucide/svelte';
 	import dayjs from 'dayjs';
 	import relativeTime from 'dayjs/plugin/relativeTime';
+	import isBetween from 'dayjs/plugin/isBetween';
 	import { onDestroy, onMount } from 'svelte';
 	import { SvelteSet } from 'svelte/reactivity';
 	import pkg from '../../../package.json';
@@ -11,9 +12,11 @@
 	import { openTaskPopup } from '../../lib/utils/taskPopup';
 
 	dayjs.extend(relativeTime);
+	dayjs.extend(isBetween);
 
 	let todayTasks: ITrackedTask[] = $state([]);
 	let copiedItems: Set<string> = new SvelteSet();
+	let timeRangeFilter: 'daily' | 'weekly' | 'monthly' | 'all' = $state('daily');
 
 	let unwatch: () => void;
 
@@ -22,12 +25,12 @@
 			// Initialize storage with mock data if needed
 			// await taskStore.initializeStorage();
 
-			// Load initial today's tasks
-			todayTasks = await taskStore.getTodayTasks();
+			// Load initial tasks based on filter
+			await loadTasksForTimeRange();
 
 			// Watch for changes in storage
 			unwatch = taskStore.watchTasks(async () => {
-				todayTasks = await taskStore.getTodayTasks();
+				await loadTasksForTimeRange();
 			});
 		};
 
@@ -41,6 +44,14 @@
 		};
 		document.addEventListener('keydown', handleKeydown);
 	});
+
+	const loadTasksForTimeRange = async () => {
+		todayTasks = await taskStore.getTasks(timeRangeFilter);
+	};
+
+	const handleTimeRangeChange = async () => {
+		await loadTasksForTimeRange();
+	};
 
 	onDestroy(() => {
 		if (unwatch) unwatch();
@@ -83,7 +94,7 @@
 		const dataStr = JSON.stringify(todayTasks, null, 2);
 		const dataUri = 'data:application/json;charset=utf-8,' + encodeURIComponent(dataStr);
 
-		const exportFileDefaultName = `todays-tasks-${dayjs().format('YYYY-MM-DD-HH-mm-ss')}.json`;
+		const exportFileDefaultName = `${timeRangeFilter}-tasks-${dayjs().format('YYYY-MM-DD-HH-mm-ss')}.json`;
 
 		const linkElement = document.createElement('a');
 		linkElement.setAttribute('href', dataUri);
@@ -91,9 +102,10 @@
 		linkElement.click();
 	};
 
-	const clearAllTasks = async () => {
-		if (confirm('Are you sure you want to clear all task data? This action cannot be undone.')) {
-			await taskStore.resetTasks();
+	const clearTasks = async () => {
+		const filterText = timeRangeFilter === 'all' ? 'all' : timeRangeFilter;
+		if (confirm(`Are you sure you want to clear ${filterText} tasks? This action cannot be undone.`)) {
+			await taskStore.resetTasks(timeRangeFilter);
 		}
 	};
 
@@ -123,25 +135,52 @@
 		const isCopied = copiedItems.has(`${task.id}-${field}`);
 		return isCopied ? `${text} (copied)` : text;
 	};
+
+	const getHeaderText = () => {
+		switch (timeRangeFilter) {
+			case 'daily':
+				return `Today's Tasks: ${todayTasks.length}`;
+			case 'weekly':
+				return `This Week's Tasks: ${todayTasks.length}`;
+			case 'monthly':
+				return `This Month's Tasks: ${todayTasks.length}`;
+			case 'all':
+				return `All Tasks: ${todayTasks.length}`;
+		}
+	};
 </script>
 
 <main class="min-h-screen overflow-y-auto bg-bg-dark flex flex-col justify-between">
 	<div class="p-4">
 		<div class="text-center mb-4 mt-1 font-family-heading">
 			<h1 class="text-2xl font-bold text-fg-dark">Tracked Tasks Summary</h1>
-			<span class="text-fg-muted text-xs">Today's Tasks: {todayTasks.length}</span>
+			<span class="text-fg-muted text-xs">{getHeaderText()}</span>
 		</div>
 
-		<div class="mb-3 flex justify-end gap-2">
-			<Button size="sm" onclick={openTaskPopup} className="flex items-center gap-2 px-3 py-2" title="Add new task">
-				<Plus size={14} />
-			</Button>
-			<Button size="sm" onclick={downloadTasks} className="flex items-center gap-2 px-3 py-2" title="Download today's tasks as JSON">
-				<Download size={14} />
-			</Button>
-			<Button size="sm" onclick={clearAllTasks} className="flex items-center gap-2 px-3 py-2" variant="destructive" title="Clear all task data">
-				<Trash2 size={14} />
-			</Button>
+		<div class="mb-3 flex justify-between items-center gap-2">
+			<div class="flex-1 max-w-40">
+				<select 
+					bind:value={timeRangeFilter} 
+					onchange={handleTimeRangeChange}
+					class="w-full px-3 py-2 text-sm bg-bg-darker border border-border rounded-md text-fg-dark focus:outline-none focus:ring-2 focus:ring-accent-primary focus:border-transparent"
+				>
+					<option value="daily">Daily</option>
+					<option value="weekly">Weekly</option>
+					<option value="monthly">Monthly</option>
+					<option value="all">All</option>
+				</select>
+			</div>
+			<div class="flex gap-2">
+				<Button size="sm" onclick={openTaskPopup} className="flex items-center gap-2 px-3 py-2" title="Add new task">
+					<Plus size={14} />
+				</Button>
+				<Button size="sm" onclick={downloadTasks} className="flex items-center gap-2 px-3 py-2" title={`Download ${timeRangeFilter} tasks as JSON`}>
+					<Download size={14} />
+				</Button>
+				<Button size="sm" onclick={clearTasks} className="flex items-center gap-2 px-3 py-2" variant="destructive" title={`Clear ${timeRangeFilter} tasks`}>
+					<Trash2 size={14} />
+				</Button>
+			</div>
 		</div>
 
 		<div class="space-y-2">
@@ -227,7 +266,7 @@
 
 		{#if todayTasks.length === 0}
 			<div class="text-center py-12">
-				<p class="text-fg-dark text-lg mb-2">No tasks recorded for today</p>
+				<p class="text-fg-dark text-lg mb-2">No tasks recorded for {timeRangeFilter === 'daily' ? 'today' : timeRangeFilter === 'all' ? 'any period' : `this ${timeRangeFilter.replace('ly', '')}`}</p>
 				<p class="text-fg-muted text-sm mb-6">Start tracking your tasks to see them here!</p>
 				<div class="text-sm text-fg-muted space-y-2">
 					<p>✨ Click the <Plus size={12} class="inline" /> button above to create your first task</p>
