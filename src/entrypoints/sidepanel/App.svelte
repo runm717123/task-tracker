@@ -12,7 +12,7 @@
 
 	dayjs.extend(relativeTime);
 
-	let tasks: ITrackedTask[] = $state([]);
+	let todayTasks: ITrackedTask[] = $state([]);
 	let copiedItems: Set<string> = new SvelteSet();
 
 	let unwatch: () => void;
@@ -22,12 +22,12 @@
 			// Initialize storage with mock data if needed
 			// await taskStore.initializeStorage();
 
-			// Load initial tasks
-			tasks = await taskStore.getTasks();
+			// Load initial today's tasks
+			todayTasks = await taskStore.getTodayTasks();
 
 			// Watch for changes in storage
-			unwatch = taskStore.watchTasks((newTasks) => {
-				tasks = newTasks;
+			unwatch = taskStore.watchTasks(async () => {
+				todayTasks = await taskStore.getTodayTasks();
 			});
 		};
 
@@ -80,10 +80,10 @@
 	};
 
 	const downloadTasks = () => {
-		const dataStr = JSON.stringify(tasks, null, 2);
+		const dataStr = JSON.stringify(todayTasks, null, 2);
 		const dataUri = 'data:application/json;charset=utf-8,' + encodeURIComponent(dataStr);
 
-		const exportFileDefaultName = `tracked-tasks-${dayjs().format('YYYY-MM-DD-HH-mm-ss')}.json`;
+		const exportFileDefaultName = `todays-tasks-${dayjs().format('YYYY-MM-DD-HH-mm-ss')}.json`;
 
 		const linkElement = document.createElement('a');
 		linkElement.setAttribute('href', dataUri);
@@ -128,15 +128,15 @@
 <main class="min-h-screen overflow-y-auto bg-bg-dark flex flex-col justify-between">
 	<div class="p-4">
 		<div class="text-center mb-4 mt-1 font-family-heading">
-			<h1 class="text-2xl font-bold text-fg-dark">Tracked Task Summary</h1>
-			<span class="text-fg-muted text-xs">Total Tasks: {tasks.length}</span>
+			<h1 class="text-2xl font-bold text-fg-dark">Tracked Tasks Summary</h1>
+			<span class="text-fg-muted text-xs">Today's Tasks: {todayTasks.length}</span>
 		</div>
 
 		<div class="mb-3 flex justify-end gap-2">
 			<Button size="sm" onclick={openTaskPopup} className="flex items-center gap-2 px-3 py-2" title="Add new task">
 				<Plus size={14} />
 			</Button>
-			<Button size="sm" onclick={downloadTasks} className="flex items-center gap-2 px-3 py-2" title="Download tasks as JSON">
+			<Button size="sm" onclick={downloadTasks} className="flex items-center gap-2 px-3 py-2" title="Download today's tasks as JSON">
 				<Download size={14} />
 			</Button>
 			<Button size="sm" onclick={clearAllTasks} className="flex items-center gap-2 px-3 py-2" variant="destructive" title="Clear all task data">
@@ -145,7 +145,7 @@
 		</div>
 
 		<div class="space-y-2">
-			{#each tasks as task (task.id)}
+			{#each todayTasks as task (task.id)}
 				<div class="bg-bg-darker border border-border rounded-lg p-3 hover:bg-bg-light transition-colors">
 					<div class="flex flex-col items-start justify-between">
 						<div class="flex items-center justify-between w-full mb-1">
@@ -225,9 +225,9 @@
 			</div>
 		</div>
 
-		{#if tasks.length === 0}
+		{#if todayTasks.length === 0}
 			<div class="text-center py-12">
-				<p class="text-fg-dark text-lg mb-2">No tasks recorded yet</p>
+				<p class="text-fg-dark text-lg mb-2">No tasks recorded for today</p>
 				<p class="text-fg-muted text-sm mb-6">Start tracking your tasks to see them here!</p>
 				<div class="text-sm text-fg-muted space-y-2">
 					<p>✨ Click the <Plus size={12} class="inline" /> button above to create your first task</p>

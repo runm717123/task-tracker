@@ -8,7 +8,7 @@
 	import EditPage from './ui/EditPage.svelte';
 	import SettingsPage from './ui/SettingsPage.svelte';
 
-	let tasks: ITrackedTask[] = $state([]);
+	let todayTasks: ITrackedTask[] = $state([]);
 	let currentView: 'list' | 'edit' | 'settings' = $state('list');
 	let editingTask: ITrackedTask | null = $state(null);
 
@@ -19,12 +19,12 @@
 			// Initialize storage with mock data if needed
 			// await taskStore.initializeStorage();
 
-			// Load initial tasks
-			tasks = await taskStore.getTasks();
+			// Load initial today's tasks
+			todayTasks = await taskStore.getTodayTasks();
 
 			// Watch for changes in storage
-			unwatch = taskStore.watchTasks((newTasks) => {
-				tasks = newTasks;
+			unwatch = taskStore.watchTasks(async () => {
+				todayTasks = await taskStore.getTodayTasks();
 			});
 		};
 
@@ -114,7 +114,7 @@
 
 		<div class="px-3 flex-1 flex flex-col min-h-0 mb-2">
 			<div class="overflow-y-auto flex-1 min-h-0" role="list">
-				{#each tasks as task (task.id)}
+				{#each todayTasks as task (task.id)}
 					<!-- svelte-ignore a11y_click_events_have_key_events -->
 					<!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
 					<div role="listitem" class="border-b border-border py-3 px-1 flex items-center justify-between flex-row gap-2" onclick={() => editTask(task)}>
@@ -138,9 +138,9 @@
 					</div>
 				{/each}
 
-				{#if tasks.length === 0}
+				{#if todayTasks.length === 0}
 					<div class="text-center py-8 text-fg-dark">
-						<p class="text-sm mb-2">No tasks recorded yet</p>
+						<p class="text-sm mb-2">No tasks recorded for today</p>
 						<p class="text-xs text-fg-muted mb-4">Create your first task to get started!</p>
 						<div class="text-xs text-fg-muted space-y-1">
 							<p>• Open sidepanel below</p>
@@ -151,9 +151,9 @@
 			</div>
 
 			<div class="mt-4 flex flex-row justify-between items-center flex-shrink-0">
-				{#if tasks.length > 0}
+				{#if todayTasks.length > 0}
 					<p class="text-sm text-fg-muted">
-						Total Tasks: <span class="text-fg-dark">{tasks.length}</span>
+						Today's Tasks: <span class="text-fg-dark">{todayTasks.length}</span>
 					</p>
 				{:else}
 					<div></div>

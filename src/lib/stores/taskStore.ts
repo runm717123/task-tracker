@@ -42,6 +42,19 @@ export class TaskStore {
 		return tasks || [];
 	}
 
+	/**
+	 * Get today's tasks from storage
+	 */
+	async getTodayTasks(): Promise<ITrackedTask[]> {
+		const tasks = await this.getTasks();
+		const today = dayjs().startOf('day');
+
+		return tasks.filter((task) => {
+			const taskDate = dayjs(task.createdAt).startOf('day');
+			return taskDate.isSame(today, 'day');
+		});
+	}
+
 	async resetTasks(): Promise<void> {
 		const defaultStartTime = await settingsStore.getSettings();
 		await this.saveTasks([]);
@@ -82,9 +95,16 @@ export class TaskStore {
 	 */
 	async addTask(task: ICreateTask): Promise<void> {
 		const tasks = await this.getTasks();
-		const lastTimeEndedTask = await this.getLastTimeEndedTask();
+		let lastTimeEndedTask = await this.getLastTimeEndedTask();
 
 		const currentTime = dayjs().toISOString();
+		const today = dayjs().startOf('day');
+
+		// Check if lastTimeEndedTask is from today, if not reset to settings start time
+		if (!dayjs(lastTimeEndedTask).isSame(today, 'day')) {
+			const settings = await settingsStore.getSettings();
+			lastTimeEndedTask = settings.startTime;
+		}
 
 		// Create new task with proper timing
 		const newTask: ITrackedTask = {
