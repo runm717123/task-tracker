@@ -1,7 +1,7 @@
 <script lang="ts">
 	import '@bios-ui/core/css';
 	import { Button } from '@bios-ui/svelte';
-	import { ClockAlert, Download, EditIcon, Plus, Trash2, XIcon } from '@lucide/svelte';
+	import { ClockAlert, Download, EditIcon, Plus, Trash2, Upload, XIcon } from '@lucide/svelte';
 	import dayjs from 'dayjs';
 	import relativeTime from 'dayjs/plugin/relativeTime';
 	import isBetween from 'dayjs/plugin/isBetween';
@@ -20,6 +20,7 @@
 	let timeRangeFilter: 'daily' | 'weekly' | 'monthly' | 'all' = $state('daily');
 	let editingTask: ITrackedTask | null = $state(null);
 	let isEditing = $state(false);
+	let fileInput: HTMLInputElement;
 
 	let unwatch: () => void;
 
@@ -128,6 +129,35 @@
 		}
 	};
 
+	const importTasks = () => {
+		fileInput.click();
+	};
+
+	const handleFileImport = async (event: Event) => {
+		const target = event.target as HTMLInputElement;
+		const file = target.files?.[0];
+		
+		if (!file) return;
+
+		try {
+			const text = await file.text();
+			const jsonData = JSON.parse(text);
+			
+			const result = await taskStore.importTasks(jsonData);
+			
+			if (result.success) {
+				alert(result.message);
+			} else {
+				alert(`Import failed: ${result.message}`);
+			}
+		} catch (error) {
+			alert('Error reading file: Please ensure it\'s a valid JSON file');
+		} finally {
+			// Reset file input
+			target.value = '';
+		}
+	};
+
 	const copyToClipboard = async (text: string, taskId: string, field: keyof ITrackedTask) => {
 		try {
 			await navigator.clipboard.writeText(text);
@@ -196,6 +226,9 @@
 					<Button size="sm" onclick={openTaskPopup} className="flex items-center gap-2 px-3 py-2" title="Add new task">
 						<Plus size={14} />
 					</Button>
+					<Button size="sm" onclick={importTasks} className="flex items-center gap-2 px-3 py-2" title="Import tasks from JSON file">
+						<Upload size={14} />
+					</Button>
 					<Button size="sm" onclick={downloadTasks} className="flex items-center gap-2 px-3 py-2" title={`Download ${timeRangeFilter} tasks as JSON`}>
 						<Download size={14} />
 					</Button>
@@ -261,7 +294,7 @@
 								<div
 									role="button"
 									tabindex="0"
-									class="text-fg-muted text-xs mb-1 leading-relaxed line-clamp-2 text-left w-full"
+									class="text-fg-muted text-xs mb-1 leading-relaxed line-clamp-3 text-left w-full whitespace-pre-wrap"
 									onclick={() => handleCardClick(task, 'description')}
 									onkeydown={(e) => e.key === 'Enter' && handleCardClick(task, 'description')}
 									title="Click to copy description"
@@ -310,4 +343,13 @@
 		<p>NDEV: Task Tracker v{pkg.version}</p>
 		<p>&copy; {dayjs().year()} NDEV. All rights reserved.</p>
 	</div>
+
+	<!-- Hidden file input for importing tasks -->
+	<input
+		bind:this={fileInput}
+		type="file"
+		accept=".json"
+		onchange={handleFileImport}
+		style="display: none;"
+	/>
 </main>

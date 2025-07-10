@@ -240,6 +240,74 @@ export class TaskStore {
 	}
 
 	/**
+	 * Import tasks from JSON data
+	 */
+	async importTasks(jsonData: ITrackedTask[]): Promise<{ success: boolean; message: string; imported: number }> {
+		try {
+			// Validate the JSON data structure
+			if (!Array.isArray(jsonData)) {
+				return { success: false, message: 'Invalid JSON format: Expected an array of tasks', imported: 0 };
+			}
+
+			// Validate each task has required fields
+			const validTasks = jsonData.filter((task) => {
+				return (
+					task &&
+					typeof task === 'object' &&
+					typeof task.id === 'string' &&
+					typeof task.title === 'string' &&
+					typeof task.description === 'string' &&
+					typeof task.status === 'string' &&
+					typeof task.createdAt === 'string' &&
+					typeof task.start === 'string' &&
+					(task.end === null || typeof task.end === 'string')
+				);
+			});
+
+			if (validTasks.length === 0) {
+				return { success: false, message: 'No valid tasks found in the uploaded file', imported: 0 };
+			}
+
+			// Get existing tasks
+			const existingTasks = await this.getTasks();
+			const existingIds = new Set(existingTasks.map((task) => task.id));
+
+			// Filter out tasks that already exist (by ID)
+			const newTasks = validTasks.filter((task) => !existingIds.has(task.id));
+
+			if (newTasks.length === 0) {
+				return { success: false, message: 'All tasks in the file already exist', imported: 0 };
+			}
+
+			// Merge with existing tasks and sort by createdAt
+			const allTasks = [...existingTasks, ...newTasks].sort((a, b) => dayjs(a.createdAt).diff(dayjs(b.createdAt)));
+
+			await this.saveTasks(allTasks);
+
+			// Update lastTimeEndedTask if necessary
+			const latestEndTime = allTasks
+				.filter((task) => task.end)
+				.map((task) => task.end!)
+				.sort((a, b) => dayjs(b).diff(dayjs(a)))[0];
+
+			if (latestEndTime) {
+				const currentLastTime = await this.getLastTimeEndedTask();
+				if (dayjs(latestEndTime).isAfter(dayjs(currentLastTime))) {
+					await this.saveLastTimeEndedTask(latestEndTime);
+				}
+			}
+
+			return {
+				success: true,
+				message: `Successfully imported ${newTasks.length} task${newTasks.length === 1 ? '' : 's'}`,
+				imported: newTasks.length,
+			};
+		} catch (error) {
+			return { success: false, message: 'Failed to parse JSON file', imported: 0 };
+		}
+	}
+
+	/**
 	 * Watch for changes in task storage
 	 */
 	watchTasks(callback: (tasks: ITrackedTask[]) => void): () => void {

@@ -31,7 +31,7 @@
 	const canSave = $derived(title.trim().length > 0);
 
 	const handleKeyDown = (event: KeyboardEvent) => {
-		if (event.key === 'Enter' && canSave) {
+		if (event.key === 'Enter' && !event.shiftKey && canSave) {
 			handleSave();
 		}
 	};
