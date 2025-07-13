@@ -1,6 +1,6 @@
 <script lang="ts">
 	import '@bios-ui/core/css';
-	import { Button } from '@bios-ui/svelte';
+	import { Button, Input, Select } from '@bios-ui/svelte';
 	import { ClockAlert, Download, EditIcon, Plus, Trash2, Upload, XIcon } from '@lucide/svelte';
 	import dayjs from 'dayjs';
 	import relativeTime from 'dayjs/plugin/relativeTime';
@@ -11,6 +11,8 @@
 	import { taskStore } from '../../lib/stores/taskStore';
 	import { openTaskPopup } from '../../lib/utils/taskPopup';
 	import EditPage from '../popup/ui/EditPage.svelte';
+	import flatpickr from 'flatpickr';
+	import 'flatpickr/dist/flatpickr.css';
 
 	dayjs.extend(relativeTime);
 	dayjs.extend(isBetween);
@@ -18,9 +20,12 @@
 	let trackedTasks: ITrackedTask[] = $state([]);
 	let copiedItems: Set<string> = new SvelteSet();
 	let timeRangeFilter: 'daily' | 'weekly' | 'monthly' | 'all' = $state('daily');
+	let selectedDate = $state(new Date());
 	let editingTask: ITrackedTask | null = $state(null);
 	let isEditing = $state(false);
 	let fileInput: HTMLInputElement;
+	let dateInput: HTMLInputElement | undefined = $state();
+	let flatpickrInstance: flatpickr.Instance;
 
 	let unwatch: () => void;
 
@@ -47,18 +52,106 @@
 			}
 		};
 		document.addEventListener('keydown', handleKeydown);
+
+		// Initialize flatpickr
+		initializeFlatpickr();
 	});
 
 	const loadTasksForTimeRange = async () => {
-		trackedTasks = await taskStore.getTasks(timeRangeFilter);
+		trackedTasks = await taskStore.getTasks(timeRangeFilter, selectedDate);
 	};
 
 	const handleTimeRangeChange = async () => {
+		// Reset to current date when changing time range
+		selectedDate = new Date();
+		await loadTasksForTimeRange();
+		// Reinitialize flatpickr with new settings
+		initializeFlatpickr();
+	};
+
+	const initializeFlatpickr = () => {
+		if (flatpickrInstance) {
+			flatpickrInstance.destroy();
+		}
+
+		if (!dateInput || timeRangeFilter === 'all') return;
+
+		let mode: 'single' = 'single';
+		let dateFormat = 'Y-m-d';
+		let defaultDate = selectedDate;
+
+		const baseOptions: flatpickr.Options.Options = {
+			mode,
+			dateFormat,
+			defaultDate,
+			maxDate: new Date(),
+			onChange: (selectedDates) => {
+				if (selectedDates.length > 0) {
+					handleFlatpickrChange(selectedDates[0]);
+				}
+			},
+		};
+
+		switch (timeRangeFilter) {
+			case 'daily':
+				flatpickrInstance = flatpickr(dateInput, baseOptions);
+				break;
+			case 'weekly':
+				flatpickrInstance = flatpickr(dateInput, {
+					...baseOptions,
+					onDayCreate: (dObj, dStr, fp, dayElem) => {
+						const date = dayjs(dayElem.dateObj);
+						const weekStart = dayjs(selectedDate).startOf('week');
+						const weekEnd = dayjs(selectedDate).endOf('week');
+
+						if (date.isBetween(weekStart, weekEnd, 'day', '[]')) {
+							dayElem.classList.add('selected-week');
+						}
+					},
+				});
+				break;
+			case 'monthly':
+				flatpickrInstance = flatpickr(dateInput, {
+					...baseOptions,
+					dateFormat: 'Y-m',
+					altInput: true,
+					altFormat: 'F Y',
+				});
+				break;
+		}
+	};
+
+	const handleFlatpickrChange = async (date: Date) => {
+		let newDate: Date;
+
+		switch (timeRangeFilter) {
+			case 'daily':
+				newDate = date;
+				break;
+			case 'weekly':
+				newDate = dayjs(date).startOf('week').toDate();
+				break;
+			case 'monthly':
+				newDate = dayjs(date).startOf('month').toDate();
+				break;
+			default:
+				newDate = new Date();
+		}
+
+		selectedDate = newDate;
 		await loadTasksForTimeRange();
 	};
 
+	// Reactive effect to reinitialize flatpickr when dateInput is available
+	$effect(() => {
+		if (dateInput && timeRangeFilter !== 'all') {
+			initializeFlatpickr();
+		}
+	});
+
 	onDestroy(() => {
 		if (unwatch) unwatch();
+		if (flatpickrInstance) flatpickrInstance.destroy();
 	});
 
 	const deleteTask = async (taskId: string) => {
@@ -80,19 +173,6 @@
 		isEditing = false;
 		editingTask = null;
 	};
-
-	// const getStatusLabel = (status: string) => {
-	// 	switch (status) {
-	// 		case 'in-progress':
-	// 			return 'In Progress';
-	// 		case 'done':
-	// 			return 'Done';
-	// 		case 'pending':
-	// 			return 'Pending';
-	// 		default:
-	// 			return status;
-	// 	}
-	// };
 
 	const getTimeRange = (start: string | null, end: string | null) => {
 		if (!start || !end) return null;
@@ -136,22 +216,22 @@
 	const handleFileImport = async (event: Event) => {
 		const target = event.target as HTMLInputElement;
 		const file = target.files?.[0];
-		
+
 		if (!file) return;
 
 		try {
 			const text = await file.text();
 			const jsonData = JSON.parse(text);
-			
+
 			const result = await taskStore.importTasks(jsonData);
-			
+
 			if (result.success) {
 				alert(result.message);
 			} else {
 				alert(`Import failed: ${result.message}`);
 			}
 		} catch (error) {
-			alert('Error reading file: Please ensure it\'s a valid JSON file');
+			alert("Error reading file: Please ensure it's a valid JSON file");
 		} finally {
 			// Reset file input
 			target.value = '';
@@ -186,13 +266,20 @@
 	};
 
 	const getHeaderText = () => {
+		const referenceDate = dayjs(selectedDate);
 		switch (timeRangeFilter) {
 			case 'daily':
-				return `Today's Tasks: ${trackedTasks.length}`;
+				const isToday = referenceDate.isSame(dayjs(), 'day');
+				const dayLabel = isToday ? 'Today' : referenceDate.format('MMM DD, YYYY');
+				return `${dayLabel}'s Tasks: ${trackedTasks.length}`;
 			case 'weekly':
-				return `This Week's Tasks: ${trackedTasks.length}`;
+				const isThisWeek = referenceDate.isSame(dayjs(), 'week');
+				const weekLabel = isThisWeek ? 'This Week' : `Week of ${referenceDate.startOf('week').format('MMM DD, YYYY')}`;
+				return `${weekLabel}'s Tasks: ${trackedTasks.length}`;
 			case 'monthly':
-				return `This Month's Tasks: ${trackedTasks.length}`;
+				const isThisMonth = referenceDate.isSame(dayjs(), 'month');
+				const monthLabel = isThisMonth ? 'This Month' : referenceDate.format('MMMM YYYY');
+				return `${monthLabel}'s Tasks: ${trackedTasks.length}`;
 			case 'all':
 				return `All Tasks: ${trackedTasks.length}`;
 		}
@@ -204,23 +291,43 @@
 		<EditPage task={editingTask} onSave={handleEditSave} onCancel={handleEditCancel} />
 	{:else}
 		<div class="p-4">
-			<div class="text-center mb-4 mt-1 font-family-heading">
-				<h1 class="text-2xl font-bold text-fg-dark">Tracked Tasks Summary</h1>
-				<span class="text-fg-muted text-xs">{getHeaderText()}</span>
+			<div class="flex justify-between items-start mb-4 mt-1">
+				<div class="font-family-heading">
+					<h1 class="text-2xl font-bold text-fg-dark">Tracked Tasks Summary</h1>
+					<span class="text-fg-muted text-xs">{getHeaderText()}</span>
+				</div>
+				<div class="flex flex-col items-end gap-1 ml-4">
+					<!-- <div class="text-xs text-fg-muted">
+						{getCurrentDateFormat()}
+					</div> -->
+					{#if timeRangeFilter !== 'all'}
+						<div class="relative">
+							<input
+								bind:this={dateInput as any}
+								class="px-2 py-1 pr-6 text-xs bg-bg-darker border border-border text-fg-dark focus:outline-none focus:ring-1 focus:ring-accent-primary focus:border-transparent cursor-pointer"
+								placeholder="Select date"
+								readonly
+							/>
+							<svg class="absolute right-2 top-1/2 transform -translate-y-1/2 w-3 h-3 text-fg-muted pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+							</svg>
+						</div>
+					{/if}
+				</div>
 			</div>
 
 			<div class="mb-3 flex justify-between items-center gap-2">
 				<div class="flex-1 max-w-40">
-					<select
+					<Select
 						bind:value={timeRangeFilter}
 						onchange={handleTimeRangeChange}
-						class="w-full px-3 py-2 text-sm bg-bg-darker border border-border rounded-md text-fg-dark focus:outline-none focus:ring-2 focus:ring-accent-primary focus:border-transparent"
-					>
-						<option value="daily">Daily</option>
-						<option value="weekly">Weekly</option>
-						<option value="monthly">Monthly</option>
-						<option value="all">All</option>
-					</select>
+						options={[
+							{ value: 'daily', label: 'Daily' },
+							{ value: 'weekly', label: 'Weekly' },
+							{ value: 'monthly', label: 'Monthly' },
+							{ value: 'all', label: 'All' },
+						]}
+					></Select>
 				</div>
 				<div class="flex gap-2">
 					<Button size="sm" onclick={openTaskPopup} className="flex items-center gap-2 px-3 py-2" title="Add new task">
@@ -345,11 +452,5 @@
 	</div>
 
 	<!-- Hidden file input for importing tasks -->
-	<input
-		bind:this={fileInput}
-		type="file"
-		accept=".json"
-		onchange={handleFileImport}
-		style="display: none;"
-	/>
+	<input bind:this={fileInput} type="file" accept=".json" onchange={handleFileImport} style="display: none;" />
 </main>

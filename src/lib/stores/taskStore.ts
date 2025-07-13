@@ -37,29 +37,29 @@ export class TaskStore {
 	/**
 	 * Get tasks from storage with optional time range filtering
 	 */
-	async getTasks(timeRange: 'all' | 'daily' | 'weekly' | 'monthly' = 'all'): Promise<ITrackedTask[]> {
+	async getTasks(timeRange: 'all' | 'daily' | 'weekly' | 'monthly' = 'all', date: string | Date = new Date()): Promise<ITrackedTask[]> {
 		const tasks = await storage.getItem<ITrackedTask[]>(this.storageKey);
 		const allTasks = tasks || [];
 
-		const now = dayjs();
+		const referenceDate = dayjs(date);
 
 		switch (timeRange) {
 			case 'daily':
-				const today = now.startOf('day');
+				const targetDay = referenceDate.startOf('day');
 				return allTasks.filter((task) => {
 					const taskDate = dayjs(task.createdAt).startOf('day');
-					return taskDate.isSame(today, 'day');
+					return taskDate.isSame(targetDay, 'day');
 				});
 			case 'weekly':
-				const startOfWeek = now.startOf('week');
-				const endOfWeek = now.endOf('week');
+				const startOfWeek = referenceDate.startOf('week');
+				const endOfWeek = referenceDate.endOf('week');
 				return allTasks.filter((task) => {
 					const taskDate = dayjs(task.createdAt);
 					return taskDate.isBetween(startOfWeek, endOfWeek, null, '[]');
 				});
 			case 'monthly':
-				const startOfMonth = now.startOf('month');
-				const endOfMonth = now.endOf('month');
+				const startOfMonth = referenceDate.startOf('month');
+				const endOfMonth = referenceDate.endOf('month');
 				return allTasks.filter((task) => {
 					const taskDate = dayjs(task.createdAt);
 					return taskDate.isBetween(startOfMonth, endOfMonth, null, '[]');

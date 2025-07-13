@@ -17,3 +17,61 @@ main {
 main {
 	height: fit-content;
 }
+
+.flatpickr-calendar {
+		border: 1px solid var(--color-fg-dark);
+	background-color: var(--color-bg-darker);
+		box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+.flatpickr-calendar::before,
+.flatpickr-calendar::after {
+	border-bottom-color: var(--color-fg-dark) !important;
+}
+
+.flatpickr-time input,
+.flatpickr-time-separator,
+.flatpickr-day,
+.prevMonthDay,
+.flatpickr-weekday,
+.flatpickr-months .flatpickr-month,
+.flatpickr-prev-month,
+.flatpickr-next-month .nextMonthDay {
+	color: var(--color-fg-dark) !important;
+}
+
+.flatpickr-prev-month, .flatpickr-next-month {
+	fill: var(--color-fg-dark) !important;
+}
+
+.flatpickr-day {
+		border-radius: 0.25rem;
+}
+
+.flatpickr-day:hover {
+	color: white
+}
+
+.flatpickr-day.selected {
+	background-color: var(--color-primary) !important;
+	color: white
+}
+
+.flatpickr-weekday {
+	font-weight: 600;
+}
+
+.flatpickr-disabled {
+	opacity: 0.5;
+}
+
+.flatpickr-current-month .flatpickr-monthDropdown-months {
+		background: var(--color-bg-darker) !important;
+		color: var(--color-fg-dark) !important;
+		border: 1px solid var(--color-fg-dark) !important;
+}
+
+
+.flatpickr-calendar.hasTime .flatpickr-time {
+	border-color: var(--color-fg-dark) !important;
+}
