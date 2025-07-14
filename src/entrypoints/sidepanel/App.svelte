@@ -1,7 +1,7 @@
 <script lang="ts">
 	import '@bios-ui/core/css';
 	import { Button, Input, Select } from '@bios-ui/svelte';
-	import { ClockAlert, Download, EditIcon, Plus, Trash2, Upload, XIcon } from '@lucide/svelte';
+	import { ClockAlert, Download, EditIcon, List, Plus, SquareKanban, Trash2, Upload, XIcon } from '@lucide/svelte';
 	import dayjs from 'dayjs';
 	import relativeTime from 'dayjs/plugin/relativeTime';
 	import isBetween from 'dayjs/plugin/isBetween';
@@ -11,6 +11,8 @@
 	import { taskStore } from '../../lib/stores/taskStore';
 	import { openTaskPopup } from '../../lib/utils/taskPopup';
 	import EditPage from '../popup/ui/EditPage.svelte';
+	import SummaryView from '../../lib/components/SummaryView.svelte';
+	import { summarizeTasksV2 } from '../../lib/utils/summarizeTasksV2';
 	import flatpickr from 'flatpickr';
 	import 'flatpickr/dist/flatpickr.css';
 
@@ -23,6 +25,9 @@
 	let selectedDate = $state(new Date());
 	let editingTask: ITrackedTask | null = $state(null);
 	let isEditing = $state(false);
+	let viewMode: 'list' | 'summary' = $state('list');
+	let summaryData: Array<{ title: string; tasks: string[] }> = $state([]);
+	let isGeneratingSummary = $state(false);
 	let fileInput: HTMLInputElement;
 	let dateInput: HTMLInputElement | undefined = $state();
 	let flatpickrInstance: flatpickr.Instance;
@@ -59,6 +64,32 @@
 
 	const loadTasksForTimeRange = async () => {
 		trackedTasks = await taskStore.getTasks(timeRangeFilter, selectedDate);
+		
+		// Generate summary data when tasks are loaded
+		if (viewMode === 'summary') {
+			await generateSummaryData();
+		}
+	};
+
+	const generateSummaryData = async () => {
+		try {
+			isGeneratingSummary = true;
+			summaryData = await summarizeTasksV2(trackedTasks);
+		} catch (error) {
+			console.error('Error generating summary:', error);
+			summaryData = [];
+		} finally {
+			isGeneratingSummary = false;
+		}
+	};
+
+	const toggleViewMode = async () => {
+		if (viewMode === 'list') {
+			viewMode = 'summary';
+			await generateSummaryData();
+		} else {
+			viewMode = 'list';
+		}
 	};
 
 	const handleTimeRangeChange = async () => {
@@ -232,6 +263,7 @@
 			}
 		} catch (error) {
 			alert("Error reading file: Please ensure it's a valid JSON file");
+			alert("Error reading file: Please ensure it's a valid JSON file");
 		} finally {
 			// Reset file input
 			target.value = '';
@@ -296,29 +328,27 @@
 					<h1 class="text-2xl font-bold text-fg-dark">Tracked Tasks Summary</h1>
 					<span class="text-fg-muted text-xs">{getHeaderText()}</span>
 				</div>
-				<div class="flex flex-col items-end gap-1 ml-4">
-					<!-- <div class="text-xs text-fg-muted">
-						{getCurrentDateFormat()}
-					</div> -->
-					{#if timeRangeFilter !== 'all'}
-						<div class="relative">
-							<input
-								bind:this={dateInput as any}
-								class="px-2 py-1 pr-6 text-xs bg-bg-darker border border-border text-fg-dark focus:outline-none focus:ring-1 focus:ring-accent-primary focus:border-transparent cursor-pointer"
-								placeholder="Select date"
-								readonly
-							/>
-							<svg class="absolute right-2 top-1/2 transform -translate-y-1/2 w-3 h-3 text-fg-muted pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-							</svg>
-						</div>
+				<Button 
+					size="sm" 
+					onclick={toggleViewMode} 
+					className="flex items-center gap-2 px-3 py-2" 
+					title={`Switch to ${viewMode === 'list' ? 'summary' : 'list'} view`}
+					disabled={isGeneratingSummary}
+				>
+					{#if isGeneratingSummary}
+						<div class="w-4 h-4 border border-current border-t-transparent rounded-full animate-spin"></div>
+					{:else if viewMode === 'list'}
+						<SquareKanban size={16} />
+					{:else}
+						<List size={16} />
 					{/if}
-				</div>
+				</Button>
 			</div>
 
 			<div class="mb-3 flex justify-between items-center gap-2">
-				<div class="flex-1 max-w-40">
+				<div class="flex items-center gap-2">
 					<Select
+						className="max-w-40"
 						bind:value={timeRangeFilter}
 						onchange={handleTimeRangeChange}
 						options={[
@@ -327,7 +357,15 @@
 							{ value: 'monthly', label: 'Monthly' },
 							{ value: 'all', label: 'All' },
 						]}
-					></Select>
+					/>
+					{#if timeRangeFilter !== 'all'}
+						<div class="relative h-full">
+							<input bind:this={dateInput as any} class="p-2 pr-6 py-[0.55rem] text-xs bg-bg-darker border-2 text-fg-dark focus:outline-none cursor-pointer" placeholder="Select date" readonly />
+							<svg class="absolute right-2 top-1/2 transform -translate-y-1/2 w-3 h-3 text-fg-muted pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+							</svg>
+						</div>
+					{/if}
 				</div>
 				<div class="flex gap-2">
 					<Button size="sm" onclick={openTaskPopup} className="flex items-center gap-2 px-3 py-2" title="Add new task">
@@ -346,7 +384,8 @@
 			</div>
 
 			{#if trackedTasks.length}
-				<div class="space-y-2">
+				{#if viewMode === 'list'}
+					<div class="space-y-2">
 					{#each trackedTasks as task (task.id)}
 						<div class="bg-bg-darker border border-border rounded-lg p-3 hover:bg-bg-light transition-colors">
 							<div class="flex flex-col items-start justify-between">
@@ -431,6 +470,56 @@
 						</p>
 					</div>
 				</div>
+				{:else}
+					{#if isGeneratingSummary}
+						<div class="flex flex-col items-center justify-center py-16 space-y-4">
+							<!-- Robotic/Techy Loading Animation -->
+							<div class="relative">
+								<!-- Main scanning circle -->
+								<div class="w-16 h-16 border-2 border-blue-500 rounded-full border-t-transparent animate-spin"></div>
+								<!-- Inner pulse -->
+								<div class="absolute inset-2 w-12 h-12 bg-blue-500/20 rounded-full animate-pulse"></div>
+								<!-- Center dot -->
+								<div class="absolute inset-6 w-4 h-4 bg-blue-500 rounded-full animate-ping"></div>
+							</div>
+							
+							<!-- Loading text with typewriter effect -->
+							<div class="text-center space-y-2">
+								<div class="text-lg font-mono text-blue-400">
+									ANALYZING TASKS...
+								</div>
+								<div class="text-sm font-mono text-gray-500 flex items-center justify-center space-x-1">
+									<span>PROCESSING</span>
+									<div class="flex space-x-1">
+										<div class="w-1 h-1 bg-blue-400 rounded-full animate-bounce" style="animation-delay: 0ms"></div>
+										<div class="w-1 h-1 bg-blue-400 rounded-full animate-bounce" style="animation-delay: 150ms"></div>
+										<div class="w-1 h-1 bg-blue-400 rounded-full animate-bounce" style="animation-delay: 300ms"></div>
+									</div>
+									<span>AI SUMMARY</span>
+								</div>
+								<div class="text-xs font-mono text-gray-600 opacity-75">
+									◢◣ SEMANTIC ANALYSIS IN PROGRESS ◤◥
+								</div>
+							</div>
+						</div>
+					{:else if summaryData.length > 0}
+						{#each summaryData as group}
+							<SummaryView 
+								items={group.tasks}
+								title={group.title}
+								emptyMessage="No tasks in this group"
+								className="mb-6"
+							/>
+						{/each}
+					{:else}
+						<SummaryView 
+							items={[]}
+							title="Task Summary"
+							emptyMessage="No tasks to summarize"
+							className="mt-4"
+						/>
+					{/if}
+				{/if}
 			{:else}
 				<div class="text-center py-12">
 					<p class="text-fg-dark text-lg mb-2">No tasks recorded for {timeRangeFilter === 'daily' ? 'today' : timeRangeFilter === 'all' ? 'any period' : `this ${timeRangeFilter.replace('ly', '')}`}</p>
@@ -452,5 +541,6 @@
 	</div>
 
 	<!-- Hidden file input for importing tasks -->
+	<input bind:this={fileInput} type="file" accept=".json" onchange={handleFileImport} style="display: none;" />
 	<input bind:this={fileInput} type="file" accept=".json" onchange={handleFileImport} style="display: none;" />
 </main>
