@@ -1,20 +1,20 @@
 <script lang="ts">
 	import '@bios-ui/core/css';
-	import { Button, Input, Select } from '@bios-ui/svelte';
+	import { Button, Select } from '@bios-ui/svelte';
 	import { ClockAlert, Download, EditIcon, List, Plus, SquareKanban, Trash2, Upload, XIcon } from '@lucide/svelte';
 	import dayjs from 'dayjs';
-	import relativeTime from 'dayjs/plugin/relativeTime';
 	import isBetween from 'dayjs/plugin/isBetween';
+	import relativeTime from 'dayjs/plugin/relativeTime';
+	import flatpickr from 'flatpickr';
+	import 'flatpickr/dist/flatpickr.css';
 	import { onDestroy, onMount } from 'svelte';
 	import { SvelteSet } from 'svelte/reactivity';
 	import pkg from '../../../package.json';
+	import SummaryView from '../../lib/components/SummaryView.svelte';
 	import { taskStore } from '../../lib/stores/taskStore';
+	import { summarizeTasksV3 } from '../../lib/utils/summarize/summaryTasks';
 	import { openTaskPopup } from '../../lib/utils/taskPopup';
 	import EditPage from '../popup/ui/EditPage.svelte';
-	import SummaryView from '../../lib/components/SummaryView.svelte';
-	import { summarizeTasksV2 } from '../../lib/utils/summarizeTasksV2';
-	import flatpickr from 'flatpickr';
-	import 'flatpickr/dist/flatpickr.css';
 
 	dayjs.extend(relativeTime);
 	dayjs.extend(isBetween);
@@ -28,6 +28,7 @@
 	let viewMode: 'list' | 'summary' = $state('list');
 	let summaryData: Array<{ title: string; tasks: string[] }> = $state([]);
 	let isGeneratingSummary = $state(false);
+	let summaryProgressStatus = $state('');
 	let fileInput: HTMLInputElement;
 	let dateInput: HTMLInputElement | undefined = $state();
 	let flatpickrInstance: flatpickr.Instance;
@@ -74,12 +75,18 @@
 	const generateSummaryData = async () => {
 		try {
 			isGeneratingSummary = true;
-			summaryData = await summarizeTasksV2(trackedTasks);
+			summaryProgressStatus = 'Generating summary...';
+			
+			summaryData = await summarizeTasksV3(trackedTasks, 0.7, (status) => {
+				summaryProgressStatus = status;
+			});
+			console.log("🚀 ~ summaryData=awaitsummarizeTasksV3 ~ summaryData:", summaryData)
 		} catch (error) {
 			console.error('Error generating summary:', error);
 			summaryData = [];
 		} finally {
 			isGeneratingSummary = false;
+			summaryProgressStatus = '';
 		}
 	};
 
@@ -486,7 +493,7 @@
 							<!-- Loading text with typewriter effect -->
 							<div class="text-center space-y-2">
 								<div class="text-lg font-mono text-blue-400">
-									ANALYZING TASKS...
+									{summaryProgressStatus || 'ANALYZING TASKS...'}
 								</div>
 								<div class="text-sm font-mono text-gray-500 flex items-center justify-center space-x-1">
 									<span>PROCESSING</span>
@@ -498,7 +505,13 @@
 									<span>AI SUMMARY</span>
 								</div>
 								<div class="text-xs font-mono text-gray-600 opacity-75">
-									◢◣ SEMANTIC ANALYSIS IN PROGRESS ◤◥
+									{#if summaryProgressStatus?.includes('DOWNLOADING')}
+										📦 MODEL DOWNLOAD IN PROGRESS - WILL BE CACHED 📦
+									{:else if summaryProgressStatus?.includes('PROCESSING')}
+										🔄 ANALYZING TASK SEMANTICS 🔄
+									{:else}
+										◢◣ SEMANTIC ANALYSIS IN PROGRESS ◤◥
+									{/if}
 								</div>
 							</div>
 						</div>

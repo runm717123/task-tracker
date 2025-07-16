@@ -22,3 +22,15 @@ interface ISettings {
 	autoFocusDescription?: boolean;
 	taskCreateDefaultValue?: Partial<ICreateTask>;
 }
+
+interface ISummaryGroup {
+	title: string;
+	tasks: string[];
+}
+
+interface IParsedTask {
+	title: string;
+	description: string;
+}
+
+type TTasksMap = Map<string, string[]>;

@@ -19,7 +19,7 @@ export default defineConfig({
 		permissions: ['commands', 'sidePanel', 'storage'],
 		web_accessible_resources: [
 			{
-				resources: ['models/universal_sentence_encoder/*'],
+				resources: ['models/universal-sentence-encoder/*'],
 				matches: ['<all_urls>'],
 			},
 		],
