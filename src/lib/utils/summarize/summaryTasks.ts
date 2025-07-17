@@ -113,16 +113,43 @@ async function groupTasksByTitle(tasks: IParsedTask[], model: UniversalSentenceE
 async function removeSimilarDescriptions(tasksMap: Map<string, string[]>, model: UniversalSentenceEncoder, threshold: number = 0.7) {
 	const result: TTasksMap = new Map();
 
-	for (const [title, tasks] of tasksMap) {
-		if (tasks.length > 0) {
-			const uniqueTasks = await removeSimilarSentences(tasks, model, threshold);
-			if (uniqueTasks.length > 0) {
-				result.set(title, uniqueTasks);
-			}
-		}
+	// Early exit for empty or small datasets
+	if (tasksMap.size === 0) return result;
 
-		// Yield control periodically during loop
-		await new Promise((resolve) => setTimeout(resolve, 0));
+	// Collect all tasks with their group information for batch processing
+	const allTasks: { task: string; groupTitle: string; originalIndex: number }[] = [];
+	const groupTaskCounts = new Map<string, number>();
+
+	for (const [title, tasks] of tasksMap) {
+		if (tasks.length === 0) continue;
+
+		// Quick deduplication by exact string match first
+		const exactlyUniqueTasks = [...new Set(tasks)];
+		groupTaskCounts.set(title, exactlyUniqueTasks.length);
+
+		exactlyUniqueTasks.forEach((task, index) => {
+			allTasks.push({ task, groupTitle: title, originalIndex: index });
+		});
+	}
+
+	// If no tasks after deduplication, return empty result
+	if (allTasks.length === 0) return result;
+
+	// Batch process all tasks at once for better performance
+	const allTaskStrings = allTasks.map((item) => item.task);
+	const uniqueTaskStrings = await removeSimilarSentences(allTaskStrings, model, threshold);
+
+	// Create a set for O(1) lookup of unique tasks
+	const uniqueTaskSet = new Set(uniqueTaskStrings);
+
+	// Rebuild the grouped structure with only unique tasks
+	for (const [title, originalTasks] of tasksMap) {
+		const exactlyUniqueTasks = [...new Set(originalTasks)];
+		const filteredUniqueTasks = exactlyUniqueTasks.filter((task) => uniqueTaskSet.has(task));
+
+		if (filteredUniqueTasks.length > 0) {
+			result.set(title, filteredUniqueTasks);
+		}
 	}
 
 	return result;
