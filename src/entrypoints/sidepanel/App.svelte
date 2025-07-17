@@ -12,7 +12,7 @@
 	import pkg from '../../../package.json';
 	import SummaryView from '../../lib/components/SummaryView.svelte';
 	import { taskStore } from '../../lib/stores/taskStore';
-	import { summarizeTasks } from '../../lib/utils/summarize/summaryTasks';
+	import { summarizeTasks } from '../../lib/utils/summarize/summarizeTasks';
 	import { openTaskPopup } from '../../lib/utils/taskPopup';
 	import { SummaryProgressStatus, type TSummaryProgressStatusType } from '../../types/summary';
 	import EditPage from '../popup/ui/EditPage.svelte';
