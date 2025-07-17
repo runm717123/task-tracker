@@ -12,26 +12,19 @@ export function parseTaskDescription(description: string): string[] {
 	let tasks: string[] = [];
 
 	for (const line of lines) {
-		// Handle bullet points
-		if (line.startsWith('-') || line.startsWith('•') || line.startsWith('*')) {
-			const task = line.replace(/^[-•*]\s*/, '').trim();
-			if (task) tasks.push(task);
+		// Filter the line using regex, remove initial characters that are not alphabet or number
+		const filteredLine = line.replace(/^[^a-zA-Z0-9]*/, '').trim();
+
+		// Check if the filtered line starts with http, if true, continue
+		if (filteredLine.startsWith('http')) {
+			continue;
 		}
-		// Handle numbered lists
-		else if (/^\d+\.\s/.test(line)) {
-			const task = line.replace(/^\d+\.\s*/, '').trim();
-			if (task) tasks.push(task);
-		}
-		// Handle regular lines (treat each line as a task)
-		else {
-			// Skip URLs on their own line
-			if (!line.startsWith('http') && !line.startsWith('www.')) {
-				tasks.push(line);
-			}
+
+		// Push filtered line to task
+		if (filteredLine) {
+			tasks.push(filteredLine);
 		}
 	}
-
-	// separate task items by commas
 
 	tasks = tasks
 		.map((task) => {
