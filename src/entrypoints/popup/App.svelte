@@ -104,6 +104,8 @@
 			if (!sidepanelOpen && currentWindow.id) {
 				await browser.sidePanel.open({ windowId: currentWindow.id });
 				sidepanelOpen = true;
+				// Close the popup after opening sidepanel
+				window.close();
 			} else {
 				// not work yet, follow this issue to track:
 				// https://github.com/w3c/webextensions/issues/521
