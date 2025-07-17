@@ -27,7 +27,7 @@ export async function getModel(onProgress?: (status: string) => void) {
 
 		const modelUrl = chrome.runtime.getURL('models/universal-sentence-encoder/model.json');
 		modelCache = await use.load({
-			modelUrl: modelUrl,
+			modelUrl: import.meta.env.dev ? modelUrl : undefined,
 		});
 
 		if (onProgress) {

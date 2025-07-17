@@ -3,7 +3,7 @@ export const SummaryProgressStatus = {
 	PREPROCESSING: 'Preprocessing tasks...',
 	FILTERING: 'Filtering work tasks...',
 	LOADING_MODEL: 'Loading AI model...',
-	DOWNLOADING_MODEL: 'DOWNLOADING MINIFIED MODEL... (THIS WILL BE CACHED FOR FUTURE USE)',
+	DOWNLOADING_MODEL: 'DOWNLOADING MINIFIED MODEL... (THIS WILL BE CACHED FOR NEXT USE)',
 	MODEL_LOADED: 'MODEL LOADED SUCCESSFULLY',
 	GROUPING: 'Grouping similar tasks...',
 	REMOVING_DUPLICATES: 'Removing duplicates...',
