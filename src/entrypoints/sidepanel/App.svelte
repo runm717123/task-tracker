@@ -12,7 +12,7 @@
 	import pkg from '../../../package.json';
 	import SummaryView from '../../lib/components/SummaryView.svelte';
 	import { taskStore } from '../../lib/stores/taskStore';
-	import { summarizeTasksV3 } from '../../lib/utils/summarize/summaryTasks';
+	import { summarizeTasks } from '../../lib/utils/summarize/summaryTasks';
 	import { openTaskPopup } from '../../lib/utils/taskPopup';
 	import { SummaryProgressStatus, type TSummaryProgressStatusType } from '../../types/summary';
 	import EditPage from '../popup/ui/EditPage.svelte';
@@ -78,7 +78,7 @@
 			isGeneratingSummary = true;
 			summaryProgressStatus = SummaryProgressStatus.GENERATING;
 
-			summaryData = await summarizeTasksV3(trackedTasks, 0.75, (status) => {
+			summaryData = await summarizeTasks(trackedTasks, 0.75, (status) => {
 				summaryProgressStatus = status;
 			});
 		} catch (error) {

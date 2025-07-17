@@ -26,13 +26,12 @@ interface IParsedTask {
  * @param onProgress Optional callback for progress updates during model loading
  * @returns Grouped summary data for display
  */
-export async function summarizeTasksV3(tasks: ITrackedTask[], similarityThreshold: number = 0.7, onProgress?: (status: string) => void): Promise<ISummaryGroup[]> {
+export async function summarizeTasks(tasks: ITrackedTask[], similarityThreshold: number = 0.7, onProgress?: (status: string) => void): Promise<ISummaryGroup[]> {
 	if (tasks.length === 0) return [];
 
 	try {
 		onProgress?.(SummaryProgressStatus.PREPROCESSING);
 		const parsedTasks = normalizeTasks(tasks);
-		console.log('🚀 ~ summarizeTasksV3 ~ parsedTasks:', parsedTasks);
 
 		// Yield control to prevent blocking
 		await new Promise((resolve) => setTimeout(resolve, 0));
@@ -49,13 +48,11 @@ export async function summarizeTasksV3(tasks: ITrackedTask[], similarityThreshol
 
 		onProgress?.(SummaryProgressStatus.GROUPING);
 		const grouped = await groupTasksByTitle(workTasks, model, 0.9);
-		console.log('🚀 ~ summarizeTasksV3 ~ grouped:', grouped);
 
 		await new Promise((resolve) => setTimeout(resolve, 0));
 
 		onProgress?.(SummaryProgressStatus.REMOVING_DUPLICATES);
 		const minimized = await removeSimilarDescriptions(grouped, model, similarityThreshold);
-		console.log('🚀 ~ summarizeTasksV3 ~ minimized:', minimized);
 
 		await new Promise((resolve) => setTimeout(resolve, 0));
 
