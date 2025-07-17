@@ -1,15 +1,16 @@
 <script lang="ts">
 	import '@bios-ui/core/css';
 	import { Button } from '@bios-ui/svelte';
-	import { ListCheckIcon, XIcon, Settings } from '@lucide/svelte';
+	import { ListCheckIcon, XIcon, Settings, HelpCircleIcon } from '@lucide/svelte';
 	import dayjs from 'dayjs';
 	import { onMount, onDestroy } from 'svelte';
 	import { taskStore } from '../../lib/stores/taskStore';
 	import EditPage from './ui/EditPage.svelte';
 	import SettingsPage from './ui/SettingsPage.svelte';
+	import HelpPage from './ui/HelpPage.svelte';
 
 	let todayTasks: ITrackedTask[] = $state([]);
-	let currentView: 'list' | 'edit' | 'settings' = $state('list');
+	let currentView: 'list' | 'edit' | 'settings' | 'help' = $state('list');
 	let editingTask: ITrackedTask | null = $state(null);
 
 	let unwatch: () => void;
@@ -37,6 +38,8 @@
 					cancelEdit();
 				} else if (currentView === 'settings') {
 					closeSettings();
+				} else if (currentView === 'help') {
+					closeHelp();
 				} else {
 					window.close();
 				}
@@ -83,6 +86,14 @@
 		currentView = 'list';
 	};
 
+	const openHelp = () => {
+		currentView = 'help';
+	};
+
+	const closeHelp = () => {
+		currentView = 'list';
+	};
+
 	let sidepanelOpen = $state(false);
 
 	const toggleSidepanel = async () => {
@@ -107,12 +118,21 @@
 
 {#if currentView === 'list'}
 	<main class="w-80 bg-bg-dark max-h-[480px] flex flex-col">
-		<h1 class="text-xl font-bold mb-4 text-fg-dark flex flex-row gap-1 border-b border-[##979797] pb-1 pt-2 ml-3 flex-shrink-0">
-			<ListCheckIcon />
-			Task Tracker
-		</h1>
+		<div class="flex items-center justify-between border-b border-[##979797] pb-1 pt-2 px-3 flex-shrink-0">
+			<h1 class="text-xl font-bold text-fg-dark flex flex-row gap-1">
+				<ListCheckIcon />
+				Task Tracker
+			</h1>
+			<button
+				onclick={openHelp}
+				class="p-1 rounded-full hover:bg-bg-light transition-colors"
+				title="Help & Guide"
+			>
+				<HelpCircleIcon size={20} class="text-fg-muted hover:text-fg-dark" />
+			</button>
+		</div>
 
-		<div class="px-3 flex-1 flex flex-col min-h-0 mb-2">
+		<div class="px-3 flex-1 flex flex-col min-h-0 mb-2 mt-4">
 			<div class="overflow-y-auto flex-1 min-h-0" role="list">
 				{#each todayTasks as task (task.id)}
 					<!-- svelte-ignore a11y_click_events_have_key_events -->
@@ -171,4 +191,6 @@
 	<EditPage task={editingTask} onSave={saveTask} onCancel={cancelEdit} />
 {:else if currentView === 'settings'}
 	<SettingsPage onCancel={closeSettings} />
+{:else if currentView === 'help'}
+	<HelpPage onCancel={closeHelp} />
 {/if}
