@@ -77,10 +77,9 @@
 			isGeneratingSummary = true;
 			summaryProgressStatus = 'Generating summary...';
 			
-			summaryData = await summarizeTasksV3(trackedTasks, 0.7, (status) => {
+			summaryData = await summarizeTasksV3(trackedTasks, 0.75, (status) => {
 				summaryProgressStatus = status;
 			});
-			console.log("🚀 ~ summaryData=awaitsummarizeTasksV3 ~ summaryData:", summaryData)
 		} catch (error) {
 			console.error('Error generating summary:', error);
 			summaryData = [];

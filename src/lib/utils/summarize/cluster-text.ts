@@ -7,5 +7,5 @@ export async function clusterTexts(texts: string[], model: UniversalSentenceEnco
 	const embeddings = await model.embed(texts);
 	const embeddingVectors = await embeddings.array();
 
-	return performSemanticClustering(texts, embeddingVectors, threshold);
+	return await performSemanticClustering(texts, embeddingVectors, threshold);
 }

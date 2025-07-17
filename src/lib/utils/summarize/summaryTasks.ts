@@ -29,14 +29,36 @@ export async function summarizeTasksV3(tasks: ITrackedTask[], similarityThreshol
 	if (tasks.length === 0) return [];
 
 	try {
+		onProgress?.('Preprocessing tasks...');
 		const parsedTasks = normalizeTasks(tasks);
-		console.log("🚀 ~ summarizeTasksV3 ~ parsedTasks:", parsedTasks)
+		console.log('🚀 ~ summarizeTasksV3 ~ parsedTasks:', parsedTasks);
+
+		// Yield control to prevent blocking
+		await new Promise((resolve) => setTimeout(resolve, 0));
+
+		onProgress?.('Filtering work tasks...');
 		const workTasks = filterWorkTasks(parsedTasks);
+
+		await new Promise((resolve) => setTimeout(resolve, 0));
+
+		onProgress?.('Loading AI model...');
 		const model = await getModel(onProgress);
+
+		await new Promise((resolve) => setTimeout(resolve, 0));
+
+		onProgress?.('Grouping similar tasks...');
 		const grouped = await groupTasksByTitle(workTasks, model, 0.9);
 		console.log('🚀 ~ summarizeTasksV3 ~ grouped:', grouped);
+
+		await new Promise((resolve) => setTimeout(resolve, 0));
+
+		onProgress?.('Removing duplicates...');
 		const minimized = await removeSimilarDescriptions(grouped, model, similarityThreshold);
 		console.log('🚀 ~ summarizeTasksV3 ~ minimized:', minimized);
+
+		await new Promise((resolve) => setTimeout(resolve, 0));
+
+		onProgress?.('Finalizing summary...');
 		return formatSummaryGroups(minimized);
 	} catch (error) {
 		console.error('Error summarizing tasks:', error);
@@ -51,10 +73,17 @@ async function groupTasksByTitle(tasks: IParsedTask[], model: UniversalSentenceE
 	const groups = new Map<string, string[]>();
 	let titles = tasks.map((task) => task.title);
 
+	// Yield control before heavy computation
+	await new Promise((resolve) => setTimeout(resolve, 0));
+
 	const [numericGroups, otherTitles] = splitByOnlyDifferInNumber(titles);
+
+	// Yield control before clustering
+	await new Promise((resolve) => setTimeout(resolve, 0));
 
 	const clusteredTasks = await clusterTexts(otherTitles, model, threshold);
 	const combinedClusters = [...numericGroups.map((title) => [title]), ...clusteredTasks];
+
 	for (const cluster of combinedClusters) {
 		if (cluster.length === 0) continue;
 
@@ -73,6 +102,9 @@ async function groupTasksByTitle(tasks: IParsedTask[], model: UniversalSentenceE
 		if (taskItems.length > 0) {
 			groups.set(representativeTitle, taskItems);
 		}
+
+		// Yield control periodically during loop
+		await new Promise((resolve) => setTimeout(resolve, 0));
 	}
 
 	return groups;
@@ -88,6 +120,9 @@ async function removeSimilarDescriptions(tasksMap: Map<string, string[]>, model:
 				result.set(title, uniqueTasks);
 			}
 		}
+
+		// Yield control periodically during loop
+		await new Promise((resolve) => setTimeout(resolve, 0));
 	}
 
 	return result;

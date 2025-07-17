@@ -3,7 +3,7 @@ import { calculateCosineSimilarity } from "./calc-cosine-similarity";
 /**
  * Performs semantic clustering on texts using cosine similarity
  */
-export function performSemanticClustering(texts: string[], vectors: number[][], threshold: number): string[][] {
+export async function performSemanticClustering(texts: string[], vectors: number[][], threshold: number): Promise<string[][]> {
 	const used = new Array(texts.length).fill(false);
 	const clusters: string[][] = [];
 
@@ -24,6 +24,11 @@ export function performSemanticClustering(texts: string[], vectors: number[][], 
 		}
 
 		clusters.push(cluster);
+
+		// Yield control every 10 iterations to prevent blocking
+		if (i % 10 === 0) {
+			await new Promise((resolve) => setTimeout(resolve, 0));
+		}
 	}
 
 	return clusters.sort((a, b) => b.length - a.length);
