@@ -15,16 +15,11 @@
 	{/if}
 
 	{#if items.length > 0}
-		<div class="space-y-2">
-			{#each items as item, index}
-				<div class="flex items-start gap-3 p-3 bg-bg-muted rounded-lg border border-border">
-					<div class="flex-shrink-0 w-6 h-6 bg-accent text-fg-on-accent rounded-full flex items-center justify-center text-sm font-medium">
-						{index + 1}
-					</div>
-					<p class="text-fg-dark text-sm leading-relaxed flex-1">{item}</p>
-				</div>
+		<ol class="space-y-1 list-decimal list-inside">
+			{#each items as item}
+				<li class="text-fg-dark text-sm leading-relaxed">{item}</li>
 			{/each}
-		</div>
+		</ol>
 	{:else}
 		<div class="text-center py-8">
 			<p class="text-fg-muted text-sm">{emptyMessage}</p>

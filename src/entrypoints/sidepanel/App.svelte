@@ -65,7 +65,7 @@
 
 	const loadTasksForTimeRange = async () => {
 		trackedTasks = await taskStore.getTasks(timeRangeFilter, selectedDate);
-		
+
 		// Generate summary data when tasks are loaded
 		if (viewMode === 'summary') {
 			await generateSummaryData();
@@ -76,7 +76,7 @@
 		try {
 			isGeneratingSummary = true;
 			summaryProgressStatus = 'Generating summary...';
-			
+
 			summaryData = await summarizeTasksV3(trackedTasks, 0.75, (status) => {
 				summaryProgressStatus = status;
 			});
@@ -334,13 +334,7 @@
 					<h1 class="text-2xl font-bold text-fg-dark">Tracked Tasks Summary</h1>
 					<span class="text-fg-muted text-xs">{getHeaderText()}</span>
 				</div>
-				<Button 
-					size="sm" 
-					onclick={toggleViewMode} 
-					className="flex items-center gap-2 px-3 py-2" 
-					title={`Switch to ${viewMode === 'list' ? 'summary' : 'list'} view`}
-					disabled={isGeneratingSummary}
-				>
+				<Button size="sm" onclick={toggleViewMode} className="flex items-center gap-2 px-3 py-2" title={`Switch to ${viewMode === 'list' ? 'summary' : 'list'} view`} disabled={isGeneratingSummary}>
 					{#if isGeneratingSummary}
 						<div class="w-4 h-4 border border-current border-t-transparent rounded-full animate-spin"></div>
 					{:else if viewMode === 'list'}
@@ -392,12 +386,12 @@
 			{#if trackedTasks.length}
 				{#if viewMode === 'list'}
 					<div class="space-y-2">
-					{#each trackedTasks as task (task.id)}
-						<div class="bg-bg-darker border border-border rounded-lg p-3 hover:bg-bg-light transition-colors">
-							<div class="flex flex-col items-start justify-between">
-								<div class="flex items-center justify-between w-full mb-1">
-									<div class="flex items-center">
-										<!-- <div
+						{#each trackedTasks as task (task.id)}
+							<div class="bg-bg-darker border border-border rounded-lg p-3 hover:bg-bg-light transition-colors">
+								<div class="flex flex-col items-start justify-between">
+									<div class="flex items-center justify-between w-full mb-1">
+										<div class="flex items-center">
+											<!-- <div
 									role="button"
 									tabindex="0"
 									class="text-accent-primary font-medium bg-accent-primary/10 pr-2 py-0.5 rounded text-xs whitespace-nowrap"
@@ -407,130 +401,120 @@
 								>
 									{getDisplayText(task, 'status', task.status ? getStatusLabel(task.status) : '')}
 								</div> -->
-										{#if getTimeRange(task.start, task.end)}
-											<!-- svelte-ignore a11y_click_events_have_key_events -->
-											<div
-												role="button"
-												tabindex="0"
-												class="text-accent-primary text-sm font-medium bg-accent-primary/10 px-2 py-0.5 rounded whitespace-nowrap"
-												onclick={() => copyToClipboard(getTimeRange(task.start, task.end) || '', task.id, 'start')}
-												title="Click to copy time range"
-											>
-												{getDisplayText(task, 'start', getTimeRange(task.start, task.end) || '')}
-											</div>
-										{:else}
-											<ClockAlert class="text-fg-dark mr-4" size={16} />
-										{/if}
+											{#if getTimeRange(task.start, task.end)}
+												<!-- svelte-ignore a11y_click_events_have_key_events -->
+												<div
+													role="button"
+													tabindex="0"
+													class="text-accent-primary text-sm font-medium bg-accent-primary/10 px-2 py-0.5 rounded whitespace-nowrap"
+													onclick={() => copyToClipboard(getTimeRange(task.start, task.end) || '', task.id, 'start')}
+													title="Click to copy time range"
+												>
+													{getDisplayText(task, 'start', getTimeRange(task.start, task.end) || '')}
+												</div>
+											{:else}
+												<ClockAlert class="text-fg-dark mr-4" size={16} />
+											{/if}
+										</div>
+										<div class="flex items-center gap-1 flex-shrink-0">
+											<button class="p-1 text-fg-muted hover:text-fg-dark hover:bg-blue-50 rounded-md transition-colors" onclick={() => editTask(task)} title="Edit task">
+												<EditIcon size={16} />
+											</button>
+											<button class="p-1 text-fg-muted hover:text-red-600 hover:bg-red-50 rounded-md transition-colors" onclick={() => deleteTask(task.id)} title="Delete task">
+												<XIcon size={16} />
+											</button>
+										</div>
 									</div>
-									<div class="flex items-center gap-1 flex-shrink-0">
-										<button class="p-1 text-fg-muted hover:text-fg-dark hover:bg-blue-50 rounded-md transition-colors" onclick={() => editTask(task)} title="Edit task">
-											<EditIcon size={16} />
-										</button>
-										<button class="p-1 text-fg-muted hover:text-red-600 hover:bg-red-50 rounded-md transition-colors" onclick={() => deleteTask(task.id)} title="Delete task">
-											<XIcon size={16} />
-										</button>
-									</div>
-								</div>
 
-								<div
-									role="button"
-									tabindex="0"
-									class="font-semibold text-base text-fg-dark truncate mr-4 text-left w-full"
-									onclick={() => handleCardClick(task, 'title')}
-									onkeydown={(e) => e.key === 'Enter' && handleCardClick(task, 'title')}
-									title="Click to copy title"
-								>
-									{getDisplayText(task, 'title', task.title)}
-								</div>
-
-								<div
-									role="button"
-									tabindex="0"
-									class="text-fg-muted text-xs mb-1 leading-relaxed line-clamp-3 text-left w-full whitespace-pre-wrap"
-									onclick={() => handleCardClick(task, 'description')}
-									onkeydown={(e) => e.key === 'Enter' && handleCardClick(task, 'description')}
-									title="Click to copy description"
-								>
-									{getDisplayText(task, 'description', task.description)}
-								</div>
-
-								<div class="text-xs text-fg-muted">
 									<div
 										role="button"
 										tabindex="0"
-										class="text-xs text-fg-muted"
-										onclick={() => copyToClipboard(getRelativeTime(task.createdAt), task.id, 'createdAt')}
-										onkeydown={(e) => e.key === 'Enter' && copyToClipboard(getRelativeTime(task.createdAt), task.id, 'createdAt')}
-										title="Click to copy created time"
+										class="font-semibold text-base text-fg-dark truncate mr-4 text-left w-full"
+										onclick={() => handleCardClick(task, 'title')}
+										onkeydown={(e) => e.key === 'Enter' && handleCardClick(task, 'title')}
+										title="Click to copy title"
 									>
-										Created {getDisplayText(task, 'createdAt', getRelativeTime(task.createdAt))}
+										{getDisplayText(task, 'title', task.title)}
 									</div>
-								</div>
-							</div>
-						</div>
-					{/each}
 
-					<div class="mb-3 text-center">
-						<p class="text-xs text-fg-muted opacity-80 bg-bg-darker border border-border rounded-lg px-3 py-2">
-							💡 <strong>Tip:</strong> Click on any task content to copy it to your clipboard
-						</p>
-					</div>
-				</div>
-				{:else}
-					{#if isGeneratingSummary}
-						<div class="flex flex-col items-center justify-center py-16 space-y-4">
-							<!-- Robotic/Techy Loading Animation -->
-							<div class="relative">
-								<!-- Main scanning circle -->
-								<div class="w-16 h-16 border-2 border-blue-500 rounded-full border-t-transparent animate-spin"></div>
-								<!-- Inner pulse -->
-								<div class="absolute inset-2 w-12 h-12 bg-blue-500/20 rounded-full animate-pulse"></div>
-								<!-- Center dot -->
-								<div class="absolute inset-6 w-4 h-4 bg-blue-500 rounded-full animate-ping"></div>
-							</div>
-							
-							<!-- Loading text with typewriter effect -->
-							<div class="text-center space-y-2">
-								<div class="text-lg font-mono text-blue-400">
-									{summaryProgressStatus || 'ANALYZING TASKS...'}
-								</div>
-								<div class="text-sm font-mono text-gray-500 flex items-center justify-center space-x-1">
-									<span>PROCESSING</span>
-									<div class="flex space-x-1">
-										<div class="w-1 h-1 bg-blue-400 rounded-full animate-bounce" style="animation-delay: 0ms"></div>
-										<div class="w-1 h-1 bg-blue-400 rounded-full animate-bounce" style="animation-delay: 150ms"></div>
-										<div class="w-1 h-1 bg-blue-400 rounded-full animate-bounce" style="animation-delay: 300ms"></div>
+									<div
+										role="button"
+										tabindex="0"
+										class="text-fg-muted text-xs mb-1 leading-relaxed line-clamp-3 text-left w-full whitespace-pre-wrap"
+										onclick={() => handleCardClick(task, 'description')}
+										onkeydown={(e) => e.key === 'Enter' && handleCardClick(task, 'description')}
+										title="Click to copy description"
+									>
+										{getDisplayText(task, 'description', task.description)}
 									</div>
-									<span>AI SUMMARY</span>
+
+									<div class="text-xs text-fg-muted">
+										<div
+											role="button"
+											tabindex="0"
+											class="text-xs text-fg-muted"
+											onclick={() => copyToClipboard(getRelativeTime(task.createdAt), task.id, 'createdAt')}
+											onkeydown={(e) => e.key === 'Enter' && copyToClipboard(getRelativeTime(task.createdAt), task.id, 'createdAt')}
+											title="Click to copy created time"
+										>
+											Created {getDisplayText(task, 'createdAt', getRelativeTime(task.createdAt))}
+										</div>
+									</div>
 								</div>
-								<div class="text-xs font-mono text-gray-600 opacity-75">
-									{#if summaryProgressStatus?.includes('DOWNLOADING')}
-										📦 MODEL DOWNLOAD IN PROGRESS - WILL BE CACHED 📦
-									{:else if summaryProgressStatus?.includes('PROCESSING')}
-										🔄 ANALYZING TASK SEMANTICS 🔄
-									{:else}
-										◢◣ SEMANTIC ANALYSIS IN PROGRESS ◤◥
-									{/if}
+							</div>
+						{/each}
+
+						<div class="mb-3 text-center">
+							<p class="text-xs text-fg-muted opacity-80 bg-bg-darker border border-border rounded-lg px-3 py-2">
+								💡 <strong>Tip:</strong> Click on any task content to copy it to your clipboard
+							</p>
+						</div>
+					</div>
+				{:else if isGeneratingSummary}
+					<div class="flex flex-col items-center justify-center py-16 space-y-4">
+						<!-- Robotic/Techy Loading Animation -->
+						<div class="relative">
+							<!-- Main scanning circle -->
+							<div class="w-16 h-16 border-2 border-blue-500 rounded-full border-t-transparent animate-spin"></div>
+							<!-- Inner pulse -->
+							<div class="absolute inset-2 w-12 h-12 bg-blue-500/20 rounded-full animate-pulse"></div>
+							<!-- Center dot -->
+							<div class="absolute inset-6 w-4 h-4 bg-blue-500 rounded-full animate-ping"></div>
+						</div>
+
+						<!-- Loading text with typewriter effect -->
+						<div class="text-center space-y-2">
+							<div class="text-lg font-mono text-blue-400">
+								{summaryProgressStatus || 'ANALYZING TASKS...'}
+							</div>
+							<div class="text-sm font-mono text-gray-500 flex items-center justify-center space-x-1">
+								<span>PROCESSING</span>
+								<div class="flex space-x-1">
+									<div class="w-1 h-1 bg-blue-400 rounded-full animate-bounce" style="animation-delay: 0ms"></div>
+									<div class="w-1 h-1 bg-blue-400 rounded-full animate-bounce" style="animation-delay: 150ms"></div>
+									<div class="w-1 h-1 bg-blue-400 rounded-full animate-bounce" style="animation-delay: 300ms"></div>
 								</div>
+								<span>AI SUMMARY</span>
+							</div>
+							<div class="text-xs font-mono text-gray-600 opacity-75">
+								{#if summaryProgressStatus?.includes('DOWNLOADING')}
+									📦 MODEL DOWNLOAD IN PROGRESS - WILL BE CACHED 📦
+								{:else if summaryProgressStatus?.includes('PROCESSING')}
+									🔄 ANALYZING TASK SEMANTICS 🔄
+								{:else}
+									◢◣ SEMANTIC ANALYSIS IN PROGRESS ◤◥
+								{/if}
 							</div>
 						</div>
-					{:else if summaryData.length > 0}
+					</div>
+				{:else if summaryData.length > 0}
+					<div class="mt-9">
 						{#each summaryData as group}
-							<SummaryView 
-								items={group.tasks}
-								title={group.title}
-								emptyMessage="No tasks in this group"
-								className="mb-6"
-							/>
+							<SummaryView items={group.tasks} title={group.title} emptyMessage="No tasks in this group" className="mb-6" />
 						{/each}
-					{:else}
-						<SummaryView 
-							items={[]}
-							title="Task Summary"
-							emptyMessage="No tasks to summarize"
-							className="mt-4"
-						/>
-					{/if}
+					</div>
+				{:else}
+					<SummaryView items={[]} title="Task Summary" emptyMessage="No tasks to summarize" className="mt-4" />
 				{/if}
 			{:else}
 				<div class="text-center py-12">
