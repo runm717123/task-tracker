@@ -1,7 +1,7 @@
 <script lang="ts">
 	import '@bios-ui/core/css';
 	import { Button, Select } from '@bios-ui/svelte';
-	import { ClockAlert, Download, EditIcon, List, Plus, SquareKanban, Trash2, Upload, XIcon } from '@lucide/svelte';
+	import { ClockAlert, Download, EditIcon, ListIcon, ListOrderedIcon, Plus, Trash2, Upload, XIcon } from '@lucide/svelte';
 	import dayjs from 'dayjs';
 	import isBetween from 'dayjs/plugin/isBetween';
 	import relativeTime from 'dayjs/plugin/relativeTime';
@@ -14,8 +14,8 @@
 	import { taskStore } from '../../lib/stores/taskStore';
 	import { summarizeTasksV3 } from '../../lib/utils/summarize/summaryTasks';
 	import { openTaskPopup } from '../../lib/utils/taskPopup';
-	import EditPage from '../popup/ui/EditPage.svelte';
 	import { SummaryProgressStatus, type TSummaryProgressStatusType } from '../../types/summary';
+	import EditPage from '../popup/ui/EditPage.svelte';
 
 	dayjs.extend(relativeTime);
 	dayjs.extend(isBetween);
@@ -339,9 +339,9 @@
 					{#if isGeneratingSummary}
 						<div class="w-4 h-4 border border-current border-t-transparent rounded-full animate-spin"></div>
 					{:else if viewMode === 'list'}
-						<SquareKanban size={16} />
+						<ListOrderedIcon size={16} />
 					{:else}
-						<List size={16} />
+						<ListIcon size={16} />
 					{/if}
 				</Button>
 			</div>
