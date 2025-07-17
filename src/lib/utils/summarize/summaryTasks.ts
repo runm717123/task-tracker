@@ -6,6 +6,7 @@ import { clusterTexts } from './cluster-text';
 import { removeSimilarSentences } from './remove-similiar-sentences';
 import { parseTaskDescription } from './preprocess/parse-task-descs';
 import { onlyDifferInNumber } from './checker';
+import { SummaryProgressStatus } from '../../../types/summary';
 
 interface ISummaryGroup {
 	title: string;
@@ -29,36 +30,36 @@ export async function summarizeTasksV3(tasks: ITrackedTask[], similarityThreshol
 	if (tasks.length === 0) return [];
 
 	try {
-		onProgress?.('Preprocessing tasks...');
+		onProgress?.(SummaryProgressStatus.PREPROCESSING);
 		const parsedTasks = normalizeTasks(tasks);
 		console.log('🚀 ~ summarizeTasksV3 ~ parsedTasks:', parsedTasks);
 
 		// Yield control to prevent blocking
 		await new Promise((resolve) => setTimeout(resolve, 0));
 
-		onProgress?.('Filtering work tasks...');
+		onProgress?.(SummaryProgressStatus.FILTERING);
 		const workTasks = filterWorkTasks(parsedTasks);
 
 		await new Promise((resolve) => setTimeout(resolve, 0));
 
-		onProgress?.('Loading AI model...');
+		onProgress?.(SummaryProgressStatus.LOADING_MODEL);
 		const model = await getModel(onProgress);
 
 		await new Promise((resolve) => setTimeout(resolve, 0));
 
-		onProgress?.('Grouping similar tasks...');
+		onProgress?.(SummaryProgressStatus.GROUPING);
 		const grouped = await groupTasksByTitle(workTasks, model, 0.9);
 		console.log('🚀 ~ summarizeTasksV3 ~ grouped:', grouped);
 
 		await new Promise((resolve) => setTimeout(resolve, 0));
 
-		onProgress?.('Removing duplicates...');
+		onProgress?.(SummaryProgressStatus.REMOVING_DUPLICATES);
 		const minimized = await removeSimilarDescriptions(grouped, model, similarityThreshold);
 		console.log('🚀 ~ summarizeTasksV3 ~ minimized:', minimized);
 
 		await new Promise((resolve) => setTimeout(resolve, 0));
 
-		onProgress?.('Finalizing summary...');
+		onProgress?.(SummaryProgressStatus.FINALIZING);
 		return formatSummaryGroups(minimized);
 	} catch (error) {
 		console.error('Error summarizing tasks:', error);

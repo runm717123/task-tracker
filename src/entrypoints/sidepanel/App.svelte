@@ -15,6 +15,7 @@
 	import { summarizeTasksV3 } from '../../lib/utils/summarize/summaryTasks';
 	import { openTaskPopup } from '../../lib/utils/taskPopup';
 	import EditPage from '../popup/ui/EditPage.svelte';
+	import { SummaryProgressStatus, type TSummaryProgressStatusType } from '../../types/summary';
 
 	dayjs.extend(relativeTime);
 	dayjs.extend(isBetween);
@@ -28,7 +29,7 @@
 	let viewMode: 'list' | 'summary' = $state('list');
 	let summaryData: Array<{ title: string; tasks: string[] }> = $state([]);
 	let isGeneratingSummary = $state(false);
-	let summaryProgressStatus = $state('');
+	let summaryProgressStatus: TSummaryProgressStatusType = $state(SummaryProgressStatus.IDLE);
 	let fileInput: HTMLInputElement;
 	let dateInput: HTMLInputElement | undefined = $state();
 	let flatpickrInstance: flatpickr.Instance;
@@ -75,7 +76,7 @@
 	const generateSummaryData = async () => {
 		try {
 			isGeneratingSummary = true;
-			summaryProgressStatus = 'Generating summary...';
+			summaryProgressStatus = SummaryProgressStatus.GENERATING;
 
 			summaryData = await summarizeTasksV3(trackedTasks, 0.75, (status) => {
 				summaryProgressStatus = status;
@@ -85,7 +86,7 @@
 			summaryData = [];
 		} finally {
 			isGeneratingSummary = false;
-			summaryProgressStatus = '';
+			summaryProgressStatus = SummaryProgressStatus.IDLE;
 		}
 	};
 
@@ -487,22 +488,11 @@
 							<div class="text-lg font-mono text-blue-400">
 								{summaryProgressStatus || 'ANALYZING TASKS...'}
 							</div>
-							<div class="text-sm font-mono text-gray-500 flex items-center justify-center space-x-1">
-								<span>PROCESSING</span>
-								<div class="flex space-x-1">
-									<div class="w-1 h-1 bg-blue-400 rounded-full animate-bounce" style="animation-delay: 0ms"></div>
-									<div class="w-1 h-1 bg-blue-400 rounded-full animate-bounce" style="animation-delay: 150ms"></div>
-									<div class="w-1 h-1 bg-blue-400 rounded-full animate-bounce" style="animation-delay: 300ms"></div>
-								</div>
-								<span>AI SUMMARY</span>
-							</div>
 							<div class="text-xs font-mono text-gray-600 opacity-75">
-								{#if summaryProgressStatus?.includes('DOWNLOADING')}
+								{#if summaryProgressStatus.includes('DOWNLOADING')}
 									📦 MODEL DOWNLOAD IN PROGRESS - WILL BE CACHED 📦
-								{:else if summaryProgressStatus?.includes('PROCESSING')}
-									🔄 ANALYZING TASK SEMANTICS 🔄
 								{:else}
-									◢◣ SEMANTIC ANALYSIS IN PROGRESS ◤◥
+									🔄 ANALYZING TASK SEMANTICS 🔄
 								{/if}
 							</div>
 						</div>

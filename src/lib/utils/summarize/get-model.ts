@@ -1,6 +1,6 @@
 import '@tensorflow/tfjs'; // MUST come before @tensorflow-models
 import * as use from '@tensorflow-models/universal-sentence-encoder';
-
+import { SummaryProgressStatus } from '../../../types/summary';
 
 // Cache the model instance
 let modelCache: use.UniversalSentenceEncoder | null = null;
@@ -22,7 +22,7 @@ export async function getModel(onProgress?: (status: string) => void) {
 	try {
 		isModelLoading = true;
 		if (onProgress) {
-			onProgress('DOWNLOADING MINIFIED MODEL... (THIS WILL BE CACHED FOR FUTURE USE)');
+			onProgress(SummaryProgressStatus.DOWNLOADING_MODEL);
 		}
 
 		const modelUrl = chrome.runtime.getURL('models/universal-sentence-encoder/model.json');
@@ -31,7 +31,7 @@ export async function getModel(onProgress?: (status: string) => void) {
 		});
 
 		if (onProgress) {
-			onProgress('MODEL LOADED SUCCESSFULLY');
+			onProgress(SummaryProgressStatus.MODEL_LOADED);
 		}
 
 		return modelCache;
