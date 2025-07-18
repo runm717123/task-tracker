@@ -38,28 +38,28 @@ export async function summarizeTasks(tasks: ITrackedTask[], similarityThreshold:
 		// Start model loading early in background
 		const modelPromise = getModel(onProgress);
 
-		progressTracker.nextStep();
 		const parsedTasks = await processWithProgress(() => normalizeTasks(tasks), 'Preprocessing tasks...');
+		progressTracker.reportStepComplete(SummaryProgressStatus.PREPROCESSING);
 
-		progressTracker.nextStep();
 		const workTasks = await processWithProgress(() => filterWorkTasks(parsedTasks), 'Filtering work tasks...');
+		progressTracker.reportStepComplete(SummaryProgressStatus.FILTERING);
 
 		// Wait for model to be ready
-		progressTracker.nextStep();
 		const model = await modelPromise;
+		progressTracker.reportStepComplete(SummaryProgressStatus.LOADING_MODEL);
 
-		progressTracker.nextStep();
 		const grouped = await groupTasksByTitle(workTasks, model, 0.9, (subStatus) => {
-			progressTracker.updateCurrentStep(50, subStatus);
+			progressTracker.updateCurrentStepProgress(subStatus);
 		});
+		progressTracker.reportStepComplete(SummaryProgressStatus.GROUPING);
 
-		progressTracker.nextStep();
 		const minimized = await removeSimilarDescriptions(grouped, model, similarityThreshold, (subStatus) => {
-			progressTracker.updateCurrentStep(50, subStatus);
+			progressTracker.updateCurrentStepProgress(subStatus);
 		});
+		progressTracker.reportStepComplete(SummaryProgressStatus.REMOVING_DUPLICATES);
 
-		progressTracker.nextStep();
 		const result = await processWithProgress(() => formatSummaryGroups(minimized), 'Finalizing summary...');
+		progressTracker.reportStepComplete(SummaryProgressStatus.FINALIZING);
 
 		progressTracker.complete('Summary generated successfully!');
 		return result;
