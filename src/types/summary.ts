@@ -6,7 +6,13 @@ export const SummaryProgressStatus = {
 	DOWNLOADING_MODEL: 'DOWNLOADING MINIFIED MODEL... (THIS WILL BE CACHED FOR NEXT USE)',
 	MODEL_LOADED: 'MODEL LOADED SUCCESSFULLY',
 	GROUPING: 'Grouping similar tasks...',
+	CLUSTERING: 'Clustering similar titles...',
+	ANALYZING_PATTERNS: 'Analyzing title patterns...',
+	PROCESSING_GROUPS: 'Processing task groups...',
 	REMOVING_DUPLICATES: 'Removing duplicates...',
+	COLLECTING_TASKS: 'Collecting tasks for deduplication...',
+	ANALYZING_SIMILARITIES: 'Analyzing semantic similarities...',
+	REBUILDING_GROUPS: 'Rebuilding task groups...',
 	FINALIZING: 'Finalizing summary...',
 	GENERATING: 'Generating summary...',
 } as const;

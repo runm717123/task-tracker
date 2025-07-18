@@ -7,6 +7,7 @@ import { removeSimilarSentences } from './remove-similiar-sentences';
 import { parseTaskDescription } from './preprocess/parse-task-descs';
 import { onlyDifferInNumber } from './checker';
 import { SummaryProgressStatus } from '../../../types/summary';
+import { ProgressTracker } from './progress-tracker';
 
 interface ISummaryGroup {
 	title: string;
@@ -29,90 +30,127 @@ interface IParsedTask {
 export async function summarizeTasks(tasks: ITrackedTask[], similarityThreshold: number = 0.7, onProgress?: (status: string) => void): Promise<ISummaryGroup[]> {
 	if (tasks.length === 0) return [];
 
+	const progressSteps = [SummaryProgressStatus.PREPROCESSING, SummaryProgressStatus.FILTERING, SummaryProgressStatus.LOADING_MODEL, SummaryProgressStatus.GROUPING, SummaryProgressStatus.REMOVING_DUPLICATES, SummaryProgressStatus.FINALIZING];
+
+	const progressTracker = new ProgressTracker(progressSteps, onProgress);
+
 	try {
-		onProgress?.(SummaryProgressStatus.PREPROCESSING);
-		const parsedTasks = normalizeTasks(tasks);
+		// Start model loading early in background
+		const modelPromise = getModel(onProgress);
 
-		// Yield control to prevent blocking
-		await new Promise((resolve) => setTimeout(resolve, 0));
+		progressTracker.nextStep();
+		const parsedTasks = await processWithProgress(() => normalizeTasks(tasks), 'Preprocessing tasks...');
 
-		onProgress?.(SummaryProgressStatus.FILTERING);
-		const workTasks = filterWorkTasks(parsedTasks);
+		progressTracker.nextStep();
+		const workTasks = await processWithProgress(() => filterWorkTasks(parsedTasks), 'Filtering work tasks...');
 
-		await new Promise((resolve) => setTimeout(resolve, 0));
+		// Wait for model to be ready
+		progressTracker.nextStep();
+		const model = await modelPromise;
 
-		onProgress?.(SummaryProgressStatus.LOADING_MODEL);
-		const model = await getModel(onProgress);
+		progressTracker.nextStep();
+		const grouped = await groupTasksByTitle(workTasks, model, 0.9, (subStatus) => {
+			progressTracker.updateCurrentStep(50, subStatus);
+		});
 
-		await new Promise((resolve) => setTimeout(resolve, 0));
+		progressTracker.nextStep();
+		const minimized = await removeSimilarDescriptions(grouped, model, similarityThreshold, (subStatus) => {
+			progressTracker.updateCurrentStep(50, subStatus);
+		});
 
-		onProgress?.(SummaryProgressStatus.GROUPING);
-		const grouped = await groupTasksByTitle(workTasks, model, 0.9);
+		progressTracker.nextStep();
+		const result = await processWithProgress(() => formatSummaryGroups(minimized), 'Finalizing summary...');
 
-		await new Promise((resolve) => setTimeout(resolve, 0));
-
-		onProgress?.(SummaryProgressStatus.REMOVING_DUPLICATES);
-		const minimized = await removeSimilarDescriptions(grouped, model, similarityThreshold);
-
-		await new Promise((resolve) => setTimeout(resolve, 0));
-
-		onProgress?.(SummaryProgressStatus.FINALIZING);
-		return formatSummaryGroups(minimized);
+		progressTracker.complete('Summary generated successfully!');
+		return result;
 	} catch (error) {
 		console.error('Error summarizing tasks:', error);
+		onProgress?.('Error generating summary');
 		return [];
+	} finally {
+		progressTracker.destroy();
 	}
+}
+
+/**
+ * Helper function to process work with progress yielding
+ */
+async function processWithProgress<T>(work: () => T, _progressMessage?: string): Promise<T> {
+	// Yield control before starting work
+	await new Promise((resolve) => setTimeout(resolve, 0));
+
+	const result = work();
+
+	// Yield control after work
+	await new Promise((resolve) => setTimeout(resolve, 0));
+
+	return result;
 }
 
 /**
  * Groups tasks by their titles, merging similar titles
  */
-async function groupTasksByTitle(tasks: IParsedTask[], model: UniversalSentenceEncoder, threshold: number = 0.7) {
+async function groupTasksByTitle(tasks: IParsedTask[], model: UniversalSentenceEncoder, threshold: number = 0.7, onProgress?: (status: string) => void) {
 	const groups = new Map<string, string[]>();
 	let titles = tasks.map((task) => task.title);
 
 	// Yield control before heavy computation
 	await new Promise((resolve) => setTimeout(resolve, 0));
 
-	const [numericGroups, otherTitles] = splitByOnlyDifferInNumber(titles);
+	onProgress?.('Analyzing title patterns...');
+	const [numericGroups, otherTitles] = await processWithProgress(() => splitByOnlyDifferInNumber(titles), 'Analyzing title patterns...');
 
-	// Yield control before clustering
-	await new Promise((resolve) => setTimeout(resolve, 0));
-
+	onProgress?.('Clustering similar titles...');
 	const clusteredTasks = await clusterTexts(otherTitles, model, threshold);
 	const combinedClusters = [...numericGroups.map((title) => [title]), ...clusteredTasks];
 
-	for (const cluster of combinedClusters) {
-		if (cluster.length === 0) continue;
+	onProgress?.('Processing task groups...');
 
-		// Use the first title as representative
-		const representativeTitle = cluster[0];
-		const taskItems: string[] = [];
+	// Process clusters in chunks to maintain responsiveness
+	const chunkSize = Math.max(1, Math.floor(combinedClusters.length / 10));
 
-		for (const title of cluster) {
-			const matchingTasks = tasks.filter((task) => task.title === title);
-			for (const task of matchingTasks) {
-				const items = parseTaskDescription(task.description);
-				taskItems.push(...items);
+	for (let i = 0; i < combinedClusters.length; i += chunkSize) {
+		const chunk = combinedClusters.slice(i, i + chunkSize);
+
+		for (const cluster of chunk) {
+			if (cluster.length === 0) continue;
+
+			// Use the first title as representative
+			const representativeTitle = cluster[0];
+			const taskItems: string[] = [];
+
+			for (const title of cluster) {
+				const matchingTasks = tasks.filter((task) => task.title === title);
+				for (const task of matchingTasks) {
+					const items = parseTaskDescription(task.description);
+					taskItems.push(...items);
+				}
+			}
+
+			if (taskItems.length > 0) {
+				groups.set(representativeTitle, taskItems);
 			}
 		}
 
-		if (taskItems.length > 0) {
-			groups.set(representativeTitle, taskItems);
-		}
-
-		// Yield control periodically during loop
+		// Yield control after processing each chunk
 		await new Promise((resolve) => setTimeout(resolve, 0));
+
+		// Update progress
+		const progress = Math.round(((i + chunkSize) / combinedClusters.length) * 100);
+		onProgress?.(`Processing task groups... ${Math.min(progress, 100)}%`);
 	}
 
 	return groups;
 }
 
-async function removeSimilarDescriptions(tasksMap: Map<string, string[]>, model: UniversalSentenceEncoder, threshold: number = 0.7) {
+async function removeSimilarDescriptions(tasksMap: Map<string, string[]>, model: UniversalSentenceEncoder, threshold: number = 0.7, onProgress?: (status: string) => void) {
 	const result: TTasksMap = new Map();
 
 	// Early exit for empty or small datasets
 	if (tasksMap.size === 0) return result;
+
+	onProgress?.('Collecting tasks for deduplication...');
+	await new Promise((resolve) => setTimeout(resolve, 0));
 
 	// Collect all tasks with their group information for batch processing
 	const allTasks: { task: string; groupTitle: string; originalIndex: number }[] = [];
@@ -133,9 +171,15 @@ async function removeSimilarDescriptions(tasksMap: Map<string, string[]>, model:
 	// If no tasks after deduplication, return empty result
 	if (allTasks.length === 0) return result;
 
+	onProgress?.('Analyzing semantic similarities...');
+	await new Promise((resolve) => setTimeout(resolve, 0));
+
 	// Batch process all tasks at once for better performance
 	const allTaskStrings = allTasks.map((item) => item.task);
 	const uniqueTaskStrings = await removeSimilarSentences(allTaskStrings, model, threshold);
+
+	onProgress?.('Rebuilding task groups...');
+	await new Promise((resolve) => setTimeout(resolve, 0));
 
 	// Create a set for O(1) lookup of unique tasks
 	const uniqueTaskSet = new Set(uniqueTaskStrings);

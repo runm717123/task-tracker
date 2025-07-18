@@ -78,15 +78,22 @@
 			isGeneratingSummary = true;
 			summaryProgressStatus = SummaryProgressStatus.GENERATING;
 
+			// Add a small delay to show the initial status
+			await new Promise(resolve => setTimeout(resolve, 100));
+
 			summaryData = await summarizeTasks(trackedTasks, 0.75, (status) => {
 				summaryProgressStatus = status;
 			});
 		} catch (error) {
 			console.error('Error generating summary:', error);
+			summaryProgressStatus = 'Error generating summary';
 			summaryData = [];
 		} finally {
-			isGeneratingSummary = false;
-			summaryProgressStatus = SummaryProgressStatus.IDLE;
+			// Add a small delay before clearing the status
+			setTimeout(() => {
+				isGeneratingSummary = false;
+				summaryProgressStatus = SummaryProgressStatus.IDLE;
+			}, 500);
 		}
 	};
 
