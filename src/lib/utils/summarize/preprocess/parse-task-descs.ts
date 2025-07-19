@@ -13,7 +13,13 @@ export function parseTaskDescription(description: string): string[] {
 
 	for (const line of lines) {
 		// Filter the line using regex, remove initial characters that are not alphabet or number
-		const filteredLine = line.replace(/^[^a-zA-Z0-9]*/, '').trim();
+		let filteredLine = line.replace(/^[^a-zA-Z0-9]*/, '').trim();
+
+		// Remove status at the end: "task - Done", "task -> Done", "task (Done)"
+		filteredLine = filteredLine.replace(/\s*(-|->|\()\s*(done|in progress|completed|pending|todo|finished)\s*\)?$/i, '').trim();
+
+		// Remove status at the beginning: "Done -> task", "Done - task"
+		filteredLine = filteredLine.replace(/^(done|in progress|completed|pending|todo|finished)\s*(-|->)\s*/i, '').trim();
 
 		// Check if the filtered line starts with http, if true, continue
 		if (filteredLine.startsWith('http')) {
