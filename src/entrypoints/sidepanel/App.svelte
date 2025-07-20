@@ -99,6 +99,11 @@
 
 	const toggleViewMode = async () => {
 		if (viewMode === 'list') {
+			// Check if there are no tasks to summarize
+			if (trackedTasks.length === 0) {
+				alert('No tasks available to summarize! Please create some tasks first or try adjusting the date range or time period to find existing tasks.');
+				return;
+			}
 			viewMode = 'summary';
 			await generateSummaryData();
 		} else {
@@ -109,6 +114,8 @@
 	const handleTimeRangeChange = async () => {
 		// Reset to current date when changing time range
 		selectedDate = new Date();
+		// Reset view mode to list when changing periods
+		viewMode = 'list';
 		await loadTasksForTimeRange();
 		// Reinitialize flatpickr with new settings
 		initializeFlatpickr();
@@ -332,11 +339,11 @@
 	};
 </script>
 
-<main class="min-h-screen overflow-y-auto bg-bg-dark flex flex-col justify-between">
+<main class="min-h-screen overflow-y-auto bg-bg-dark flex flex-col justify-between h-full">
 	{#if isEditing && editingTask}
 		<EditPage task={editingTask} onSave={handleEditSave} onCancel={handleEditCancel} />
 	{:else}
-		<div class="p-4">
+		<div class="p-4 flex flex-col flex-1">
 			<div class="flex justify-between items-start mb-4 mt-1">
 				<div class="font-family-heading">
 					<h1 class="text-2xl font-bold text-fg-dark">Tracked Tasks Summary</h1>
@@ -393,7 +400,7 @@
 
 			{#if trackedTasks.length}
 				{#if viewMode === 'list'}
-					<div class="space-y-2">
+					<div class="space-y-2 flex flex-col flex-1">
 						{#each trackedTasks as task (task.id)}
 							<div class="bg-bg-darker border border-border rounded-lg p-3 hover:bg-bg-light transition-colors">
 								<div class="flex flex-col items-start justify-between">
@@ -479,7 +486,7 @@
 						</div>
 					</div>
 				{:else if isGeneratingSummary}
-					<div class="flex flex-col items-center justify-center py-16 space-y-4">
+					<div class="flex flex-1 flex-col items-center justify-center py-16 space-y-4">
 						<!-- Robotic/Techy Loading Animation -->
 						<div class="relative">
 							<!-- Main scanning circle -->
@@ -514,7 +521,7 @@
 					<SummaryView items={[]} title="Task Summary" emptyMessage="No tasks to summarize" className="mt-4" />
 				{/if}
 			{:else}
-				<div class="text-center py-12">
+				<div class="flex flex-col justify-center items-center text-center flex-1">
 					<p class="text-fg-dark text-lg mb-2">No tasks recorded for {timeRangeFilter === 'daily' ? 'today' : timeRangeFilter === 'all' ? 'any period' : `this ${timeRangeFilter.replace('ly', '')}`}</p>
 					<p class="text-fg-muted text-sm mb-6">Start tracking your tasks to see them here!</p>
 					<div class="text-sm text-fg-muted space-y-2">
