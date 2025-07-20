@@ -115,7 +115,7 @@ async function groupTasksByTitle(tasks: IParsedTask[], progressTracker: Progress
 
 		// For valid_title and project_tasks categories, group each title separately
 		// For other categories, group all titles under the category name
-		if (categoryKey === 'valid_title' || categoryKey === 'project_tasks') {
+		if (categoryKey === 'valid_title') {
 			// Each title gets its own group
 			for (const title of categoryTitles) {
 				const taskItems: string[] = [];

@@ -25,6 +25,8 @@ export async function getModel(onProgress?: (status: string) => void) {
 			onProgress(SummaryProgressStatus.DOWNLOADING_MODEL);
 		}
 
+		// wxt env handling seems to be broken, so we use a local model
+		// and fallback to the default model if the local one fails to load
 		try {
 			const localModelUrl = chrome.runtime.getURL('models/universal-sentence-encoder/model.json');
 			modelCache = await use.load({
