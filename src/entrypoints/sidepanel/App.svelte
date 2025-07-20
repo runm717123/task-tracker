@@ -353,7 +353,7 @@
 				</Button>
 			</div>
 
-			<div class="mb-3 flex justify-between items-center gap-2">
+			<div class="mb-3 flex justify-between items-center flex-wrap gap-4 md:gap-2">
 				<div class="flex items-center gap-2">
 					<Select
 						className="max-w-40"
@@ -505,7 +505,7 @@
 						</div>
 					</div>
 				{:else if summaryData.length > 0}
-					<div class="mt-9">
+					<div class="mt-8">
 						{#each summaryData as group}
 							<SummaryView items={group.tasks} title={group.title} emptyMessage="No tasks in this group" className="mb-6" />
 						{/each}
