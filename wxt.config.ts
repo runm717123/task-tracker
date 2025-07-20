@@ -13,7 +13,7 @@ export default defineConfig({
 	}),
 	// seems there is a bug where the mode is "home"
 	// publicDir: import.meta.env.PROD ? 'public' : 'public-dev',
-	publicDir: 'public-dev',
+	publicDir: 'public',
 	manifest: {
 		name: 'NDEV: Task Tracker',
 		description: pkg.description,
