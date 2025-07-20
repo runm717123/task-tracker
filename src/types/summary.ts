@@ -5,7 +5,7 @@ export const SummaryProgressStatus = {
 	LOADING_MODEL: 'Loading AI model...',
 	LOADING_CLASSIFIER: 'Loading classifier model...',
 	CLASSIFIER_LOADED: 'Classifier model loaded, proceeding with classifying task titles...',
-	DOWNLOADING_MODEL: 'DOWNLOADING MINIFIED MODEL... (THIS WILL BE CACHED FOR NEXT USE)',
+	DOWNLOADING_MODEL: 'Downloading embedding Model... (this may take a while)',
 	MODEL_LOADED: 'MODEL LOADED SUCCESSFULLY',
 	GROUPING: 'Grouping similar tasks...',
 	CLUSTERING: 'Clustering similar titles...',

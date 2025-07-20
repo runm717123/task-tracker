@@ -22,6 +22,7 @@ export const CLASSIFIED_TITLES_KEYS = ['valid_title', 'background_task', 'meetin
  * Classifies task titles into predefined categories using a machine learning model.
  *
  * @param titles Array of task title strings to classify
+ * @param onProgress Optional callback for progress updates during model loading
  * @returns An array of indices representing the predicted task types for each title.
  *          Indices correspond to the following categories:
  *          - 0: "valid_title" -> this means the title itself is valid for summarized task title
@@ -33,9 +34,9 @@ export const CLASSIFIED_TITLES_KEYS = ['valid_title', 'background_task', 'meetin
  *
  * @see https://github.com/runm717123/task-tracker-models-dev for more details
  */
-export async function classifyTasksTitles(titles: string[]) {
-	const embedModel = await getModel();
-	const classifier = await getClassifier();
+export async function classifyTasksTitles(titles: string[], onProgress?: (status: string) => void) {
+	const embedModel = await getModel(onProgress);
+	const classifier = await getClassifier(onProgress);
 
 	const embeddings = await embedModel.embed(titles);
 	const predictions = classifier.predict(embeddings);
@@ -47,8 +48,8 @@ export async function classifyTasksTitles(titles: string[]) {
 	return predictedIndices;
 }
 
-export async function clusterTitles(titles: string[]): Promise<Record<string, string[]>> {
-	const classified = await classifyTasksTitles(titles);
+export async function clusterTitles(titles: string[], onProgress?: (status: string) => void): Promise<Record<string, string[]>> {
+	const classified = await classifyTasksTitles(titles, onProgress);
 	const clusters: Record<string, string[]> = {};
 	for (let i = 0; i < titles.length; i++) {
 		const key = CLASSIFIED_TITLES_KEYS[classified[i]];

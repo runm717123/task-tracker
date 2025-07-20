@@ -13,7 +13,7 @@ const PROGRESS_MESSAGES = {
 	TITLE_CLASSIFICATION: 'Classifying task titles...',
 	PROCESSING_GROUPS: 'Processing classified groups...',
 	COLLECTING_FOR_DEDUPLICATION: 'Collecting tasks for deduplication...',
-	ANALYZING_SIMILARITIES: 'Analyzing semantic similarities...',
+	ANALYZING_SIMILARITIES: 'Removing duplicates tasks...',
 	REBUILDING_GROUPS: 'Rebuilding task groups...',
 } as const;
 
@@ -26,6 +26,8 @@ interface IParsedTask {
 	title: string;
 	description: string;
 }
+
+type TTasksMap = Map<string, string[]>;
 
 /**
  * Parses ITrackedTask array and groups tasks by semantic similarity and title
@@ -43,18 +45,15 @@ export async function summarizeTasks(tasks: ITrackedTask[], similarityThreshold:
 	const progressTracker = new ProgressTracker(progressSteps, onProgress);
 
 	try {
+		progressTracker.reportStepComplete(SummaryProgressStatus.LOADING_MODEL);
 		// Start model loading early in background
-		const modelPromise = getModel(onProgress);
+		const model = await getModel((status) => progressTracker.updateCurrentStepProgress(status));
 
 		const parsedTasks = await processWithProgress(() => normalizeTasks(tasks), 'Preprocessing tasks...');
 		progressTracker.reportStepComplete(SummaryProgressStatus.PREPROCESSING);
 
 		const workTasks = await processWithProgress(() => filterWorkTasks(parsedTasks), 'Filtering work tasks...');
 		progressTracker.reportStepComplete(SummaryProgressStatus.FILTERING);
-
-		// Wait for model to be ready
-		const model = await modelPromise;
-		progressTracker.reportStepComplete(SummaryProgressStatus.LOADING_MODEL);
 
 		const grouped = await groupTasksByTitle(workTasks, progressTracker);
 		progressTracker.reportStepComplete(SummaryProgressStatus.GROUPING);
@@ -69,7 +68,7 @@ export async function summarizeTasks(tasks: ITrackedTask[], similarityThreshold:
 		return result;
 	} catch (error) {
 		console.error('Error summarizing tasks:', error);
-		onProgress?.('Error generating summary');
+		progressTracker.updateCurrentStepProgress('Error generating summary');
 		return [];
 	} finally {
 		progressTracker.destroy();
@@ -103,7 +102,7 @@ async function groupTasksByTitle(tasks: IParsedTask[], progressTracker: Progress
 
 	// Step 1: Classify task titles
 	progressTracker.updateCurrentStepProgress(PROGRESS_MESSAGES.TITLE_CLASSIFICATION);
-	const titleClusters = await processWithProgress(() => clusterTitles(titles), PROGRESS_MESSAGES.TITLE_CLASSIFICATION);
+	const titleClusters = await processWithProgress(() => clusterTitles(titles, (status) => progressTracker.updateCurrentStepProgress(status)), PROGRESS_MESSAGES.TITLE_CLASSIFICATION);
 
 	// Step 2: Process each classification category
 	progressTracker.updateCurrentStepProgress(PROGRESS_MESSAGES.PROCESSING_GROUPS);
