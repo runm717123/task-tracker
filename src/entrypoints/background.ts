@@ -1,6 +1,6 @@
 // this file is service worker
 
-import { openTaskPopup } from '../lib/utils/taskPopup';
+import { openTaskPopup } from '../lib/utils/newTaskFormPopup';
 
 export default defineBackground(async () => {
 	console.log('Hello background!', { id: browser.runtime.id });

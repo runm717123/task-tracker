@@ -6,7 +6,7 @@ export const openTaskPopup = async () => {
 	const top = Math.round(screen.height! / 2 - height / 2);
 
 	await browser.windows.create({
-		url: browser.runtime.getURL('/task-popup.html'),
+		url: browser.runtime.getURL('/new-task-form-popup.html'),
 		type: 'panel',
 		width,
 		height,

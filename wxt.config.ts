@@ -7,8 +7,6 @@ export default defineConfig({
 	srcDir: 'src',
 	modules: ['@wxt-dev/module-svelte'],
 	vite: () => ({
-		// Override config here, same as `defineConfig({ ... })`
-		// inside vite.config.ts files
 		plugins: [tailwindcss()],
 	}),
 	// seems there is a bug where the mode is "home"
@@ -34,12 +32,6 @@ export default defineConfig({
 				},
 				description: 'Open add new Task popup',
 			},
-			// _execute_action: {
-			// 	suggested_key: {
-			// 		default: 'Ctrl+Shift+X',
-			// 		mac: 'Command+Shift+Y',
-			// 	},
-			// },
 		},
 	},
 });

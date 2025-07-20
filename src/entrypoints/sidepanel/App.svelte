@@ -13,7 +13,7 @@
 	import SummaryView from '../../lib/components/SummaryView.svelte';
 	import { taskStore } from '../../lib/stores/taskStore';
 	import { summarizeTasks } from '../../lib/utils/summarize/summarizeTasks';
-	import { openTaskPopup } from '../../lib/utils/taskPopup';
+	import { openTaskPopup } from '../../lib/utils/newTaskFormPopup';
 	import { SummaryProgressStatus, type TSummaryProgressStatusType } from '../../types/summary';
 	import EditPage from '../popup/ui/EditPage.svelte';
 

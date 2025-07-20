@@ -7,7 +7,7 @@ Response Format, Code Structure, Coding Standards and Preferences that AI should
 This is a chrome extension app, this will have 3 main sections:
 - the `src/entrypoints/popup` folder contains the code for the extension popup UI
 - the `src/entrypoints/sidepanel` folder contains the code for the extension sidepanel UI
-- the `src/entrypoints/task-popup` folder contains the code for the custom task popup UI
+- the `src/entrypoints/new-task-form-popup` folder contains the code for the custom task popup UI
 - use `src/lib/components` for components
 - use `src/lib/utils` for utility functions
 - use `src/types` for TypeScript types
