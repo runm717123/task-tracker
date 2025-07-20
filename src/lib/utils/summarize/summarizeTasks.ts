@@ -1,11 +1,11 @@
 import type { UniversalSentenceEncoder } from '@tensorflow-models/universal-sentence-encoder';
-import { SummaryProgressStatus } from '../../../types/summary';
+import { ProgressReporter, type ProgressReportCallback } from '../progress-reporter/progress-reporter';
+import { PROGRESS_CONFIG } from '../progress-reporter/progress-config';
 import { clusterTitles } from './classify-title';
 import { getModel } from './get-model';
 import { filterWorkTasks } from './preprocess/filter-work-tasks';
 import { normalizeTasks } from './preprocess/normalizer';
 import { parseTaskDescription } from './preprocess/parse-task-descs';
-import { ProgressTracker } from './progress-tracker';
 import { removeSimilarSentences } from './remove-similiar-sentences';
 
 // Progress message constants
@@ -40,38 +40,46 @@ type TTasksMap = Map<string, string[]>;
 export async function summarizeTasks(tasks: ITrackedTask[], similarityThreshold: number = 0.7, onProgress?: (status: string) => void): Promise<ISummaryGroup[]> {
 	if (tasks.length === 0) return [];
 
-	const progressSteps = [SummaryProgressStatus.PREPROCESSING, SummaryProgressStatus.FILTERING, SummaryProgressStatus.LOADING_MODEL, SummaryProgressStatus.GROUPING, SummaryProgressStatus.REMOVING_DUPLICATES, SummaryProgressStatus.FINALIZING];
+	const progressReporter = new ProgressReporter(PROGRESS_CONFIG);
 
-	const progressTracker = new ProgressTracker(progressSteps, onProgress);
+	// Set up progress callback to convert ProgressStage to string
+	if (onProgress) {
+		progressReporter.onProgress((stage, stageName) => {
+			console.log('🚀 ~ progressReporter.onProgress ~ stage:', stage);
+			onProgress(`${stage.message} (${stage.percentage}%)`);
+		});
+	}
 
 	try {
-		progressTracker.reportStepComplete(SummaryProgressStatus.LOADING_MODEL);
+		progressReporter.report('init');
+
 		// Start model loading early in background
-		const model = await getModel((status) => progressTracker.updateCurrentStepProgress(status));
+		progressReporter.report('loadingEmbeddingModel');
+		const model = await getModel();
 
+		progressReporter.report('preprocess');
 		const parsedTasks = await processWithProgress(() => normalizeTasks(tasks), 'Preprocessing tasks...');
-		progressTracker.reportStepComplete(SummaryProgressStatus.PREPROCESSING);
 
+		progressReporter.report('filterWorkTasks');
 		const workTasks = await processWithProgress(() => filterWorkTasks(parsedTasks), 'Filtering work tasks...');
-		progressTracker.reportStepComplete(SummaryProgressStatus.FILTERING);
 
-		const grouped = await groupTasksByTitle(workTasks, progressTracker);
-		progressTracker.reportStepComplete(SummaryProgressStatus.GROUPING);
+		progressReporter.report('groupingTaskTitles');
+		const grouped = await groupTasksByTitle(workTasks, progressReporter, onProgress);
 
-		const minimized = await removeSimilarDescriptions(grouped, model, similarityThreshold, progressTracker);
-		progressTracker.reportStepComplete(SummaryProgressStatus.REMOVING_DUPLICATES);
+		progressReporter.report('removeSimilarDescriptions');
+		const minimized = await removeSimilarDescriptions(grouped, model, similarityThreshold, progressReporter, onProgress);
 
+		progressReporter.report('finalizing');
 		const result = await processWithProgress(() => formatSummaryGroups(minimized), 'Finalizing summary...');
-		progressTracker.reportStepComplete(SummaryProgressStatus.FINALIZING);
 
-		progressTracker.complete('Summary generated successfully!');
+		progressReporter.report('done');
 		return result;
 	} catch (error) {
 		console.error('Error summarizing tasks:', error);
-		progressTracker.updateCurrentStepProgress('Error generating summary');
+		if (onProgress) {
+			onProgress('Error generating summary');
+		}
 		return [];
-	} finally {
-		progressTracker.destroy();
 	}
 }
 
@@ -93,7 +101,7 @@ async function processWithProgress<T>(work: () => T, _progressMessage?: string):
 /**
  * Groups tasks by their titles using ML-based classification
  */
-async function groupTasksByTitle(tasks: IParsedTask[], progressTracker: ProgressTracker) {
+async function groupTasksByTitle(tasks: IParsedTask[], progressReporter: ProgressReporter, onProgress?: (status: string) => void) {
 	const groups = new Map<string, string[]>();
 	const titles = tasks.map((task) => task.title);
 
@@ -101,11 +109,17 @@ async function groupTasksByTitle(tasks: IParsedTask[], progressTracker: Progress
 	await new Promise((resolve) => setTimeout(resolve, 0));
 
 	// Step 1: Classify task titles
-	progressTracker.updateCurrentStepProgress(PROGRESS_MESSAGES.TITLE_CLASSIFICATION);
-	const titleClusters = await processWithProgress(() => clusterTitles(titles, (status) => progressTracker.updateCurrentStepProgress(status)), PROGRESS_MESSAGES.TITLE_CLASSIFICATION);
+	if (onProgress) onProgress(PROGRESS_MESSAGES.TITLE_CLASSIFICATION);
+	const titleClusters = await processWithProgress(
+		() =>
+			clusterTitles(titles, (status) => {
+				if (onProgress) onProgress(status);
+			}),
+		PROGRESS_MESSAGES.TITLE_CLASSIFICATION
+	);
 
 	// Step 2: Process each classification category
-	progressTracker.updateCurrentStepProgress(PROGRESS_MESSAGES.PROCESSING_GROUPS);
+	if (onProgress) onProgress(PROGRESS_MESSAGES.PROCESSING_GROUPS);
 
 	const categoryEntries = Object.entries(titleClusters).filter(([_, titles]) => titles.length > 0);
 	const totalCategories = categoryEntries.length;
@@ -152,19 +166,22 @@ async function groupTasksByTitle(tasks: IParsedTask[], progressTracker: Progress
 		// Yield control and update sub-progress
 		await new Promise((resolve) => setTimeout(resolve, 0));
 
-		progressTracker.updateCurrentStepWithSubProgress(PROGRESS_MESSAGES.PROCESSING_GROUPS, categoryIndex, totalCategories);
+		if (onProgress) {
+			const subProgress = Math.round(((categoryIndex + 1) / totalCategories) * 100);
+			onProgress(`${PROGRESS_MESSAGES.PROCESSING_GROUPS} ${subProgress}%`);
+		}
 	}
 
 	return groups;
 }
 
-async function removeSimilarDescriptions(tasksMap: Map<string, string[]>, model: UniversalSentenceEncoder, threshold: number = 0.7, progressTracker: ProgressTracker) {
+async function removeSimilarDescriptions(tasksMap: Map<string, string[]>, model: UniversalSentenceEncoder, threshold: number = 0.7, progressReporter: ProgressReporter, onProgress?: (status: string) => void) {
 	const result: TTasksMap = new Map();
 
 	// Early exit for empty or small datasets
 	if (tasksMap.size === 0) return result;
 
-	progressTracker.updateCurrentStepProgress(PROGRESS_MESSAGES.COLLECTING_FOR_DEDUPLICATION);
+	if (onProgress) onProgress(PROGRESS_MESSAGES.COLLECTING_FOR_DEDUPLICATION);
 	await new Promise((resolve) => setTimeout(resolve, 0));
 
 	// Collect all tasks with their group information for batch processing
@@ -186,14 +203,14 @@ async function removeSimilarDescriptions(tasksMap: Map<string, string[]>, model:
 	// If no tasks after deduplication, return empty result
 	if (allTasks.length === 0) return result;
 
-	progressTracker.updateCurrentStepProgress(PROGRESS_MESSAGES.ANALYZING_SIMILARITIES);
+	if (onProgress) onProgress(PROGRESS_MESSAGES.ANALYZING_SIMILARITIES);
 	await new Promise((resolve) => setTimeout(resolve, 0));
 
 	// Batch process all tasks at once for better performance
 	const allTaskStrings = allTasks.map((item) => item.task);
 	const uniqueTaskStrings = await removeSimilarSentences(allTaskStrings, model, threshold);
 
-	progressTracker.updateCurrentStepProgress(PROGRESS_MESSAGES.REBUILDING_GROUPS);
+	if (onProgress) onProgress(PROGRESS_MESSAGES.REBUILDING_GROUPS);
 	await new Promise((resolve) => setTimeout(resolve, 0));
 
 	// Create a set for O(1) lookup of unique tasks
