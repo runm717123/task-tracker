@@ -1,4 +1,4 @@
-import '@tensorflow/tfjs'; // MUST come before @tensorflow-models
+import * as tf from '@tensorflow/tfjs'; // MUST come before @tensorflow-models
 import * as use from '@tensorflow-models/universal-sentence-encoder';
 import { SummaryProgressStatus } from '../../../types/summary';
 
@@ -26,8 +26,10 @@ export async function getModel(onProgress?: (status: string) => void) {
 		}
 
 		const modelUrl = chrome.runtime.getURL('models/universal-sentence-encoder/model.json');
+		console.log('env', import.meta.env);
 		modelCache = await use.load({
-			modelUrl: import.meta.env.dev ? modelUrl : undefined,
+			// modelUrl: import.meta.env.DEV ? modelUrl : undefined,
+			modelUrl,
 		});
 
 		if (onProgress) {
@@ -37,5 +39,39 @@ export async function getModel(onProgress?: (status: string) => void) {
 		return modelCache;
 	} finally {
 		isModelLoading = false;
+	}
+}
+
+let classifierCache: tf.LayersModel | null = null;
+let isClassifierLoading = false;
+
+export async function getClassifier(onProgress?: (status: string) => void) {
+	if (classifierCache) {
+		return classifierCache;
+	}
+
+	if (isClassifierLoading) {
+		while (isClassifierLoading) {
+			await new Promise((resolve) => setTimeout(resolve, 50));
+		}
+		return classifierCache!;
+	}
+
+	try {
+		isClassifierLoading = true;
+		if (onProgress) {
+			onProgress(SummaryProgressStatus.LOADING_CLASSIFIER);
+		}
+
+		const classifierUrl = chrome.runtime.getURL('models/classifier/model.json');
+		classifierCache = await tf.loadLayersModel(classifierUrl);
+
+		if (onProgress) {
+			onProgress(SummaryProgressStatus.CLASSIFIER_LOADED);
+		}
+
+		return classifierCache;
+	} finally {
+		isClassifierLoading = false;
 	}
 }

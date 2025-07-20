@@ -14,7 +14,7 @@
 		"zip:firefox": "wxt zip -b firefox",
 		"check": "svelte-check --tsconfig ./tsconfig.json",
 		"postinstall": "wxt prepare",
-		"dev:watch": "nodemon --exec \"wxt build\"",
+		"dev:watch": "nodemon --exec \"wxt build --mode development\"",
 		"test": "vitest",
 		"test:ui": "vitest --ui"
 	},

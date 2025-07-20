@@ -5,9 +5,18 @@ import { normalizeTasks } from './preprocess/normalizer';
 import { clusterTexts } from './cluster-text';
 import { removeSimilarSentences } from './remove-similiar-sentences';
 import { parseTaskDescription } from './preprocess/parse-task-descs';
-import { onlyDifferInNumber } from './checker';
 import { SummaryProgressStatus } from '../../../types/summary';
 import { ProgressTracker } from './progress-tracker';
+import { clusterTitles, CLASSIFIED_TITLES_KEYS } from './classify-title';
+
+// Progress message constants
+const PROGRESS_MESSAGES = {
+	TITLE_CLASSIFICATION: 'Classifying task titles...',
+	PROCESSING_GROUPS: 'Processing classified groups...',
+	COLLECTING_FOR_DEDUPLICATION: 'Collecting tasks for deduplication...',
+	ANALYZING_SIMILARITIES: 'Analyzing semantic similarities...',
+	REBUILDING_GROUPS: 'Rebuilding task groups...',
+} as const;
 
 interface ISummaryGroup {
 	title: string;
@@ -48,14 +57,10 @@ export async function summarizeTasks(tasks: ITrackedTask[], similarityThreshold:
 		const model = await modelPromise;
 		progressTracker.reportStepComplete(SummaryProgressStatus.LOADING_MODEL);
 
-		const grouped = await groupTasksByTitle(workTasks, model, 0.9, (subStatus) => {
-			progressTracker.updateCurrentStepProgress(subStatus);
-		});
+		const grouped = await groupTasksByTitle(workTasks, progressTracker);
 		progressTracker.reportStepComplete(SummaryProgressStatus.GROUPING);
 
-		const minimized = await removeSimilarDescriptions(grouped, model, similarityThreshold, (subStatus) => {
-			progressTracker.updateCurrentStepProgress(subStatus);
-		});
+		const minimized = await removeSimilarDescriptions(grouped, model, similarityThreshold, progressTracker);
 		progressTracker.reportStepComplete(SummaryProgressStatus.REMOVING_DUPLICATES);
 
 		const result = await processWithProgress(() => formatSummaryGroups(minimized), 'Finalizing summary...');
@@ -88,38 +93,50 @@ async function processWithProgress<T>(work: () => T, _progressMessage?: string):
 }
 
 /**
- * Groups tasks by their titles, merging similar titles
+ * Groups tasks by their titles using ML-based classification
  */
-async function groupTasksByTitle(tasks: IParsedTask[], model: UniversalSentenceEncoder, threshold: number = 0.7, onProgress?: (status: string) => void) {
+async function groupTasksByTitle(tasks: IParsedTask[], progressTracker: ProgressTracker) {
 	const groups = new Map<string, string[]>();
-	let titles = tasks.map((task) => task.title);
+	const titles = tasks.map((task) => task.title);
 
 	// Yield control before heavy computation
 	await new Promise((resolve) => setTimeout(resolve, 0));
 
-	onProgress?.('Analyzing title patterns...');
-	const [numericGroups, otherTitles] = await processWithProgress(() => splitByOnlyDifferInNumber(titles), 'Analyzing title patterns...');
+	// Step 1: Classify task titles
+	progressTracker.updateCurrentStepProgress(PROGRESS_MESSAGES.TITLE_CLASSIFICATION);
+	const titleClusters = await processWithProgress(() => clusterTitles(titles), PROGRESS_MESSAGES.TITLE_CLASSIFICATION);
 
-	onProgress?.('Clustering similar titles...');
-	const clusteredTasks = await clusterTexts(otherTitles, model, threshold);
-	const combinedClusters = [...numericGroups.map((title) => [title]), ...clusteredTasks];
+	// Step 2: Process each classification category
+	progressTracker.updateCurrentStepProgress(PROGRESS_MESSAGES.PROCESSING_GROUPS);
+	
+	const categoryEntries = Object.entries(titleClusters).filter(([_, titles]) => titles.length > 0);
+	const totalCategories = categoryEntries.length;
 
-	onProgress?.('Processing task groups...');
+	for (let categoryIndex = 0; categoryIndex < categoryEntries.length; categoryIndex++) {
+		const [categoryKey, categoryTitles] = categoryEntries[categoryIndex];
 
-	// Process clusters in chunks to maintain responsiveness
-	const chunkSize = Math.max(1, Math.floor(combinedClusters.length / 10));
+		// For valid_title and project_tasks categories, group each title separately
+		// For other categories, group all titles under the category name
+		if (categoryKey === 'valid_title' || categoryKey === 'project_tasks') {
+			// Each title gets its own group
+			for (const title of categoryTitles) {
+				const taskItems: string[] = [];
+				const matchingTasks = tasks.filter((task) => task.title === title);
 
-	for (let i = 0; i < combinedClusters.length; i += chunkSize) {
-		const chunk = combinedClusters.slice(i, i + chunkSize);
+				for (const task of matchingTasks) {
+					const items = parseTaskDescription(task.description);
+					taskItems.push(...items);
+				}
 
-		for (const cluster of chunk) {
-			if (cluster.length === 0) continue;
-
-			// Use the first title as representative
-			const representativeTitle = cluster[0];
+				if (taskItems.length > 0) {
+					groups.set(title, taskItems);
+				}
+			}
+		} else {
+			// Group all titles under the category name
 			const taskItems: string[] = [];
 
-			for (const title of cluster) {
+			for (const title of categoryTitles) {
 				const matchingTasks = tasks.filter((task) => task.title === title);
 				for (const task of matchingTasks) {
 					const items = parseTaskDescription(task.description);
@@ -128,28 +145,28 @@ async function groupTasksByTitle(tasks: IParsedTask[], model: UniversalSentenceE
 			}
 
 			if (taskItems.length > 0) {
-				groups.set(representativeTitle, taskItems);
+				// Use a more readable category name
+				const categoryDisplayName = categoryKey.replace(/_/g, ' ').replace(/\b\w/g, (l) => l.toUpperCase());
+				groups.set(categoryDisplayName, taskItems);
 			}
 		}
 
-		// Yield control after processing each chunk
+		// Yield control and update sub-progress
 		await new Promise((resolve) => setTimeout(resolve, 0));
-
-		// Update progress
-		const progress = Math.round(((i + chunkSize) / combinedClusters.length) * 100);
-		onProgress?.(`Processing task groups... ${Math.min(progress, 100)}%`);
+		
+		progressTracker.updateCurrentStepWithSubProgress(PROGRESS_MESSAGES.PROCESSING_GROUPS, categoryIndex, totalCategories);
 	}
 
 	return groups;
 }
 
-async function removeSimilarDescriptions(tasksMap: Map<string, string[]>, model: UniversalSentenceEncoder, threshold: number = 0.7, onProgress?: (status: string) => void) {
+async function removeSimilarDescriptions(tasksMap: Map<string, string[]>, model: UniversalSentenceEncoder, threshold: number = 0.7, progressTracker: ProgressTracker) {
 	const result: TTasksMap = new Map();
 
 	// Early exit for empty or small datasets
 	if (tasksMap.size === 0) return result;
 
-	onProgress?.('Collecting tasks for deduplication...');
+	progressTracker.updateCurrentStepProgress(PROGRESS_MESSAGES.COLLECTING_FOR_DEDUPLICATION);
 	await new Promise((resolve) => setTimeout(resolve, 0));
 
 	// Collect all tasks with their group information for batch processing
@@ -171,14 +188,14 @@ async function removeSimilarDescriptions(tasksMap: Map<string, string[]>, model:
 	// If no tasks after deduplication, return empty result
 	if (allTasks.length === 0) return result;
 
-	onProgress?.('Analyzing semantic similarities...');
+	progressTracker.updateCurrentStepProgress(PROGRESS_MESSAGES.ANALYZING_SIMILARITIES);
 	await new Promise((resolve) => setTimeout(resolve, 0));
 
 	// Batch process all tasks at once for better performance
 	const allTaskStrings = allTasks.map((item) => item.task);
 	const uniqueTaskStrings = await removeSimilarSentences(allTaskStrings, model, threshold);
 
-	onProgress?.('Rebuilding task groups...');
+	progressTracker.updateCurrentStepProgress(PROGRESS_MESSAGES.REBUILDING_GROUPS);
 	await new Promise((resolve) => setTimeout(resolve, 0));
 
 	// Create a set for O(1) lookup of unique tasks
@@ -214,29 +231,4 @@ function formatSummaryGroups(groups: Map<string, string[]>): ISummaryGroup[] {
 	});
 
 	return result;
-}
-
-// this function splits strings into 2 groups:
-// 1. strings that only differ in numbers (e.g. "Project A Sprint 10" and "Project A Sprint 11")
-// 2. the otherwise
-function splitByOnlyDifferInNumber(strings: string[]): [string[], string[]] {
-	const numericGroup: Set<string> = new Set();
-	const others: string[] = [];
-
-	for (let i = 0; i < strings.length; i++) {
-		for (let j = i + 1; j < strings.length; j++) {
-			if (onlyDifferInNumber(strings[i], strings[j])) {
-				numericGroup.add(strings[i]);
-				numericGroup.add(strings[j]);
-			}
-		}
-	}
-
-	for (const str of strings) {
-		if (!numericGroup.has(str)) {
-			others.push(str);
-		}
-	}
-
-	return [[...numericGroup], others];
 }

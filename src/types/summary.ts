@@ -3,6 +3,8 @@ export const SummaryProgressStatus = {
 	PREPROCESSING: 'Preprocessing tasks...',
 	FILTERING: 'Filtering work tasks...',
 	LOADING_MODEL: 'Loading AI model...',
+	LOADING_CLASSIFIER: 'Loading classifier model...',
+	CLASSIFIER_LOADED: 'Classifier model loaded, proceeding with classifying task titles...',
 	DOWNLOADING_MODEL: 'DOWNLOADING MINIFIED MODEL... (THIS WILL BE CACHED FOR NEXT USE)',
 	MODEL_LOADED: 'MODEL LOADED SUCCESSFULLY',
 	GROUPING: 'Grouping similar tasks...',
