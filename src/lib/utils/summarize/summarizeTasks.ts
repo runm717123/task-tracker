@@ -1,13 +1,12 @@
 import type { UniversalSentenceEncoder } from '@tensorflow-models/universal-sentence-encoder';
+import { SummaryProgressStatus } from '../../../types/summary';
+import { clusterTitles } from './classify-title';
 import { getModel } from './get-model';
 import { filterWorkTasks } from './preprocess/filter-work-tasks';
 import { normalizeTasks } from './preprocess/normalizer';
-import { clusterTexts } from './cluster-text';
-import { removeSimilarSentences } from './remove-similiar-sentences';
 import { parseTaskDescription } from './preprocess/parse-task-descs';
-import { SummaryProgressStatus } from '../../../types/summary';
 import { ProgressTracker } from './progress-tracker';
-import { clusterTitles, CLASSIFIED_TITLES_KEYS } from './classify-title';
+import { removeSimilarSentences } from './remove-similiar-sentences';
 
 // Progress message constants
 const PROGRESS_MESSAGES = {
@@ -108,7 +107,7 @@ async function groupTasksByTitle(tasks: IParsedTask[], progressTracker: Progress
 
 	// Step 2: Process each classification category
 	progressTracker.updateCurrentStepProgress(PROGRESS_MESSAGES.PROCESSING_GROUPS);
-	
+
 	const categoryEntries = Object.entries(titleClusters).filter(([_, titles]) => titles.length > 0);
 	const totalCategories = categoryEntries.length;
 
@@ -153,7 +152,7 @@ async function groupTasksByTitle(tasks: IParsedTask[], progressTracker: Progress
 
 		// Yield control and update sub-progress
 		await new Promise((resolve) => setTimeout(resolve, 0));
-		
+
 		progressTracker.updateCurrentStepWithSubProgress(PROGRESS_MESSAGES.PROCESSING_GROUPS, categoryIndex, totalCategories);
 	}
 
@@ -222,11 +221,30 @@ function formatSummaryGroups(groups: Map<string, string[]>): ISummaryGroup[] {
 		};
 	});
 
-	// Sort by title for consistent output
+	// Sort by title following CLASSIFIED_TITLES_KEYS ordering with project_tasks as 3rd
+	const titleOrder = [
+		// 'valid_title', // These are original titles that should appear first when not matching any category
+		'Background Task',
+		'Project Tasks', // project_tasks moved to 3rd position
+		'Meetings',
+		'General Tasks',
+		'General Activities',
+	];
+
 	result.sort((a, b) => {
-		// Put "General Tasks" at the end
-		if (a.title === 'General Tasks') return 1;
-		if (b.title === 'General Tasks') return -1;
+		const indexA = titleOrder.indexOf(a.title);
+		const indexB = titleOrder.indexOf(b.title);
+
+		// If both titles are in the predefined order, sort by their index
+		if (indexA !== -1 && indexB !== -1) {
+			return indexA - indexB;
+		}
+
+		// If only one title is in the predefined order, it comes after original titles (valid_title)
+		if (indexA !== -1) return 1;
+		if (indexB !== -1) return -1;
+
+		// If neither title is in the predefined order (original titles from valid_title), sort alphabetically and appear first
 		return a.title.localeCompare(b.title);
 	});
 
