@@ -37,7 +37,7 @@ type TTasksMap = Map<string, string[]>;
 
 // Environment variable typing for import.meta.env
 interface ImportMetaEnv {
-	readonly NODE_ENV: 'dev' | 'test' | 'prod';
+	readonly WXT_ENV: 'dev' | 'test' | 'prod';
 }
 
 interface ImportMeta {

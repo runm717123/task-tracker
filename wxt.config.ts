@@ -11,7 +11,7 @@ export default defineConfig({
 		plugins: [tailwindcss()],
 	}),
 	// seems there is a bug where the mode is "home"
-	publicDir: import.meta.env.NODE_ENV === 'prod' ? 'public' : 'public-dev',
+	publicDir: import.meta.env.WXT_ENV === 'prod' ? 'public' : 'public-dev',
 	manifest: {
 		name: 'NDEV: Task Tracker',
 		description: pkg.description,
