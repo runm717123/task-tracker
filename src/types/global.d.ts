@@ -34,3 +34,12 @@ interface IParsedTask {
 }
 
 type TTasksMap = Map<string, string[]>;
+
+// Environment variable typing for import.meta.env
+interface ImportMetaEnv {
+	readonly NODE_ENV: 'dev' | 'test' | 'prod';
+}
+
+interface ImportMeta {
+	readonly env: ImportMetaEnv;
+}
