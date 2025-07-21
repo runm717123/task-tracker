@@ -14,7 +14,6 @@
 	import { taskStore } from '../../lib/stores/taskStore';
 	import { summarizeTasks } from '../../lib/utils/summarize/summarizeTasks';
 	import { openTaskPopup } from '../../lib/utils/newTaskFormPopup';
-	import { SummaryProgressStatus, type TSummaryProgressStatusType } from '../../types/summary';
 	import EditPage from '../popup/ui/EditPage.svelte';
 
 	dayjs.extend(relativeTime);
@@ -29,7 +28,7 @@
 	let viewMode: 'list' | 'summary' = $state('list');
 	let summaryData: Array<{ title: string; tasks: string[] }> = $state([]);
 	let isGeneratingSummary = $state(false);
-	let summaryProgressStatus: TSummaryProgressStatusType = $state(SummaryProgressStatus.IDLE);
+	let summaryProgressStatus: string = $state('idle');
 	let fileInput: HTMLInputElement;
 	let dateInput: HTMLInputElement | undefined = $state();
 	let flatpickrInstance: flatpickr.Instance;
@@ -76,10 +75,9 @@
 	const generateSummaryData = async () => {
 		try {
 			isGeneratingSummary = true;
-			summaryProgressStatus = SummaryProgressStatus.GENERATING;
 
 			// Add a small delay to show the initial status
-			await new Promise(resolve => setTimeout(resolve, 100));
+			await new Promise((resolve) => setTimeout(resolve, 100));
 
 			summaryData = await summarizeTasks(trackedTasks, 0.75, (status) => {
 				summaryProgressStatus = status;
@@ -92,7 +90,7 @@
 			// Add a small delay before clearing the status
 			setTimeout(() => {
 				isGeneratingSummary = false;
-				summaryProgressStatus = SummaryProgressStatus.IDLE;
+				summaryProgressStatus = 'idle';
 			}, 500);
 		}
 	};

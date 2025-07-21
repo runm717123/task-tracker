@@ -8,27 +8,6 @@ import { normalizeTasks } from './preprocess/normalizer';
 import { parseTaskDescription } from './preprocess/parse-task-descs';
 import { removeSimilarSentences } from './remove-similiar-sentences';
 
-// Progress message constants
-const PROGRESS_MESSAGES = {
-	TITLE_CLASSIFICATION: 'Classifying task titles...',
-	PROCESSING_GROUPS: 'Processing classified groups...',
-	COLLECTING_FOR_DEDUPLICATION: 'Collecting tasks for deduplication...',
-	ANALYZING_SIMILARITIES: 'Removing duplicates tasks...',
-	REBUILDING_GROUPS: 'Rebuilding task groups...',
-} as const;
-
-interface ISummaryGroup {
-	title: string;
-	tasks: string[];
-}
-
-interface IParsedTask {
-	title: string;
-	description: string;
-}
-
-type TTasksMap = Map<string, string[]>;
-
 /**
  * Parses ITrackedTask array and groups tasks by semantic similarity and title
  * Filters out non-work related tasks (breaks, personal activities)
@@ -64,7 +43,7 @@ export async function summarizeTasks(tasks: ITrackedTask[], similarityThreshold:
 		const workTasks = await processWithProgress(() => filterWorkTasks(parsedTasks), 'Filtering work tasks...');
 
 		progressReporter.report('groupingTaskTitles');
-		const grouped = await groupTasksByTitle(workTasks, progressReporter, onProgress);
+		const grouped = await groupTasksByTitle(workTasks);
 
 		progressReporter.report('removeSimilarDescriptions');
 		const minimized = await removeSimilarDescriptions(grouped, model, similarityThreshold, progressReporter, onProgress);
@@ -101,25 +80,14 @@ async function processWithProgress<T>(work: () => T, _progressMessage?: string):
 /**
  * Groups tasks by their titles using ML-based classification
  */
-async function groupTasksByTitle(tasks: IParsedTask[], progressReporter: ProgressReporter, onProgress?: (status: string) => void) {
+async function groupTasksByTitle(tasks: IParsedTask[]) {
 	const groups = new Map<string, string[]>();
 	const titles = tasks.map((task) => task.title);
 
 	// Yield control before heavy computation
 	await new Promise((resolve) => setTimeout(resolve, 0));
 
-	// Step 1: Classify task titles
-	if (onProgress) onProgress(PROGRESS_MESSAGES.TITLE_CLASSIFICATION);
-	const titleClusters = await processWithProgress(
-		() =>
-			clusterTitles(titles, (status) => {
-				if (onProgress) onProgress(status);
-			}),
-		PROGRESS_MESSAGES.TITLE_CLASSIFICATION
-	);
-
-	// Step 2: Process each classification category
-	if (onProgress) onProgress(PROGRESS_MESSAGES.PROCESSING_GROUPS);
+	const titleClusters = await clusterTitles(titles);
 
 	const categoryEntries = Object.entries(titleClusters).filter(([_, titles]) => titles.length > 0);
 	const totalCategories = categoryEntries.length;
@@ -165,11 +133,6 @@ async function groupTasksByTitle(tasks: IParsedTask[], progressReporter: Progres
 
 		// Yield control and update sub-progress
 		await new Promise((resolve) => setTimeout(resolve, 0));
-
-		if (onProgress) {
-			const subProgress = Math.round(((categoryIndex + 1) / totalCategories) * 100);
-			onProgress(`${PROGRESS_MESSAGES.PROCESSING_GROUPS} ${subProgress}%`);
-		}
 	}
 
 	return groups;
@@ -181,7 +144,6 @@ async function removeSimilarDescriptions(tasksMap: Map<string, string[]>, model:
 	// Early exit for empty or small datasets
 	if (tasksMap.size === 0) return result;
 
-	if (onProgress) onProgress(PROGRESS_MESSAGES.COLLECTING_FOR_DEDUPLICATION);
 	await new Promise((resolve) => setTimeout(resolve, 0));
 
 	// Collect all tasks with their group information for batch processing
@@ -203,14 +165,12 @@ async function removeSimilarDescriptions(tasksMap: Map<string, string[]>, model:
 	// If no tasks after deduplication, return empty result
 	if (allTasks.length === 0) return result;
 
-	if (onProgress) onProgress(PROGRESS_MESSAGES.ANALYZING_SIMILARITIES);
 	await new Promise((resolve) => setTimeout(resolve, 0));
 
 	// Batch process all tasks at once for better performance
 	const allTaskStrings = allTasks.map((item) => item.task);
 	const uniqueTaskStrings = await removeSimilarSentences(allTaskStrings, model, threshold);
 
-	if (onProgress) onProgress(PROGRESS_MESSAGES.REBUILDING_GROUPS);
 	await new Promise((resolve) => setTimeout(resolve, 0));
 
 	// Create a set for O(1) lookup of unique tasks

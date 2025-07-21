@@ -35,7 +35,7 @@ export const CLASSIFIED_TITLES_KEYS = ['valid_title', 'background_task', 'meetin
  * @see https://github.com/runm717123/task-tracker-models-dev for more details
  */
 export async function classifyTasksTitles(titles: string[], onProgress?: (status: string) => void) {
-	const embedModel = await getModel(onProgress);
+	const embedModel = await getModel();
 	const classifier = await getClassifier(onProgress);
 
 	const embeddings = await embedModel.embed(titles);
