@@ -244,7 +244,7 @@
 		const dataStr = JSON.stringify(trackedTasks, null, 2);
 		const dataUri = 'data:application/json;charset=utf-8,' + encodeURIComponent(dataStr);
 
-		const exportFileDefaultName = `${timeRangeFilter}-tasks-${dayjs().format('YYYY-MM-DD-HH-mm-ss')}.json`;
+		const exportFileDefaultName = `${timeRangeFilter}-tasks-${dayjs(selectedDate).format('YYYY-MM-DD-HH-mm-ss')}.json`;
 
 		const linkElement = document.createElement('a');
 		linkElement.setAttribute('href', dataUri);
@@ -500,13 +500,7 @@
 							<div class="text-lg font-mono text-blue-400">
 								{summaryProgressStatus || 'ANALYZING TASKS...'}
 							</div>
-							<div class="text-xs font-mono text-gray-600 opacity-75">
-								{#if summaryProgressStatus.includes('DOWNLOADING')}
-									📦 MODEL DOWNLOAD IN PROGRESS - WILL BE CACHED 📦
-								{:else}
-									🔄 ANALYZING TASK SEMANTICS 🔄
-								{/if}
-							</div>
+							<div class="text-xs font-mono text-gray-600 opacity-75">🔄 ANALYZING TASK SEMANTICS 🔄</div>
 						</div>
 					</div>
 				{:else if summaryData.length > 0}
