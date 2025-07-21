@@ -7,8 +7,8 @@
 	"scripts": {
 		"dev": "wxt",
 		"dev:firefox": "wxt -b firefox",
-		"build": "cross-env NODE_ENV=dev wxt build",
-		"build:prod": "cross-env NODE_ENV=prod wxt --mode production build && wxt --mode production zip",
+		"build": "cross-env WXT_ENV=dev wxt build",
+		"build:prod": "cross-env WXT_ENV=prod wxt --mode production build && wxt --mode production zip",
 		"build:firefox": "wxt build -b firefox",
 		"zip": "wxt zip",
 		"zip:firefox": "wxt zip -b firefox",

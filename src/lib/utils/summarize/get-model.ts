@@ -25,7 +25,9 @@ export async function getModel(onProgress?: (status: string) => void) {
 			onProgress(SummaryProgressStatus.DOWNLOADING_MODEL);
 		}
 
-		if (import.meta.env.NODE_ENV === 'dev') {
+		console.log(import.meta.env.WXT_ENV, 'asef');
+
+		if (import.meta.env.WXT_ENV === 'dev') {
 			const localModelUrl = chrome.runtime.getURL('models/universal-sentence-encoder/model.json');
 			modelCache = await use.load({
 				modelUrl: localModelUrl,
