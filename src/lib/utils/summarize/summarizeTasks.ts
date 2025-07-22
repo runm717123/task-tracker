@@ -1,9 +1,8 @@
 import type { UniversalSentenceEncoder } from '@tensorflow-models/universal-sentence-encoder';
-import { ProgressReporter, type ProgressReportCallback } from '../progress-reporter/progress-reporter';
 import { PROGRESS_CONFIG } from '../progress-reporter/progress-config';
+import { ProgressReporter } from '../progress-reporter/progress-reporter';
 import { clusterTitles } from './classify-title';
 import { getModel } from './get-model';
-import { filterWorkTasks } from './preprocess/filter-work-tasks';
 import { normalizeTasks } from './preprocess/normalizer';
 import { parseTaskDescription } from './preprocess/parse-task-descs';
 import { removeSimilarSentences } from './remove-similiar-sentences';
@@ -23,8 +22,7 @@ export async function summarizeTasks(tasks: ITrackedTask[], similarityThreshold:
 
 	// Set up progress callback to convert ProgressStage to string
 	if (onProgress) {
-		progressReporter.onProgress((stage, stageName) => {
-			console.log('🚀 ~ progressReporter.onProgress ~ stage:', stage);
+		progressReporter.onProgress((stage) => {
 			onProgress(`${stage.message} (${stage.percentage}%)`);
 		});
 	}
@@ -39,17 +37,14 @@ export async function summarizeTasks(tasks: ITrackedTask[], similarityThreshold:
 		progressReporter.report('preprocess');
 		const parsedTasks = await processWithProgress(() => normalizeTasks(tasks), 'Preprocessing tasks...');
 
-		progressReporter.report('filterWorkTasks');
-		const workTasks = await processWithProgress(() => filterWorkTasks(parsedTasks), 'Filtering work tasks...');
-
 		progressReporter.report('groupingTaskTitles');
-		const grouped = await groupTasksByTitle(workTasks);
+		const grouped = await groupTasksByTitle(parsedTasks);
 
-		progressReporter.report('removeSimilarDescriptions');
 		const minimized = await removeSimilarDescriptions(grouped, model, similarityThreshold, progressReporter, onProgress);
+		console.log('🚀 ~ summarizeTasks ~ minimized:', minimized);
 
-		progressReporter.report('finalizing');
 		const result = await processWithProgress(() => formatSummaryGroups(minimized), 'Finalizing summary...');
+		console.log('🚀 ~ summarizeTasks ~ result:', result);
 
 		progressReporter.report('done');
 		return result;
@@ -90,7 +85,6 @@ async function groupTasksByTitle(tasks: IParsedTask[]) {
 	const titleClusters = await clusterTitles(titles);
 
 	const categoryEntries = Object.entries(titleClusters).filter(([_, titles]) => titles.length > 0);
-	const totalCategories = categoryEntries.length;
 
 	for (let categoryIndex = 0; categoryIndex < categoryEntries.length; categoryIndex++) {
 		const [categoryKey, categoryTitles] = categoryEntries[categoryIndex];
@@ -138,7 +132,7 @@ async function groupTasksByTitle(tasks: IParsedTask[]) {
 	return groups;
 }
 
-async function removeSimilarDescriptions(tasksMap: Map<string, string[]>, model: UniversalSentenceEncoder, threshold: number = 0.7, progressReporter: ProgressReporter, onProgress?: (status: string) => void) {
+async function removeSimilarDescriptions(tasksMap: Map<string, string[]>, model: UniversalSentenceEncoder, threshold: number = 0.7, progressReporter: ProgressReporter<typeof PROGRESS_CONFIG>, onProgress?: (status: string) => void) {
 	const result: TTasksMap = new Map();
 
 	// Early exit for empty or small datasets
