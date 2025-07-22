@@ -25,13 +25,7 @@ A Chrome extension for task tracking built with WXT and Svelte.
    pnpm install -D nodemon
    ```
 
-2. **For faster summarization loader in development**, update the `wxt.config.ts` to use `public-dev` directory:
-   ```typescript
-   // In wxt.config.ts, change:
-   publicDir: 'public-dev',
-   ```
-
-3. Start development server:
+2. Start development server:
    ```bash
    pnpm dev:watch
    ```
@@ -40,7 +34,7 @@ A Chrome extension for task tracking built with WXT and Svelte.
    pnpm dev
    ```
 
-4. **Load the extension in Chrome:**
+3. **Load the extension in Chrome:**
    - Open Chrome and navigate to `chrome://extensions/`
    - Enable "Developer mode" (toggle in top right)
    - Click "Load unpacked"
