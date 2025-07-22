@@ -75,6 +75,36 @@
 					<p><kbd class="bg-bg-dark px-1.5 py-0.5 rounded font-mono">Alt+Up</kbd> - Create new task</p>
 				</div>
 			</div>
+
+			<!-- Bonus Tips -->
+			<div class="bg-bg-light rounded-md p-3 border border-border">
+				<div class="flex items-center gap-2 mb-2">
+					<PlusIcon size={16} class="text-accent-primary" />
+					<h3 class="text-sm font-semibold text-fg-dark">Bonus Tips!</h3>
+				</div>
+				<div class="text-xs text-fg-muted space-y-2">
+					<p class="text-accent-muted italic">💡 Pro tip: Better task descriptions = better AI summaries</p>
+					<div class="space-y-1">
+						<p><strong>Consider:</strong> Adding project name in title for context</p>
+						<p><strong>Try:</strong> Breaking down details in description</p>
+					</div>
+					<div class="bg-bg-dark rounded p-2 border border-border">
+						<p class="text-xs font-semibold text-fg-dark mb-1">Example:</p>
+						<p class="text-accent-primary font-medium">MyProject v1</p>
+						<div class="text-xs mt-1 space-y-0.5">
+							<p>• Implement user authentication system</p>
+							<p>• Add responsive design for mobile devices</p>
+							<p>• Set up database migration scripts</p>
+						</div>
+					</div>
+					<div class="mt-3 p-2 bg-bg-darker rounded border border-border-muted">
+						<p class="text-xs text-fg-muted">
+							<strong>Note:</strong> These are just suggestions! Our custom AI adapts to any writing style you prefer. 
+							If you encounter any issues with summaries, feel free to contact the developer.
+						</p>
+					</div>
+				</div>
+			</div>
 		</div>
 	</div>
 
