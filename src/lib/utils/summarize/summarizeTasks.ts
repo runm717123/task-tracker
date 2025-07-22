@@ -32,10 +32,12 @@ export async function summarizeTasks(tasks: ITrackedTask[], similarityThreshold:
 
 		// Start model loading early in background
 		progressReporter.report('loadingEmbeddingModel');
+		await tick();
 		const model = await getModel();
 
 		progressReporter.report('preprocess');
-		const parsedTasks = await processWithProgress(() => normalizeTasks(tasks), 'Preprocessing tasks...');
+		await tick();
+		const parsedTasks = normalizeTasks(tasks);
 
 		progressReporter.report('groupingTaskTitles');
 		const grouped = await groupTasksByTitle(parsedTasks);
@@ -43,7 +45,7 @@ export async function summarizeTasks(tasks: ITrackedTask[], similarityThreshold:
 		const minimized = await removeSimilarDescriptions(grouped, model, similarityThreshold, progressReporter, onProgress);
 		console.log('🚀 ~ summarizeTasks ~ minimized:', minimized);
 
-		const result = await processWithProgress(() => formatSummaryGroups(minimized), 'Finalizing summary...');
+		const result = formatSummaryGroups(minimized);
 		console.log('🚀 ~ summarizeTasks ~ result:', result);
 
 		progressReporter.report('done');
@@ -58,29 +60,13 @@ export async function summarizeTasks(tasks: ITrackedTask[], similarityThreshold:
 }
 
 /**
- * Helper function to process work with progress yielding
- */
-async function processWithProgress<T>(work: () => T, _progressMessage?: string): Promise<T> {
-	// Yield control before starting work
-	await new Promise((resolve) => setTimeout(resolve, 0));
-
-	const result = work();
-
-	// Yield control after work
-	await new Promise((resolve) => setTimeout(resolve, 0));
-
-	return result;
-}
-
-/**
  * Groups tasks by their titles using ML-based classification
  */
 async function groupTasksByTitle(tasks: IParsedTask[]) {
 	const groups = new Map<string, string[]>();
 	const titles = tasks.map((task) => task.title);
 
-	// Yield control before heavy computation
-	await new Promise((resolve) => setTimeout(resolve, 0));
+	await tick();
 
 	const titleClusters = await clusterTitles(titles);
 
@@ -125,8 +111,7 @@ async function groupTasksByTitle(tasks: IParsedTask[]) {
 			}
 		}
 
-		// Yield control and update sub-progress
-		await new Promise((resolve) => setTimeout(resolve, 0));
+		await tick();
 	}
 
 	return groups;
@@ -138,18 +123,16 @@ async function removeSimilarDescriptions(tasksMap: Map<string, string[]>, model:
 	// Early exit for empty or small datasets
 	if (tasksMap.size === 0) return result;
 
-	await new Promise((resolve) => setTimeout(resolve, 0));
+	await tick();
 
 	// Collect all tasks with their group information for batch processing
 	const allTasks: { task: string; groupTitle: string; originalIndex: number }[] = [];
-	const groupTaskCounts = new Map<string, number>();
 
 	for (const [title, tasks] of tasksMap) {
 		if (tasks.length === 0) continue;
 
 		// Quick deduplication by exact string match first
 		const exactlyUniqueTasks = [...new Set(tasks)];
-		groupTaskCounts.set(title, exactlyUniqueTasks.length);
 
 		exactlyUniqueTasks.forEach((task, index) => {
 			allTasks.push({ task, groupTitle: title, originalIndex: index });
@@ -159,13 +142,13 @@ async function removeSimilarDescriptions(tasksMap: Map<string, string[]>, model:
 	// If no tasks after deduplication, return empty result
 	if (allTasks.length === 0) return result;
 
-	await new Promise((resolve) => setTimeout(resolve, 0));
+	await tick();
 
 	// Batch process all tasks at once for better performance
 	const allTaskStrings = allTasks.map((item) => item.task);
 	const uniqueTaskStrings = await removeSimilarSentences(allTaskStrings, model, threshold);
 
-	await new Promise((resolve) => setTimeout(resolve, 0));
+	await tick();
 
 	// Create a set for O(1) lookup of unique tasks
 	const uniqueTaskSet = new Set(uniqueTaskStrings);

@@ -76,8 +76,7 @@
 		try {
 			isGeneratingSummary = true;
 
-			// Add a small delay to show the initial status
-			await new Promise((resolve) => setTimeout(resolve, 100));
+			await tick();
 
 			summaryData = await summarizeTasks(trackedTasks, 0.75, (status) => {
 				summaryProgressStatus = status;
