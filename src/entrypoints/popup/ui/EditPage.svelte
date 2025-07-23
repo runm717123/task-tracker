@@ -93,18 +93,18 @@
 			handleSave();
 		}
 	};
+
+	const handleSubmit = () => {
+		if (canSave) {
+			handleSave();
+		}
+	};
 </script>
 
 <main class="w-80 !p-3 bg-bg-dark">
 	<FormHeader title="EDIT TASK" onBack={onCancel} />
 
-	<form
-		class="flex flex-col gap-4"
-		onsubmit={(e) => {
-			e.preventDefault();
-			if (canSave) handleSave();
-		}}
-	>
+	<div class="flex flex-col gap-4">
 		<InputLabel size="sm" className="flex flex-col gap-1">
 			Title
 			<Input id="title" bind:value={title} placeholder="Enter task title" onkeydown={handleKeyDown} />
@@ -141,9 +141,9 @@
 
 		<div class="flex gap-2 pt-2">
 			<Button onclick={onCancel} size="md" className="flex-1">Cancel</Button>
-			<Button type="submit" size="md" disabled={!canSave} className="flex-1">Save</Button>
+			<Button type="button" onclick={handleSubmit} size="md" disabled={!canSave} className="flex-1">Save</Button>
 		</div>
-	</form>
+	</div>
 </main>
 
 <style>
