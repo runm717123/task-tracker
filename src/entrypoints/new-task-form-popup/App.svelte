@@ -90,7 +90,7 @@
 		<div class="flex-1 flex flex-col gap-4">
 			<div>
 				<InputLabel size="sm" className="flex flex-col gap-1">
-					Title
+					Title*
 					<Input id="task-title-input" required bind:value={taskTitle} onkeydown={handleKeydown} placeholder="Enter task title..." className="w-full" />
 				</InputLabel>
 			</div>

@@ -7,14 +7,13 @@
 	import relativeTime from 'dayjs/plugin/relativeTime';
 	import flatpickr from 'flatpickr';
 	import 'flatpickr/dist/flatpickr.css';
-	import { onDestroy, onMount } from 'svelte';
+	import { onDestroy, onMount, tick } from 'svelte';
 	import { SvelteSet } from 'svelte/reactivity';
 	import pkg from '../../../package.json';
 	import SummaryView from '../../lib/components/SummaryView.svelte';
 	import { taskStore } from '../../lib/stores/taskStore';
 	import { summarizeTasks } from '../../lib/utils/summarize/summarizeTasks';
-	import { openTaskPopup } from '../../lib/utils/newTaskFormPopup';
-	import EditPage from '../popup/ui/EditPage.svelte';
+	import TaskFormPage from '../popup/ui/TaskFormPage.svelte';
 
 	dayjs.extend(relativeTime);
 	dayjs.extend(isBetween);
@@ -23,8 +22,8 @@
 	let copiedItems: Set<string> = new SvelteSet();
 	let timeRangeFilter: 'daily' | 'weekly' | 'monthly' | 'all' = $state('daily');
 	let selectedDate = $state(new Date());
-	let editingTask: ITrackedTask | null = $state(null);
-	let isEditing = $state(false);
+	let taskFormData: ITrackedTask | null = $state(null);
+	let isTaskFormOpen = $state(false);
 	let viewMode: 'list' | 'summary' = $state('list');
 	let summaryData: Array<{ title: string; tasks: string[] }> = $state([]);
 	let isGeneratingSummary = $state(false);
@@ -207,20 +206,50 @@
 		await taskStore.deleteTask(taskId);
 	};
 
-	const editTask = (task: ITrackedTask) => {
-		editingTask = task;
-		isEditing = true;
+	const openTaskForm = (task: ITrackedTask) => {
+		taskFormData = task;
+		isTaskFormOpen = true;
 	};
 
-	const handleEditSave = async (updatedTask: ITrackedTask) => {
-		await taskStore.updateTask(updatedTask);
-		isEditing = false;
-		editingTask = null;
+	const handleTaskFormSave = async (savedTask: ITrackedTask) => {
+		// Check if this is a new task (empty title originally) or existing task
+		const isNewTask = !taskFormData?.title;
+
+		if (isNewTask) {
+			await taskStore.addTask(savedTask);
+		} else {
+			// Update existing task
+			await taskStore.updateTask(savedTask);
+		}
+
+		isTaskFormOpen = false;
+		taskFormData = null;
 	};
 
-	const handleEditCancel = () => {
-		isEditing = false;
-		editingTask = null;
+	const handleTaskFormCancel = () => {
+		isTaskFormOpen = false;
+		taskFormData = null;
+	};
+
+	const openCreateNewTaskForm = async () => {
+		// Use selected date as default, fallback to today's date
+		const defaultDate = selectedDate || new Date();
+
+		// Get the appropriate start time for the selected date
+		const startTime = await taskStore.getLatestStartTime(defaultDate);
+
+		const newTask: ITrackedTask = {
+			id: crypto.randomUUID(),
+			title: '',
+			description: '',
+			status: 'pending',
+			createdAt: dayjs().toISOString(),
+			start: startTime,
+			end: null,
+		};
+
+		taskFormData = newTask;
+		isTaskFormOpen = true;
 	};
 
 	const getTimeRange = (start: string | null, end: string | null) => {
@@ -337,8 +366,8 @@
 </script>
 
 <main class="min-h-screen overflow-y-auto bg-bg-dark flex flex-col justify-between h-full">
-	{#if isEditing && editingTask}
-		<EditPage task={editingTask} onSave={handleEditSave} onCancel={handleEditCancel} />
+	{#if isTaskFormOpen && taskFormData}
+		<TaskFormPage task={taskFormData} onSave={handleTaskFormSave} onCancel={handleTaskFormCancel} isNewTask={!taskFormData.title} />
 	{:else}
 		<div class="p-4 flex flex-col flex-1">
 			<div class="flex justify-between items-start mb-4 mt-1">
@@ -372,7 +401,7 @@
 					/>
 					{#if timeRangeFilter !== 'all'}
 						<div class="relative h-full">
-							<input bind:this={dateInput as any} class="p-2 pr-6 py-[0.55rem] text-xs bg-bg-darker border-2 text-fg-dark focus:outline-none cursor-pointer" placeholder="Select date" readonly />
+							<input bind:this={dateInput as any} class="w-full p-2 pr-6 py-[0.55rem] text-xs bg-bg-darker border-2 text-fg-dark focus:outline-none cursor-pointer" placeholder="Select date" readonly />
 							<svg class="absolute right-2 top-1/2 transform -translate-y-1/2 w-3 h-3 text-fg-muted pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
 							</svg>
@@ -380,7 +409,7 @@
 					{/if}
 				</div>
 				<div class="flex gap-2">
-					<Button size="sm" onclick={openTaskPopup} className="flex items-center gap-2 px-3 py-2" title="Add new task">
+					<Button size="sm" onclick={openCreateNewTaskForm} className="flex items-center gap-2 px-3 py-2" title="Add new task">
 						<Plus size={14} />
 					</Button>
 					<Button size="sm" onclick={importTasks} className="flex items-center gap-2 px-3 py-2" title="Import tasks from JSON file">
@@ -429,7 +458,7 @@
 											{/if}
 										</div>
 										<div class="flex items-center gap-1 flex-shrink-0">
-											<button class="p-1 text-fg-muted hover:text-fg-dark hover:bg-blue-50 rounded-md transition-colors" onclick={() => editTask(task)} title="Edit task">
+											<button class="p-1 text-fg-muted hover:text-fg-dark hover:bg-blue-50 rounded-md transition-colors" onclick={() => openTaskForm(task)} title="Edit task">
 												<EditIcon size={16} />
 											</button>
 											<button class="p-1 text-fg-muted hover:text-red-600 hover:bg-red-50 rounded-md transition-colors" onclick={() => deleteTask(task.id)} title="Delete task">

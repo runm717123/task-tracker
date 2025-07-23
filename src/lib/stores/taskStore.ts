@@ -47,7 +47,7 @@ export class TaskStore {
 			case 'daily':
 				const targetDay = referenceDate.startOf('day');
 				return allTasks.filter((task) => {
-					const taskDate = dayjs(task.createdAt).startOf('day');
+					const taskDate = dayjs(task.start).startOf('day');
 					return taskDate.isSame(targetDay, 'day');
 				});
 			case 'weekly':
@@ -143,6 +143,19 @@ export class TaskStore {
 		await storage.setItem(this.storageKey, tasks);
 	}
 
+	async getTodayLastTimeEndedTask(): Promise<string> {
+		const today = dayjs().startOf('day');
+		let lastTimeEndedTask = await this.getLastTimeEndedTask();
+
+		// Check if lastTimeEndedTask is from today, if not reset to settings start time
+		if (!dayjs(lastTimeEndedTask).isSame(today, 'day')) {
+			const settings = await settingsStore.getSettings();
+			lastTimeEndedTask = settings.startTime;
+		}
+
+		return lastTimeEndedTask;
+	}
+
 	/**
 	 * Get the last time a task was ended
 	 */
@@ -167,34 +180,56 @@ export class TaskStore {
 
 	/**
 	 * Add a new task with proper timing logic
+	 * @param task - Task data with optional startTime and endTime
+	 * If startTime is provided but endTime is not, endTime will be set to startTime + 30 minutes
 	 */
 	async addTask(task: ICreateTask): Promise<void> {
 		const tasks = await this.getTasks();
-		let lastTimeEndedTask = await this.getLastTimeEndedTask();
+		const lastTimeEndedTask = await this.getTodayLastTimeEndedTask();
 
 		const currentTime = dayjs().toISOString();
-		const today = dayjs().startOf('day');
 
-		// Check if lastTimeEndedTask is from today, if not reset to settings start time
-		if (!dayjs(lastTimeEndedTask).isSame(today, 'day')) {
-			const settings = await settingsStore.getSettings();
-			lastTimeEndedTask = settings.startTime;
+		// Determine start and end times based on provided parameters
+		let startTime: string;
+		let endTime: string;
+
+		if (task.start) {
+			// Use provided start time
+			startTime = dayjs(task.start).toISOString();
+
+			if (task.end) {
+				// Use provided end time
+				endTime = dayjs(task.end).toISOString();
+			} else {
+				// Auto-set to 30 minutes after start time
+				endTime = dayjs(task.start).add(30, 'minutes').toISOString();
+			}
+		} else {
+			// Use existing logic: lastTimeEndedTask as start, current time as end
+			startTime = lastTimeEndedTask;
+			endTime = task.end ? dayjs(task.end).toISOString() : currentTime;
 		}
 
 		// Create new task with proper timing
 		const newTask: ITrackedTask = {
-			...task,
+			title: task.title,
+			description: task.description,
+			status: task.status || 'pending',
 			id: crypto.randomUUID(),
-			start: lastTimeEndedTask, // Use lastTimeEndedTask as start time, or settings start time as fallback
-			end: currentTime, // Set end time to current time
-			createdAt: currentTime, // Set createdAt to current time
+			start: startTime,
+			end: endTime,
+			createdAt: currentTime,
 		};
 
 		tasks.push(newTask);
 		await this.saveTasks(tasks);
 
-		// Update lastTimeEndedTask to current time
-		await this.saveLastTimeEndedTask(currentTime);
+		// if endTime is not today's date, don't update lastTimeEndedTask
+		const today = dayjs().startOf('day');
+		if (dayjs(endTime).isSame(today, 'day')) {
+			// Update lastTimeEndedTask to the end time of this task
+			await this.saveLastTimeEndedTask(endTime);
+		}
 	}
 
 	/**
@@ -308,7 +343,35 @@ export class TaskStore {
 	}
 
 	/**
-	 * Watch for changes in task storage
+	 * Get the latest start time for a given date
+	 * Returns the latest end time from tasks on that date, or settings start time if no tasks exist
+	 */
+	async getLatestStartTime(dateString: string | Date): Promise<string> {
+		const targetDate = dayjs(dateString);
+
+		// Get tasks for the specified date
+		const tasksForDate = await this.getTasks('daily', targetDate.toDate());
+
+		if (tasksForDate.length > 0) {
+			// Find the latest end time from completed tasks on the selected date
+			const completedTasks = tasksForDate.filter((task) => task.end);
+			if (completedTasks.length > 0) {
+				const latestEndTime = completedTasks.map((task) => task.end!).sort((a, b) => dayjs(b).diff(dayjs(a)))[0];
+
+				// Use the latest end time but with the target date
+				const latestEndMoment = dayjs(latestEndTime);
+				return targetDate.set('hour', latestEndMoment.hour()).set('minute', latestEndMoment.minute()).set('second', latestEndMoment.second()).toISOString();
+			}
+		}
+
+		// No tasks or no completed tasks, fall back to settings start time
+		const settings = await settingsStore.getSettings();
+		const settingsStartMoment = dayjs(settings.startTime);
+		return targetDate.set('hour', settingsStartMoment.hour()).set('minute', settingsStartMoment.minute()).set('second', settingsStartMoment.second()).toISOString();
+	}
+
+	/**
+	 * Watch for changes in tasks storage
 	 */
 	watchTasks(callback: (tasks: ITrackedTask[]) => void): () => void {
 		return storage.watch<ITrackedTask[]>(this.storageKey, (newTasks) => {

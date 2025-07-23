@@ -13,7 +13,10 @@ interface ITrackedTask extends ITask {
 	end: string | null;
 }
 
-interface ICreateTask extends ITask {}
+interface ICreateTask extends ITask {
+	start?: string | null; // ISO 8601 date string - optional start time
+	end?: string | null; // ISO 8601 date string - optional end time
+}
 
 interface ISettings {
 	// when the user usually starts working

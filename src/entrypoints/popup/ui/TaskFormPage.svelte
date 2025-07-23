@@ -6,14 +6,16 @@
 	import flatpickr from 'flatpickr';
 	import 'flatpickr/dist/flatpickr.css';
 	import FormHeader from '../../../lib/components/popup/FormHeader.svelte';
+	import { settingsStore } from '../../../lib/stores/settingsStore';
 
 	interface Props {
 		task: ITrackedTask;
 		onSave: (updatedTask: ITrackedTask) => void;
 		onCancel: () => void;
+		isNewTask?: boolean;
 	}
 
-	let { task, onSave, onCancel }: Props = $props();
+	let { task, onSave, onCancel, isNewTask = false }: Props = $props();
 
 	let title = $state(task.title);
 	let description = $state(task.description);
@@ -27,6 +29,7 @@
 
 	onMount(() => {
 		initializeFlatpickr();
+		handleAutoFocus();
 	});
 
 	onDestroy(() => {
@@ -75,6 +78,34 @@
 		}
 	});
 
+	const handleAutoFocus = async () => {
+		if (!isNewTask) return;
+
+		const titleInput = document.getElementById('title') as HTMLInputElement;
+		const descriptionInput = document.getElementById('description') as HTMLTextAreaElement;
+
+		try {
+			const settings = await settingsStore.getSettings();
+			const shouldFocusDescription = settings.autoFocusDescription;
+
+			// Use setTimeout to ensure DOM is ready
+			setTimeout(() => {
+				if (shouldFocusDescription && descriptionInput) {
+					descriptionInput.focus();
+				} else if (titleInput) {
+					titleInput.focus();
+				}
+			}, 100);
+		} catch (error) {
+			// Fallback to title if settings can't be loaded
+			setTimeout(() => {
+				if (titleInput) {
+					titleInput.focus();
+				}
+			}, 100);
+		}
+	};
+
 	const handleSave = () => {
 		const updatedTask: ITrackedTask = {
 			...task,
@@ -102,11 +133,11 @@
 </script>
 
 <main class="w-80 !p-3 bg-bg-dark">
-	<FormHeader title="EDIT TASK" onBack={onCancel} />
+	<FormHeader title={isNewTask ? 'NEW TASK' : 'EDIT TASK'} onBack={onCancel} />
 
 	<div class="flex flex-col gap-4">
 		<InputLabel size="sm" className="flex flex-col gap-1">
-			Title
+			Title*
 			<Input id="title" bind:value={title} placeholder="Enter task title" onkeydown={handleKeyDown} />
 		</InputLabel>
 

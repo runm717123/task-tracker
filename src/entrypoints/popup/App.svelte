@@ -5,7 +5,7 @@
 	import dayjs from 'dayjs';
 	import { onMount, onDestroy } from 'svelte';
 	import { taskStore } from '../../lib/stores/taskStore';
-	import EditPage from './ui/EditPage.svelte';
+	import TaskFormPage from './ui/TaskFormPage.svelte';
 	import SettingsPage from './ui/SettingsPage.svelte';
 	import HelpPage from './ui/HelpPage.svelte';
 
@@ -190,7 +190,7 @@
 		</div>
 	</main>
 {:else if currentView === 'edit' && editingTask}
-	<EditPage task={editingTask} onSave={saveTask} onCancel={cancelEdit} />
+	<TaskFormPage task={editingTask} onSave={saveTask} onCancel={cancelEdit} />
 {:else if currentView === 'settings'}
 	<SettingsPage onCancel={closeSettings} />
 {:else if currentView === 'help'}

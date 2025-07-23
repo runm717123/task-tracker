@@ -166,6 +166,66 @@ describe('TaskStore', () => {
 			const lastTimeEndedTask = await taskStore.getLastTimeEndedTask();
 			expect(lastTimeEndedTask).toBe('2025-07-07T10:00:00.000Z');
 		});
+
+		it('should use provided startTime and endTime', async () => {
+			const startTime = '2025-07-07T09:00:00.000Z';
+			const endTime = '2025-07-07T11:00:00.000Z';
+
+			const newTask: ICreateTask = {
+				title: 'Task with Times',
+				description: 'Task Description',
+				status: 'pending',
+				startTime,
+				endTime,
+			};
+
+			await taskStore.addTask(newTask);
+
+			const tasks = await taskStore.getTasks();
+			expect(tasks).toHaveLength(1);
+
+			const addedTask = tasks[0];
+			expect(addedTask.start).toBe(startTime);
+			expect(addedTask.end).toBe(endTime);
+		});
+
+		it('should auto-set endTime to 30 minutes after startTime when only startTime is provided', async () => {
+			const startTime = '2025-07-07T09:00:00.000Z';
+
+			const newTask: ICreateTask = {
+				title: 'Task with Start Time Only',
+				description: 'Task Description',
+				status: 'pending',
+				startTime,
+			};
+
+			await taskStore.addTask(newTask);
+
+			const tasks = await taskStore.getTasks();
+			expect(tasks).toHaveLength(1);
+
+			const addedTask = tasks[0];
+			expect(addedTask.start).toBe(startTime);
+			expect(addedTask.end).toBe('2025-07-07T09:30:00.000Z'); // 30 minutes later
+		});
+
+		it('should update lastTimeEndedTask to custom endTime when provided', async () => {
+			const startTime = '2025-07-07T09:00:00.000Z';
+			const endTime = '2025-07-07T11:00:00.000Z';
+
+			const newTask: ICreateTask = {
+				title: 'Task with Custom Times',
+				description: 'Task Description',
+				status: 'pending',
+				startTime,
+				endTime,
+			};
+
+			await taskStore.addTask(newTask);
+
+			const lastTimeEnded = await taskStore.getLastTimeEndedTask();
+			expect(lastTimeEnded).toBe(endTime);
+		});
 	});
 
 	describe('updateTask', () => {
