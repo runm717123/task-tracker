@@ -18,7 +18,6 @@ export function normalizeSentence(sentence: string): string {
 		' pr ': ' pull request ',
 		'self-explore': 'self explore',
 	};
-	// replace keys with values
 	Object.entries(map).forEach(([key, value]) => {
 		sentence = sentence.replace(new RegExp(key, 'gi'), value);
 	});

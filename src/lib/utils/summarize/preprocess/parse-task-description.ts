@@ -1,7 +1,9 @@
 import { isValidSentences } from '../is-valid-sentences';
 
 /**
- * Parses task description into individual task items
+ * the description is a big chunk of text
+ * it can contain multiple tasks, separated by commas or new lines
+ * this function parses the description and return array of extracted tasks
  */
 export async function parseTaskDescription(description: string) {
 	if (!description) return [];

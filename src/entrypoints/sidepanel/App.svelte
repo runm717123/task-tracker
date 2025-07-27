@@ -12,7 +12,7 @@
 	import pkg from '../../../package.json';
 	import SummaryView from '../../lib/components/SummaryView.svelte';
 	import { taskStore } from '../../lib/stores/taskStore';
-	import { summarizeTasks } from '../../lib/utils/summarize/summarizeTasks';
+	import { summarizeTasks } from '../../lib/utils/summarize';
 	import TaskFormPage from '../popup/ui/TaskFormPage.svelte';
 
 	dayjs.extend(relativeTime);

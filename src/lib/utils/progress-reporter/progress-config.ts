@@ -19,15 +19,19 @@ export const PROGRESS_CONFIG = {
 	},
 	groupingTaskTitles: {
 		message: 'grouping tasks by title',
-		percentage: 60,
+		percentage: 50,
+	},
+	parseTaskDescriptions: {
+		message: 'parsing task descriptions',
+		percentage: 65,
 	},
 	removeSimilarDescriptions: {
 		message: 'removing similar task descriptions',
-		percentage: 75,
+		percentage: 85,
 	},
 	finalizing: {
 		message: 'format and sorting summary',
-		percentage: 95,
+		percentage: 90,
 	},
 	done: {
 		message: 'summary complete',

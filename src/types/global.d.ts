@@ -36,6 +36,10 @@ interface IParsedTask {
 	description: string;
 }
 
+interface ITaskWithParsedDescription extends IParsedTask {
+	descriptionItems: string[];
+}
+
 type TTasksMap = Map<string, string[]>;
 
 // Environment variable typing for import.meta.env
