@@ -1,4 +1,5 @@
 import type { UniversalSentenceEncoder } from '@tensorflow-models/universal-sentence-encoder';
+import { tick } from 'svelte';
 import { PROGRESS_CONFIG } from '../progress-reporter/progress-config';
 import { ProgressReporter } from '../progress-reporter/progress-reporter';
 import { clusterTitles } from './classify-title';
@@ -42,13 +43,20 @@ export async function summarizeTasks(tasks: ITrackedTask[], similarityThreshold:
 		progressReporter.report('groupingTaskTitles');
 		const grouped = await groupTasksByTitle(parsedTasks);
 
+		progressReporter.report('removeSimilarDescriptions');
+		await tick();
 		const minimized = await removeSimilarDescriptions(grouped, model, similarityThreshold, progressReporter, onProgress);
 		console.log('🚀 ~ summarizeTasks ~ minimized:', minimized);
 
-		const result = formatSummaryGroups(minimized);
+		await tick();
+		progressReporter.report('finalizing');
+		await tick();
+
+		const result = await formatSummaryGroups(minimized);
 		console.log('🚀 ~ summarizeTasks ~ result:', result);
 
 		progressReporter.report('done');
+		await tick();
 		return result;
 	} catch (error) {
 		console.error('Error summarizing tasks:', error);
@@ -166,7 +174,7 @@ async function removeSimilarDescriptions(tasksMap: Map<string, string[]>, model:
 	return result;
 }
 
-function formatSummaryGroups(groups: Map<string, string[]>): ISummaryGroup[] {
+async function formatSummaryGroups(groups: Map<string, string[]>): Promise<ISummaryGroup[]> {
 	const result = Array.from(groups.entries()).map(([title, tasks]) => {
 		return {
 			title: title || 'General Tasks',
