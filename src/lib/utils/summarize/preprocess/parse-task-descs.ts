@@ -1,7 +1,9 @@
+import { isValidSentences } from '../is-valid-sentences';
+
 /**
  * Parses task description into individual task items
  */
-export function parseTaskDescription(description: string): string[] {
+export async function parseTaskDescription(description: string) {
 	if (!description) return [];
 
 	const lines = description
@@ -12,14 +14,17 @@ export function parseTaskDescription(description: string): string[] {
 	let tasks: string[] = [];
 
 	for (const line of lines) {
-		// Filter the line using regex, remove initial characters that are not alphabet or number
-		let filteredLine = line.replace(/^[^a-zA-Z0-9]*/, '').trim();
+		const statusWords = '(done|in progress|completed|pending|todo|finished)';
+		const statusRegexStart = new RegExp(`^${statusWords}\\s*(-|->)\\s*`, 'i');
+		const statusRegexEnd = new RegExp(`\\s*(-|->|\\()\\s*${statusWords}\\s*\\)?$`, 'i');
 
-		// Remove status at the end: "task - Done", "task -> Done", "task (Done)"
-		filteredLine = filteredLine.replace(/\s*(-|->|\()\s*(done|in progress|completed|pending|todo|finished)\s*\)?$/i, '').trim();
-
-		// Remove status at the beginning: "Done -> task", "Done - task"
-		filteredLine = filteredLine.replace(/^(done|in progress|completed|pending|todo|finished)\s*(-|->)\s*/i, '').trim();
+		const filteredLine = line
+			// Filter the line using regex, remove initial characters that are not alphabet or number
+			.replace(/^[^a-zA-Z0-9]*/, '')
+			// Remove status at the beginning: "Done -> task", "Done - task"
+			.replace(statusRegexEnd, '')
+			.replace(statusRegexStart, '')
+			.trim();
 
 		// Check if the filtered line starts with http, if true, continue
 		if (filteredLine.startsWith('http')) {
@@ -28,20 +33,54 @@ export function parseTaskDescription(description: string): string[] {
 
 		// Push filtered line to task
 		if (filteredLine) {
-			tasks.push(filteredLine);
+			const parsed = await parseSplittedTasks(filteredLine.split(',').filter((t) => !!t.trim().length));
+			tasks.push(...parsed);
 		}
 	}
-
-	tasks = tasks
-		.map((task) => {
-			return task.split(',').map((item) => item.trim());
-		})
-		.flat();
 
 	// If no structured tasks found, treat the whole description as one task
 	if (tasks.length === 0 && description.trim()) {
 		tasks.push(description.trim());
 	}
 
+	tasks = await parseSplittedTasks(tasks);
+
 	return tasks;
 }
+
+export const parseSplittedTasks = async (splittedTasks: string[]): Promise<string[]> => {
+	if (!splittedTasks) return [];
+
+	// If only one task, return as is
+	if (splittedTasks.length <= 1) {
+		return splittedTasks;
+	}
+
+	// Validate the sentences
+	const validationResults = await isValidSentences(splittedTasks);
+
+	const allZeros = validationResults.every((result) => result === 0);
+	if (allZeros) {
+		return [splittedTasks.join(', ')];
+	}
+
+	// turn [0, 0, 1, 0] into [1, 1, 1, 0]
+	const firstValidIndex = validationResults.findIndex((result) => result === 1);
+	const transformedIndexes = validationResults.map((result, index) => (index < firstValidIndex ? 1 : result));
+
+	// turn [1, 1, 1, 0] into [1, 1, 1]
+	// combine last invalid text with the last valid text
+
+	// return all if all of them are valid
+	const lastValidIndex = transformedIndexes.lastIndexOf(1);
+	if (lastValidIndex === splittedTasks.length - 1) {
+		return splittedTasks;
+	}
+
+	let lastValidText = splittedTasks[lastValidIndex];
+	if (lastValidIndex < transformedIndexes.length - 1) {
+		lastValidText = splittedTasks.splice(lastValidIndex).join(', ');
+	}
+
+	return [...splittedTasks, lastValidText];
+};

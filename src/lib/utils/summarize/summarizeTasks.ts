@@ -92,7 +92,7 @@ async function groupTasksByTitle(tasks: IParsedTask[]) {
 				const matchingTasks = tasks.filter((task) => task.title === title);
 
 				for (const task of matchingTasks) {
-					const items = parseTaskDescription(task.description);
+					const items = await parseTaskDescription(task.description);
 					taskItems.push(...items);
 				}
 
@@ -107,7 +107,7 @@ async function groupTasksByTitle(tasks: IParsedTask[]) {
 			for (const title of categoryTitles) {
 				const matchingTasks = tasks.filter((task) => task.title === title);
 				for (const task of matchingTasks) {
-					const items = parseTaskDescription(task.description);
+					const items = await parseTaskDescription(task.description);
 					taskItems.push(...items);
 				}
 			}

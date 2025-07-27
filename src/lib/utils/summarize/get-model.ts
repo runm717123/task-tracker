@@ -1,4 +1,4 @@
-import * as tf from '@tensorflow/tfjs'; // MUST come before @tensorflow-models
+import * as tf from '@tensorflow/tfjs';
 import * as use from '@tensorflow-models/universal-sentence-encoder';
 
 // Cache the model instance
@@ -20,8 +20,6 @@ export async function getModel() {
 
 	try {
 		isModelLoading = true;
-
-		console.log(import.meta.env.WXT_ENV, 'asef');
 
 		if (import.meta.env.WXT_ENV === 'dev') {
 			const localModelUrl = chrome.runtime.getURL('models/universal-sentence-encoder/model.json');
@@ -62,5 +60,43 @@ export async function getClassifier(onProgress?: (status: string) => void) {
 		return classifierCache;
 	} finally {
 		isClassifierLoading = false;
+	}
+}
+
+let sentenceValidatorModelCache: tf.LayersModel | null = null;
+let isSentenceValidatorModelLoading = false;
+
+export async function getSentenceValidatorModel() {
+	if (sentenceValidatorModelCache) {
+		return sentenceValidatorModelCache;
+	}
+
+	// little hack to ensure L2 regularizer is registered
+	// https://stackoverflow.com/questions/64063914/unknown-regularizer-l2-in-tensorflowjs
+	class L2 {
+		static className = 'L2'; // Must match what appears in model.json
+
+		constructor(config: any) {
+			return tf.regularizers.l1l2(config); // return compatible instance
+		}
+	}
+	tf.serialization.registerClass(L2 as any);
+
+	if (isSentenceValidatorModelLoading) {
+		while (isSentenceValidatorModelLoading) {
+			await new Promise((resolve) => setTimeout(resolve, 50));
+		}
+		return sentenceValidatorModelCache!;
+	}
+
+	try {
+		isSentenceValidatorModelLoading = true;
+
+		const modelUrl = chrome.runtime.getURL('models/sentence-validator/model.json');
+		sentenceValidatorModelCache = await tf.loadLayersModel(modelUrl);
+
+		return sentenceValidatorModelCache;
+	} finally {
+		isSentenceValidatorModelLoading = false;
 	}
 }
