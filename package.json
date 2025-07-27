@@ -5,16 +5,14 @@
 	"version": "0.5.7",
 	"type": "module",
 	"scripts": {
-		"dev": "wxt",
-		"dev:firefox": "wxt -b firefox",
-		"build": "cross-env WXT_ENV=dev wxt build",
+		"dev": "cross-env WXT_ENV=dev wxt build",
 		"build:prod": "cross-env WXT_ENV=prod wxt --mode production build && cross-env WXT_ENV=prod wxt --mode production zip",
 		"build:firefox": "wxt build -b firefox",
 		"zip": "wxt zip",
 		"zip:firefox": "wxt zip -b firefox",
 		"check": "svelte-check --tsconfig ./tsconfig.json",
 		"postinstall": "wxt prepare",
-		"dev:watch": "nodemon --exec \"pnpm run build\"",
+		"dev:watch": "nodemon --exec \"pnpm run dev\"",
 		"test": "vitest",
 		"test:ui": "vitest --ui"
 	},
