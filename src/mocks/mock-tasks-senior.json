@@ -4,63 +4,63 @@
 		"title": "PaymentHub v3.2 - Architecture Review",
 		"description": "Review microservices architecture for payment gateway redesign\n-https://github.com/company/paymenthub/issues/234",
 		"status": "done",
-		"createdAt": "2025-07-14T07:30:00Z",
-		"start": "2025-07-14T08:00:00Z",
-		"end": "2025-07-14T10:00:00Z"
+		"createdAt": "2025-08-14T07:30:00Z",
+		"start": "2025-08-14T08:00:00Z",
+		"end": "2025-08-14T10:00:00Z"
 	},
 	{
 		"id": "2",
 		"title": "PaymentHub v3.2 - Security Implementation Review",
 		"description": "Review PCI DSS compliance implementation for new gateway\n-https://github.com/company/paymenthub/pull/567",
 		"status": "done",
-		"createdAt": "2025-07-14T09:45:00Z",
-		"start": "2025-07-14T10:00:00Z",
-		"end": "2025-07-14T11:30:00Z"
+		"createdAt": "2025-08-14T09:45:00Z",
+		"start": "2025-08-14T10:00:00Z",
+		"end": "2025-08-14T11:30:00Z"
 	},
 	{
 		"id": "3",
 		"title": "Team - Junior Developer Mentoring",
 		"description": "1:1 mentoring session with Alex on PaymentHub integration patterns",
 		"status": "done",
-		"createdAt": "2025-07-14T11:15:00Z",
-		"start": "2025-07-14T11:30:00Z",
-		"end": "2025-07-14T12:30:00Z"
+		"createdAt": "2025-08-14T11:15:00Z",
+		"start": "2025-08-14T11:30:00Z",
+		"end": "2025-08-14T12:30:00Z"
 	},
 	{
 		"id": "4",
 		"title": "DataSync v2.1 - Technical Debt Assessment",
 		"description": "Analyze ETL pipeline performance issues and legacy code\n-Plan Sprint 24 refactoring tasks",
 		"status": "done",
-		"createdAt": "2025-07-14T12:15:00Z",
-		"start": "2025-07-14T12:30:00Z",
-		"end": "2025-07-14T14:30:00Z"
+		"createdAt": "2025-08-14T12:15:00Z",
+		"start": "2025-08-14T12:30:00Z",
+		"end": "2025-08-14T14:30:00Z"
 	},
 	{
 		"id": "5",
 		"title": "PaymentHub v3.2 - API Contract Design",
 		"description": "Define API contracts with mobile team for new payment flows\n-Finalize OpenAPI specs for v3.2",
 		"status": "done",
-		"createdAt": "2025-07-14T14:15:00Z",
-		"start": "2025-07-14T14:30:00Z",
-		"end": "2025-07-14T16:00:00Z"
+		"createdAt": "2025-08-14T14:15:00Z",
+		"start": "2025-08-14T14:30:00Z",
+		"end": "2025-08-14T16:00:00Z"
 	},
 	{
 		"id": "6",
 		"title": "DataSync v2.1 - Performance Optimization",
 		"description": "Investigate and fix data pipeline bottlenecks\n-https://github.com/company/datasync/issues/890",
 		"status": "done",
-		"createdAt": "2025-07-14T15:45:00Z",
-		"start": "2025-07-14T16:00:00Z",
-		"end": "2025-07-14T18:00:00Z"
+		"createdAt": "2025-08-14T15:45:00Z",
+		"start": "2025-08-14T16:00:00Z",
+		"end": "2025-08-14T18:00:00Z"
 	},
 	{
 		"id": "7",
 		"title": "Team - Tech Leadership Sync",
 		"description": "Weekly sync with other senior engineers on project dependencies",
 		"status": "done",
-		"createdAt": "2025-07-14T17:45:00Z",
-		"start": "2025-07-14T18:00:00Z",
-		"end": "2025-07-14T19:00:00Z"
+		"createdAt": "2025-08-14T17:45:00Z",
+		"start": "2025-08-14T18:00:00Z",
+		"end": "2025-08-14T19:00:00Z"
 	},
 
 	{
@@ -68,63 +68,63 @@
 		"title": "NotificationEngine v1.3 - System Design",
 		"description": "Design event-driven architecture for real-time notifications\n-https://github.com/company/notifications/issues/445",
 		"status": "done",
-		"createdAt": "2025-07-15T07:30:00Z",
-		"start": "2025-07-15T08:00:00Z",
-		"end": "2025-07-15T10:30:00Z"
+		"createdAt": "2025-08-15T07:30:00Z",
+		"start": "2025-08-15T08:00:00Z",
+		"end": "2025-08-15T10:30:00Z"
 	},
 	{
 		"id": "9",
 		"title": "PaymentHub v3.2 - Security Audit",
 		"description": "Lead security review for Sprint 23 deliverables\n-https://github.com/company/paymenthub/pull/789",
 		"status": "done",
-		"createdAt": "2025-07-15T10:15:00Z",
-		"start": "2025-07-15T10:30:00Z",
-		"end": "2025-07-15T12:00:00Z"
+		"createdAt": "2025-08-15T10:15:00Z",
+		"start": "2025-08-15T10:30:00Z",
+		"end": "2025-08-15T12:00:00Z"
 	},
 	{
 		"id": "10",
 		"title": "Team - Technical Interview",
 		"description": "Interview senior backend engineer candidate for DataSync team",
 		"status": "done",
-		"createdAt": "2025-07-15T11:45:00Z",
-		"start": "2025-07-15T12:00:00Z",
-		"end": "2025-07-15T13:30:00Z"
+		"createdAt": "2025-08-15T11:45:00Z",
+		"start": "2025-08-15T12:00:00Z",
+		"end": "2025-08-15T13:30:00Z"
 	},
 	{
 		"id": "11",
 		"title": "DataSync v2.1 - DevOps Pipeline Setup",
 		"description": "Setup CI/CD for new data processing modules\n-Configure Kubernetes deployment for Sprint 24",
 		"status": "done",
-		"createdAt": "2025-07-15T13:15:00Z",
-		"start": "2025-07-15T13:30:00Z",
-		"end": "2025-07-15T15:30:00Z"
+		"createdAt": "2025-08-15T13:15:00Z",
+		"start": "2025-08-15T13:30:00Z",
+		"end": "2025-08-15T15:30:00Z"
 	},
 	{
 		"id": "12",
 		"title": "PaymentHub v3.2 - Code Quality Gates",
 		"description": "Implement automated testing for payment processing logic\n-https://github.com/company/paymenthub/issues/123",
 		"status": "done",
-		"createdAt": "2025-07-15T15:15:00Z",
-		"start": "2025-07-15T15:30:00Z",
-		"end": "2025-07-15T17:00:00Z"
+		"createdAt": "2025-08-15T15:15:00Z",
+		"start": "2025-08-15T15:30:00Z",
+		"end": "2025-08-15T17:00:00Z"
 	},
 	{
 		"id": "13",
 		"title": "DataSync Sprint 23 - Retrospective",
 		"description": "Lead sprint 23 retrospective for DataSync team",
 		"status": "done",
-		"createdAt": "2025-07-15T16:45:00Z",
-		"start": "2025-07-15T17:00:00Z",
-		"end": "2025-07-15T18:30:00Z"
+		"createdAt": "2025-08-15T16:45:00Z",
+		"start": "2025-08-15T17:00:00Z",
+		"end": "2025-08-15T18:30:00Z"
 	},
 	{
 		"id": "14",
 		"title": "Open Source - Apache Kafka Patch",
 		"description": "Contribute security fix to Kafka consumer library\n-https://github.com/apache/kafka/pull/2345",
 		"status": "done",
-		"createdAt": "2025-07-15T18:15:00Z",
-		"start": "2025-07-15T18:30:00Z",
-		"end": "2025-07-15T19:30:00Z"
+		"createdAt": "2025-08-15T18:15:00Z",
+		"start": "2025-08-15T18:30:00Z",
+		"end": "2025-08-15T19:30:00Z"
 	},
 
 	{
@@ -132,126 +132,126 @@
 		"title": "PaymentHub v3.2 - API Design Workshop",
 		"description": "Workshop with product team on payment flow UX\n-https://github.com/company/paymenthub/issues/567",
 		"status": "done",
-		"createdAt": "2025-07-16T07:30:00Z",
-		"start": "2025-07-16T08:00:00Z",
-		"end": "2025-07-16T10:00:00Z"
+		"createdAt": "2025-08-16T07:30:00Z",
+		"start": "2025-08-16T08:00:00Z",
+		"end": "2025-08-16T10:00:00Z"
 	},
 	{
 		"id": "16",
 		"title": "DataSync v2.1 - Disaster Recovery Test",
 		"description": "Test backup and recovery procedures for data pipeline\n-Validate Sprint 24 rollback procedures",
 		"status": "done",
-		"createdAt": "2025-07-16T09:45:00Z",
-		"start": "2025-07-16T10:00:00Z",
-		"end": "2025-07-16T12:00:00Z"
+		"createdAt": "2025-08-16T09:45:00Z",
+		"start": "2025-08-16T10:00:00Z",
+		"end": "2025-08-16T12:00:00Z"
 	},
 	{
 		"id": "17",
 		"title": "NotificationEngine v1.3 - Documentation",
 		"description": "Update integration docs for new webhook system\n-Create setup guide for Sprint 23 release",
 		"status": "done",
-		"createdAt": "2025-07-16T11:45:00Z",
-		"start": "2025-07-16T12:00:00Z",
-		"end": "2025-07-16T13:30:00Z"
+		"createdAt": "2025-08-16T11:45:00Z",
+		"start": "2025-08-16T12:00:00Z",
+		"end": "2025-08-16T13:30:00Z"
 	},
 	{
 		"id": "18",
 		"title": "Team - Q3 Roadmap Presentation",
 		"description": "Present Q3 technical roadmap for all 3 projects to executives",
 		"status": "done",
-		"createdAt": "2025-07-16T13:15:00Z",
-		"start": "2025-07-16T13:30:00Z",
-		"end": "2025-07-16T14:30:00Z"
+		"createdAt": "2025-08-16T13:15:00Z",
+		"start": "2025-08-16T13:30:00Z",
+		"end": "2025-08-16T14:30:00Z"
 	},
 	{
 		"id": "19",
 		"title": "DataSync v2.1 - Database Migration",
 		"description": "Lead PostgreSQL 15 upgrade for analytics database\n-https://github.com/company/datasync/issues/890",
 		"status": "done",
-		"createdAt": "2025-07-16T14:15:00Z",
-		"start": "2025-07-16T14:30:00Z",
-		"end": "2025-07-16T16:30:00Z"
+		"createdAt": "2025-08-16T14:15:00Z",
+		"start": "2025-08-16T14:30:00Z",
+		"end": "2025-08-16T16:30:00Z"
 	},
 	{
 		"id": "20",
 		"title": "Research - ML Integration Spike",
 		"description": "Research ML model integration for fraud detection in PaymentHub\n-Evaluate TensorFlow Serving for v3.3",
 		"status": "done",
-		"createdAt": "2025-07-16T16:15:00Z",
-		"start": "2025-07-16T16:30:00Z",
-		"end": "2025-07-16T18:00:00Z"
+		"createdAt": "2025-08-16T16:15:00Z",
+		"start": "2025-08-16T16:30:00Z",
+		"end": "2025-08-16T18:00:00Z"
 	},
 	{
 		"id": "21",
 		"title": "Team - Tech Talk Organization",
 		"description": "Organize microservices patterns tech talk for engineering team",
 		"status": "done",
-		"createdAt": "2025-07-16T17:45:00Z",
-		"start": "2025-07-16T18:00:00Z",
-		"end": "2025-07-16T19:00:00Z"
+		"createdAt": "2025-08-16T17:45:00Z",
+		"start": "2025-08-16T18:00:00Z",
+		"end": "2025-08-16T19:00:00Z"
 	},
 	{
 		"id": "22",
 		"title": "PaymentHub v3.2 - Load Testing",
 		"description": "Analyze system performance for Sprint 24 release\n-https://github.com/company/paymenthub/issues/345",
 		"status": "done",
-		"createdAt": "2025-07-17T07:30:00Z",
-		"start": "2025-07-17T08:00:00Z",
-		"end": "2025-07-17T10:00:00Z"
+		"createdAt": "2025-08-17T07:30:00Z",
+		"start": "2025-08-17T08:00:00Z",
+		"end": "2025-08-17T10:00:00Z"
 	},
 	{
 		"id": "23",
 		"title": "DataSync Sprint 24 - Planning",
 		"description": "Plan Sprint 24 tasks and estimate story points\n-Prioritize technical debt items",
 		"status": "done",
-		"createdAt": "2025-07-17T09:45:00Z",
-		"start": "2025-07-17T10:00:00Z",
-		"end": "2025-07-17T11:30:00Z"
+		"createdAt": "2025-08-17T09:45:00Z",
+		"start": "2025-08-17T10:00:00Z",
+		"end": "2025-08-17T11:30:00Z"
 	},
 	{
 		"id": "24",
 		"title": "Team - Cross-Project Dependencies",
 		"description": "Sync with PaymentHub and NotificationEngine teams on integrations",
 		"status": "done",
-		"createdAt": "2025-07-17T11:15:00Z",
-		"start": "2025-07-17T11:30:00Z",
-		"end": "2025-07-17T12:30:00Z"
+		"createdAt": "2025-08-17T11:15:00Z",
+		"start": "2025-08-17T11:30:00Z",
+		"end": "2025-08-17T12:30:00Z"
 	},
 	{
 		"id": "25",
 		"title": "PaymentHub v3.2 - Compliance Review",
 		"description": "Ensure PCI DSS compliance for Sprint 24 release\n-Review data retention policies for payment data",
 		"status": "done",
-		"createdAt": "2025-07-17T12:15:00Z",
-		"start": "2025-07-17T12:30:00Z",
-		"end": "2025-07-17T14:00:00Z"
+		"createdAt": "2025-08-17T12:15:00Z",
+		"start": "2025-08-17T12:30:00Z",
+		"end": "2025-08-17T14:00:00Z"
 	},
 	{
 		"id": "26",
 		"title": "NotificationEngine v1.3 - Monitoring Setup",
 		"description": "Implement APM for webhook delivery system\n-https://github.com/company/notifications/pull/456",
 		"status": "done",
-		"createdAt": "2025-07-17T13:45:00Z",
-		"start": "2025-07-17T14:00:00Z",
-		"end": "2025-07-17T15:30:00Z"
+		"createdAt": "2025-08-17T13:45:00Z",
+		"start": "2025-08-17T14:00:00Z",
+		"end": "2025-08-17T15:30:00Z"
 	},
 	{
 		"id": "27",
 		"title": "DataSync v2.1 - Vendor Evaluation",
 		"description": "Evaluate Snowflake vs BigQuery for analytics pipeline\n-Cost analysis for Q4 migration",
 		"status": "done",
-		"createdAt": "2025-07-17T15:15:00Z",
-		"start": "2025-07-17T15:30:00Z",
-		"end": "2025-07-17T17:00:00Z"
+		"createdAt": "2025-08-17T15:15:00Z",
+		"start": "2025-08-17T15:30:00Z",
+		"end": "2025-08-17T17:00:00Z"
 	},
 	{
 		"id": "28",
 		"title": "PaymentHub v3.2 - Incident Response",
 		"description": "Lead post-mortem for payment processing outage\n-Implement prevention measures for v3.2",
 		"status": "done",
-		"createdAt": "2025-07-17T16:45:00Z",
-		"start": "2025-07-17T17:00:00Z",
-		"end": "2025-07-17T19:00:00Z"
+		"createdAt": "2025-08-17T16:45:00Z",
+		"start": "2025-08-17T17:00:00Z",
+		"end": "2025-08-17T19:00:00Z"
 	},
 
 	{
@@ -259,63 +259,63 @@
 		"title": "Technical Strategy Planning",
 		"description": "Define technology roadmap for next 18 months\n-Evaluate microservices vs monolith trade-offs",
 		"status": "done",
-		"createdAt": "2025-07-18T07:30:00Z",
-		"start": "2025-07-18T08:00:00Z",
-		"end": "2025-07-18T10:30:00Z"
+		"createdAt": "2025-08-18T07:30:00Z",
+		"start": "2025-08-18T08:00:00Z",
+		"end": "2025-08-18T10:30:00Z"
 	},
 	{
 		"id": "30",
 		"title": "Code Architecture Refactoring",
 		"description": "Lead domain-driven design implementation\n-https://github.com/company/core/issues/678",
 		"status": "done",
-		"createdAt": "2025-07-18T10:15:00Z",
-		"start": "2025-07-18T10:30:00Z",
-		"end": "2025-07-18T12:30:00Z"
+		"createdAt": "2025-08-18T10:15:00Z",
+		"start": "2025-08-18T10:30:00Z",
+		"end": "2025-08-18T12:30:00Z"
 	},
 	{
 		"id": "31",
 		"title": "Team Capacity Planning",
 		"description": "Analyze team velocity and plan resource allocation for Q4",
 		"status": "done",
-		"createdAt": "2025-07-18T12:15:00Z",
-		"start": "2025-07-18T12:30:00Z",
-		"end": "2025-07-18T13:30:00Z"
+		"createdAt": "2025-08-18T12:15:00Z",
+		"start": "2025-08-18T12:30:00Z",
+		"end": "2025-08-18T13:30:00Z"
 	},
 	{
 		"id": "32",
 		"title": "Executive Technical Demo",
 		"description": "Demonstrate new platform capabilities to C-level executives",
 		"status": "done",
-		"createdAt": "2025-07-18T13:15:00Z",
-		"start": "2025-07-18T13:30:00Z",
-		"end": "2025-07-18T14:30:00Z"
+		"createdAt": "2025-08-18T13:15:00Z",
+		"start": "2025-08-18T13:30:00Z",
+		"end": "2025-08-18T14:30:00Z"
 	},
 	{
 		"id": "33",
 		"title": "Development Process Optimization",
 		"description": "Implement automated testing and deployment improvements\n-Reduce deployment time by 50%",
 		"status": "done",
-		"createdAt": "2025-07-18T14:15:00Z",
-		"start": "2025-07-18T14:30:00Z",
-		"end": "2025-07-18T16:30:00Z"
+		"createdAt": "2025-08-18T14:15:00Z",
+		"start": "2025-08-18T14:30:00Z",
+		"end": "2025-08-18T16:30:00Z"
 	},
 	{
 		"id": "34",
 		"title": "Technical Standards Definition",
 		"description": "Create and document engineering standards and guidelines\n-Code style, testing, and deployment standards",
 		"status": "done",
-		"createdAt": "2025-07-18T16:15:00Z",
-		"start": "2025-07-18T16:30:00Z",
-		"end": "2025-07-18T18:00:00Z"
+		"createdAt": "2025-08-18T16:15:00Z",
+		"start": "2025-08-18T16:30:00Z",
+		"end": "2025-08-18T18:00:00Z"
 	},
 	{
 		"id": "35",
 		"title": "Industry Conference Prep",
 		"description": "Prepare technical presentation for upcoming developer conference",
 		"status": "done",
-		"createdAt": "2025-07-18T17:45:00Z",
-		"start": "2025-07-18T18:00:00Z",
-		"end": "2025-07-18T19:00:00Z"
+		"createdAt": "2025-08-18T17:45:00Z",
+		"start": "2025-08-18T18:00:00Z",
+		"end": "2025-08-18T19:00:00Z"
 	},
 
 	{
@@ -323,63 +323,63 @@
 		"title": "Enterprise Integration Planning",
 		"description": "Design enterprise client integration architecture\n-https://github.com/company/enterprise/issues/234",
 		"status": "in-progress",
-		"createdAt": "2025-07-21T07:30:00Z",
-		"start": "2025-07-21T08:00:00Z",
-		"end": "2025-07-21T10:00:00Z"
+		"createdAt": "2025-08-21T07:30:00Z",
+		"start": "2025-08-21T08:00:00Z",
+		"end": "2025-08-21T10:00:00Z"
 	},
 	{
 		"id": "37",
 		"title": "Technology Risk Assessment",
 		"description": "Evaluate and mitigate technical risks in current architecture\n-Create risk mitigation strategies",
 		"status": "in-progress",
-		"createdAt": "2025-07-21T09:45:00Z",
-		"start": "2025-07-21T10:00:00Z",
-		"end": "2025-07-21T11:30:00Z"
+		"createdAt": "2025-08-21T09:45:00Z",
+		"start": "2025-08-21T10:00:00Z",
+		"end": "2025-08-21T11:30:00Z"
 	},
 	{
 		"id": "38",
 		"title": "Senior Team Mentoring Session",
 		"description": "Advanced architectural patterns workshop for senior developers",
 		"status": "in-progress",
-		"createdAt": "2025-07-21T11:15:00Z",
-		"start": "2025-07-21T11:30:00Z",
-		"end": "2025-07-21T12:30:00Z"
+		"createdAt": "2025-08-21T11:15:00Z",
+		"start": "2025-08-21T11:30:00Z",
+		"end": "2025-08-21T12:30:00Z"
 	},
 	{
 		"id": "39",
 		"title": "Cloud Migration Strategy",
 		"description": "Plan multi-cloud deployment strategy and vendor lock-in prevention\n-Cost optimization analysis",
 		"status": "planned",
-		"createdAt": "2025-07-21T12:15:00Z",
-		"start": "2025-07-21T12:30:00Z",
-		"end": "2025-07-21T14:30:00Z"
+		"createdAt": "2025-08-21T12:15:00Z",
+		"start": "2025-08-21T12:30:00Z",
+		"end": "2025-08-21T14:30:00Z"
 	},
 	{
 		"id": "40",
 		"title": "Technical Due Diligence",
 		"description": "Evaluate potential acquisition target's technology stack\n-Assess integration complexity",
 		"status": "planned",
-		"createdAt": "2025-07-21T14:15:00Z",
-		"start": "2025-07-21T14:30:00Z",
-		"end": "2025-07-21T16:00:00Z"
+		"createdAt": "2025-08-21T14:15:00Z",
+		"start": "2025-08-21T14:30:00Z",
+		"end": "2025-08-21T16:00:00Z"
 	},
 	{
 		"id": "41",
 		"title": "Innovation Lab Research",
 		"description": "Research emerging technologies: Quantum computing applications\n-Blockchain integration possibilities",
 		"status": "planned",
-		"createdAt": "2025-07-21T15:45:00Z",
-		"start": "2025-07-21T16:00:00Z",
-		"end": "2025-07-21T17:30:00Z"
+		"createdAt": "2025-08-21T15:45:00Z",
+		"start": "2025-08-21T16:00:00Z",
+		"end": "2025-08-21T17:30:00Z"
 	},
 	{
 		"id": "42",
 		"title": "Board Technical Presentation",
 		"description": "Present quarterly technology achievements to board of directors",
 		"status": "planned",
-		"createdAt": "2025-07-21T17:15:00Z",
-		"start": "2025-07-21T17:30:00Z",
-		"end": "2025-07-21T19:00:00Z"
+		"createdAt": "2025-08-21T17:15:00Z",
+		"start": "2025-08-21T17:30:00Z",
+		"end": "2025-08-21T19:00:00Z"
 	},
 
 	{
@@ -387,45 +387,45 @@
 		"title": "AI Integration Strategy",
 		"description": "Evaluate machine learning integration opportunities for core platform\n-https://github.com/company/ai-research/issues/789",
 		"status": "planned",
-		"createdAt": "2025-07-22T07:30:00Z",
-		"start": "2025-07-22T08:00:00Z",
-		"end": "2025-07-22T10:00:00Z"
+		"createdAt": "2025-08-22T07:30:00Z",
+		"start": "2025-08-22T08:00:00Z",
+		"end": "2025-08-22T10:00:00Z"
 	},
 	{
 		"id": "44",
 		"title": "Infrastructure Cost Optimization",
 		"description": "Analyze cloud spending patterns and optimize resource allocation\n-Target 25% cost reduction",
 		"status": "planned",
-		"createdAt": "2025-07-22T09:45:00Z",
-		"start": "2025-07-22T10:00:00Z",
-		"end": "2025-07-22T11:30:00Z"
+		"createdAt": "2025-08-22T09:45:00Z",
+		"start": "2025-08-22T10:00:00Z",
+		"end": "2025-08-22T11:30:00Z"
 	},
 	{
 		"id": "45",
 		"title": "Cross-Platform Architecture Review",
 		"description": "Design unified architecture for web, mobile, and desktop applications",
 		"status": "planned",
-		"createdAt": "2025-07-22T11:15:00Z",
-		"start": "2025-07-22T11:30:00Z",
-		"end": "2025-07-22T13:00:00Z"
+		"createdAt": "2025-08-22T11:15:00Z",
+		"start": "2025-08-22T11:30:00Z",
+		"end": "2025-08-22T13:00:00Z"
 	},
 	{
 		"id": "46",
 		"title": "Technical Recruitment Planning",
 		"description": "Define hiring strategy for senior engineers and technical leads\n-Create interview process improvements",
 		"status": "planned",
-		"createdAt": "2025-07-22T12:45:00Z",
-		"start": "2025-07-22T13:00:00Z",
-		"end": "2025-07-22T14:30:00Z"
+		"createdAt": "2025-08-22T12:45:00Z",
+		"start": "2025-08-22T13:00:00Z",
+		"end": "2025-08-22T14:30:00Z"
 	},
 	{
 		"id": "47",
 		"title": "Open Source Strategy Development",
 		"description": "Plan company open source contributions and community engagement\n-Evaluate legal and business implications",
 		"status": "planned",
-		"createdAt": "2025-07-22T14:15:00Z",
-		"start": "2025-07-22T14:30:00Z",
-		"end": "2025-07-22T16:00:00Z"
+		"createdAt": "2025-08-22T14:15:00Z",
+		"start": "2025-08-22T14:30:00Z",
+		"end": "2025-08-22T16:00:00Z"
 	},
 
 	{
@@ -433,45 +433,45 @@
 		"title": "Data Privacy Compliance Audit",
 		"description": "Lead comprehensive privacy compliance review for international markets\n-GDPR, CCPA, and emerging regulations",
 		"status": "planned",
-		"createdAt": "2025-07-23T07:30:00Z",
-		"start": "2025-07-23T08:00:00Z",
-		"end": "2025-07-23T10:00:00Z"
+		"createdAt": "2025-08-23T07:30:00Z",
+		"start": "2025-08-23T08:00:00Z",
+		"end": "2025-08-23T10:00:00Z"
 	},
 	{
 		"id": "49",
 		"title": "Platform Reliability Engineering",
 		"description": "Design SRE practices and implement chaos engineering\n-https://github.com/company/reliability/issues/456",
 		"status": "planned",
-		"createdAt": "2025-07-23T09:45:00Z",
-		"start": "2025-07-23T10:00:00Z",
-		"end": "2025-07-23T11:30:00Z"
+		"createdAt": "2025-08-23T09:45:00Z",
+		"start": "2025-08-23T10:00:00Z",
+		"end": "2025-08-23T11:30:00Z"
 	},
 	{
 		"id": "50",
 		"title": "Emerging Tech Evaluation Workshop",
 		"description": "Evaluate Edge Computing and IoT integration opportunities\n-Research serverless computing at edge",
 		"status": "planned",
-		"createdAt": "2025-07-23T11:15:00Z",
-		"start": "2025-07-23T11:30:00Z",
-		"end": "2025-07-23T13:00:00Z"
+		"createdAt": "2025-08-23T11:15:00Z",
+		"start": "2025-08-23T11:30:00Z",
+		"end": "2025-08-23T13:00:00Z"
 	},
 	{
 		"id": "51",
 		"title": "Technical Partnership Strategy",
 		"description": "Evaluate potential technology partnerships and integrations\n-API partnership framework development",
 		"status": "planned",
-		"createdAt": "2025-07-23T12:45:00Z",
-		"start": "2025-07-23T13:00:00Z",
-		"end": "2025-07-23T14:30:00Z"
+		"createdAt": "2025-08-23T12:45:00Z",
+		"start": "2025-08-23T13:00:00Z",
+		"end": "2025-08-23T14:30:00Z"
 	},
 	{
 		"id": "52",
 		"title": "Enterprise Security Framework",
 		"description": "Design zero-trust security architecture for enterprise clients\n-https://github.com/company/security/issues/234",
 		"status": "planned",
-		"createdAt": "2025-07-23T14:15:00Z",
-		"start": "2025-07-23T14:30:00Z",
-		"end": "2025-07-23T16:00:00Z"
+		"createdAt": "2025-08-23T14:15:00Z",
+		"start": "2025-08-23T14:30:00Z",
+		"end": "2025-08-23T16:00:00Z"
 	},
 
 	{
@@ -479,45 +479,45 @@
 		"title": "Distributed Systems Optimization",
 		"description": "Optimize microservices communication patterns and reduce latency\n-Event sourcing implementation planning",
 		"status": "planned",
-		"createdAt": "2025-07-24T07:30:00Z",
-		"start": "2025-07-24T08:00:00Z",
-		"end": "2025-07-24T10:00:00Z"
+		"createdAt": "2025-08-24T07:30:00Z",
+		"start": "2025-08-24T08:00:00Z",
+		"end": "2025-08-24T10:00:00Z"
 	},
 	{
 		"id": "54",
 		"title": "Technology Governance Framework",
 		"description": "Establish technology decision-making processes and standards\n-Create architecture review board procedures",
 		"status": "planned",
-		"createdAt": "2025-07-24T09:45:00Z",
-		"start": "2025-07-24T10:00:00Z",
-		"end": "2025-07-24T11:30:00Z"
+		"createdAt": "2025-08-24T09:45:00Z",
+		"start": "2025-08-24T10:00:00Z",
+		"end": "2025-08-24T11:30:00Z"
 	},
 	{
 		"id": "55",
 		"title": "Advanced Analytics Platform Design",
 		"description": "Design real-time analytics and business intelligence platform\n-https://github.com/company/analytics/issues/567",
 		"status": "planned",
-		"createdAt": "2025-07-24T11:15:00Z",
-		"start": "2025-07-24T11:30:00Z",
-		"end": "2025-07-24T13:00:00Z"
+		"createdAt": "2025-08-24T11:15:00Z",
+		"start": "2025-08-24T11:30:00Z",
+		"end": "2025-08-24T13:00:00Z"
 	},
 	{
 		"id": "56",
 		"title": "Technical Excellence Program",
 		"description": "Design engineering excellence program and mentorship framework\n-Skills development roadmap creation",
 		"status": "planned",
-		"createdAt": "2025-07-24T12:45:00Z",
-		"start": "2025-07-24T13:00:00Z",
-		"end": "2025-07-24T14:30:00Z"
+		"createdAt": "2025-08-24T12:45:00Z",
+		"start": "2025-08-24T13:00:00Z",
+		"end": "2025-08-24T14:30:00Z"
 	},
 	{
 		"id": "57",
 		"title": "API Ecosystem Strategy",
 		"description": "Design comprehensive API strategy for third-party developers\n-Developer portal and SDK planning",
 		"status": "planned",
-		"createdAt": "2025-07-24T14:15:00Z",
-		"start": "2025-07-24T14:30:00Z",
-		"end": "2025-07-24T16:00:00Z"
+		"createdAt": "2025-08-24T14:15:00Z",
+		"start": "2025-08-24T14:30:00Z",
+		"end": "2025-08-24T16:00:00Z"
 	},
 
 	{
@@ -525,45 +525,45 @@
 		"title": "Digital Transformation Leadership",
 		"description": "Lead digital transformation initiatives for legacy system modernization\n-Assess migration complexity and timeline",
 		"status": "planned",
-		"createdAt": "2025-07-25T07:30:00Z",
-		"start": "2025-07-25T08:00:00Z",
-		"end": "2025-07-25T10:00:00Z"
+		"createdAt": "2025-08-25T07:30:00Z",
+		"start": "2025-08-25T08:00:00Z",
+		"end": "2025-08-25T10:00:00Z"
 	},
 	{
 		"id": "59",
 		"title": "Quantum Computing Research",
 		"description": "Research quantum computing applications for cryptography and optimization\n-Future-proofing security architecture",
 		"status": "planned",
-		"createdAt": "2025-07-25T09:45:00Z",
-		"start": "2025-07-25T10:00:00Z",
-		"end": "2025-07-25T11:30:00Z"
+		"createdAt": "2025-08-25T09:45:00Z",
+		"start": "2025-08-25T10:00:00Z",
+		"end": "2025-08-25T11:30:00Z"
 	},
 	{
 		"id": "60",
 		"title": "Customer-Facing API Design",
 		"description": "Design next-generation customer APIs with GraphQL federation\n-https://github.com/company/graphql/issues/890",
 		"status": "planned",
-		"createdAt": "2025-07-25T11:15:00Z",
-		"start": "2025-07-25T11:30:00Z",
-		"end": "2025-07-25T13:00:00Z"
+		"createdAt": "2025-08-25T11:15:00Z",
+		"start": "2025-08-25T11:30:00Z",
+		"end": "2025-08-25T13:00:00Z"
 	},
 	{
 		"id": "61",
 		"title": "Engineering Metrics Framework",
 		"description": "Design engineering productivity and quality metrics system\n-DORA metrics implementation planning",
 		"status": "planned",
-		"createdAt": "2025-07-25T12:45:00Z",
-		"start": "2025-07-25T13:00:00Z",
-		"end": "2025-07-25T14:30:00Z"
+		"createdAt": "2025-08-25T12:45:00Z",
+		"start": "2025-08-25T13:00:00Z",
+		"end": "2025-08-25T14:30:00Z"
 	},
 	{
 		"id": "62",
 		"title": "Blockchain Integration Assessment",
 		"description": "Evaluate blockchain technology for supply chain and identity management\n-Pilot project planning",
 		"status": "planned",
-		"createdAt": "2025-07-25T14:15:00Z",
-		"start": "2025-07-25T14:30:00Z",
-		"end": "2025-07-25T16:00:00Z"
+		"createdAt": "2025-08-25T14:15:00Z",
+		"start": "2025-08-25T14:30:00Z",
+		"end": "2025-08-25T16:00:00Z"
 	},
 
 	{
@@ -571,45 +571,45 @@
 		"title": "Technical Architecture Modernization",
 		"description": "Plan migration from monolithic to microservices architecture\n-https://github.com/company/modernization/issues/123",
 		"status": "planned",
-		"createdAt": "2025-07-26T07:30:00Z",
-		"start": "2025-07-26T08:00:00Z",
-		"end": "2025-07-26T10:00:00Z"
+		"createdAt": "2025-08-26T07:30:00Z",
+		"start": "2025-08-26T08:00:00Z",
+		"end": "2025-08-26T10:00:00Z"
 	},
 	{
 		"id": "64",
 		"title": "Global Infrastructure Planning",
 		"description": "Design global CDN and edge computing infrastructure\n-Multi-region deployment strategy",
 		"status": "planned",
-		"createdAt": "2025-07-26T09:45:00Z",
-		"start": "2025-07-26T10:00:00Z",
-		"end": "2025-07-26T11:30:00Z"
+		"createdAt": "2025-08-26T09:45:00Z",
+		"start": "2025-08-26T10:00:00Z",
+		"end": "2025-08-26T11:30:00Z"
 	},
 	{
 		"id": "65",
 		"title": "Innovation Lab Strategy",
 		"description": "Establish innovation lab for emerging technology experiments\n-R&D project prioritization framework",
 		"status": "planned",
-		"createdAt": "2025-07-26T11:15:00Z",
-		"start": "2025-07-26T11:30:00Z",
-		"end": "2025-07-26T13:00:00Z"
+		"createdAt": "2025-08-26T11:15:00Z",
+		"start": "2025-08-26T11:30:00Z",
+		"end": "2025-08-26T13:00:00Z"
 	},
 	{
 		"id": "66",
 		"title": "Technical Risk Management",
 		"description": "Develop comprehensive technical risk assessment framework\n-Create risk mitigation playbooks",
 		"status": "planned",
-		"createdAt": "2025-07-26T12:45:00Z",
-		"start": "2025-07-26T13:00:00Z",
-		"end": "2025-07-26T14:30:00Z"
+		"createdAt": "2025-08-26T12:45:00Z",
+		"start": "2025-08-26T13:00:00Z",
+		"end": "2025-08-26T14:30:00Z"
 	},
 	{
 		"id": "67",
 		"title": "Developer Experience Enhancement",
 		"description": "Design developer tools and IDE integrations for productivity\n-https://github.com/company/devtools/issues/456",
 		"status": "planned",
-		"createdAt": "2025-07-26T14:15:00Z",
-		"start": "2025-07-26T14:30:00Z",
-		"end": "2025-07-26T16:00:00Z"
+		"createdAt": "2025-08-26T14:15:00Z",
+		"start": "2025-08-26T14:30:00Z",
+		"end": "2025-08-26T16:00:00Z"
 	},
 
 	{
@@ -617,45 +617,45 @@
 		"title": "Cybersecurity Leadership Summit",
 		"description": "Lead cybersecurity strategy for enterprise and consumer products\n-Zero-day vulnerability response planning",
 		"status": "planned",
-		"createdAt": "2025-07-27T07:30:00Z",
-		"start": "2025-07-27T08:00:00Z",
-		"end": "2025-07-27T10:00:00Z"
+		"createdAt": "2025-08-27T07:30:00Z",
+		"start": "2025-08-27T08:00:00Z",
+		"end": "2025-08-27T10:00:00Z"
 	},
 	{
 		"id": "69",
 		"title": "Platform Scalability Engineering",
 		"description": "Design auto-scaling systems for variable workloads\n-https://github.com/company/scaling/issues/789",
 		"status": "planned",
-		"createdAt": "2025-07-27T09:45:00Z",
-		"start": "2025-07-27T10:00:00Z",
-		"end": "2025-07-27T11:30:00Z"
+		"createdAt": "2025-08-27T09:45:00Z",
+		"start": "2025-08-27T10:00:00Z",
+		"end": "2025-08-27T11:30:00Z"
 	},
 	{
 		"id": "70",
 		"title": "Technical Standards Committee",
 		"description": "Establish company-wide technical standards and best practices\n-Code quality gates and review processes",
 		"status": "planned",
-		"createdAt": "2025-07-27T11:15:00Z",
-		"start": "2025-07-27T11:30:00Z",
-		"end": "2025-07-27T13:00:00Z"
+		"createdAt": "2025-08-27T11:15:00Z",
+		"start": "2025-08-27T11:30:00Z",
+		"end": "2025-08-27T13:00:00Z"
 	},
 	{
 		"id": "71",
 		"title": "Future Technology Roadmap",
 		"description": "Create 5-year technology vision and strategic roadmap\n-Emerging technology adoption timeline",
 		"status": "planned",
-		"createdAt": "2025-07-27T12:45:00Z",
-		"start": "2025-07-27T13:00:00Z",
-		"end": "2025-07-27T14:30:00Z"
+		"createdAt": "2025-08-27T12:45:00Z",
+		"start": "2025-08-27T13:00:00Z",
+		"end": "2025-08-27T14:30:00Z"
 	},
 	{
 		"id": "72",
 		"title": "Technical Advisory Role",
 		"description": "Provide technical advisory for startup acquisitions\n-Due diligence and integration planning",
 		"status": "planned",
-		"createdAt": "2025-07-27T14:15:00Z",
-		"start": "2025-07-27T14:30:00Z",
-		"end": "2025-07-27T16:00:00Z"
+		"createdAt": "2025-08-27T14:15:00Z",
+		"start": "2025-08-27T14:30:00Z",
+		"end": "2025-08-27T16:00:00Z"
 	},
 
 	{
@@ -663,45 +663,45 @@
 		"title": "Edge Computing Architecture",
 		"description": "Design edge computing solutions for low-latency applications\n-https://github.com/company/edge/issues/234",
 		"status": "planned",
-		"createdAt": "2025-07-28T07:30:00Z",
-		"start": "2025-07-28T08:00:00Z",
-		"end": "2025-07-28T10:00:00Z"
+		"createdAt": "2025-08-28T07:30:00Z",
+		"start": "2025-08-28T08:00:00Z",
+		"end": "2025-08-28T10:00:00Z"
 	},
 	{
 		"id": "74",
 		"title": "Technical Thought Leadership",
 		"description": "Author technical white papers and industry research\n-Prepare for industry conference keynotes",
 		"status": "planned",
-		"createdAt": "2025-07-28T09:45:00Z",
-		"start": "2025-07-28T10:00:00Z",
-		"end": "2025-07-28T11:30:00Z"
+		"createdAt": "2025-08-28T09:45:00Z",
+		"start": "2025-08-28T10:00:00Z",
+		"end": "2025-08-28T11:30:00Z"
 	},
 	{
 		"id": "75",
 		"title": "Platform Integration Strategy",
 		"description": "Design integration patterns for third-party services\n-Webhook and event-driven architecture",
 		"status": "planned",
-		"createdAt": "2025-07-28T11:15:00Z",
-		"start": "2025-07-28T11:30:00Z",
-		"end": "2025-07-28T13:00:00Z"
+		"createdAt": "2025-08-28T11:15:00Z",
+		"start": "2025-08-28T11:30:00Z",
+		"end": "2025-08-28T13:00:00Z"
 	},
 	{
 		"id": "76",
 		"title": "Engineering Organization Design",
 		"description": "Optimize engineering team structure and communication patterns\n-Conway's Law considerations",
 		"status": "planned",
-		"createdAt": "2025-07-28T12:45:00Z",
-		"start": "2025-07-28T13:00:00Z",
-		"end": "2025-07-28T14:30:00Z"
+		"createdAt": "2025-08-28T12:45:00Z",
+		"start": "2025-08-28T13:00:00Z",
+		"end": "2025-08-28T14:30:00Z"
 	},
 	{
 		"id": "77",
 		"title": "Technology Patent Strategy",
 		"description": "Identify patentable innovations and manage IP portfolio\n-Prior art research and patent filing coordination",
 		"status": "planned",
-		"createdAt": "2025-07-28T14:15:00Z",
-		"start": "2025-07-28T14:30:00Z",
-		"end": "2025-07-28T16:00:00Z"
+		"createdAt": "2025-08-28T14:15:00Z",
+		"start": "2025-08-28T14:30:00Z",
+		"end": "2025-08-28T16:00:00Z"
 	},
 
 	{
@@ -709,45 +709,45 @@
 		"title": "Advanced Database Architecture",
 		"description": "Design polyglot persistence strategy for different data patterns\n-https://github.com/company/database/issues/567",
 		"status": "planned",
-		"createdAt": "2025-07-29T07:30:00Z",
-		"start": "2025-07-29T08:00:00Z",
-		"end": "2025-07-29T10:00:00Z"
+		"createdAt": "2025-08-29T07:30:00Z",
+		"start": "2025-08-29T08:00:00Z",
+		"end": "2025-08-29T10:00:00Z"
 	},
 	{
 		"id": "79",
 		"title": "Technical Communication Strategy",
 		"description": "Develop technical communication standards across engineering\n-Documentation templates and review processes",
 		"status": "planned",
-		"createdAt": "2025-07-29T09:45:00Z",
-		"start": "2025-07-29T10:00:00Z",
-		"end": "2025-07-29T11:30:00Z"
+		"createdAt": "2025-08-29T09:45:00Z",
+		"start": "2025-08-29T10:00:00Z",
+		"end": "2025-08-29T11:30:00Z"
 	},
 	{
 		"id": "80",
 		"title": "Performance Engineering Framework",
 		"description": "Establish performance engineering practices and tools\n-Load testing and capacity planning automation",
 		"status": "planned",
-		"createdAt": "2025-07-29T11:15:00Z",
-		"start": "2025-07-29T11:30:00Z",
-		"end": "2025-07-29T13:00:00Z"
+		"createdAt": "2025-08-29T11:15:00Z",
+		"start": "2025-08-29T11:30:00Z",
+		"end": "2025-08-29T13:00:00Z"
 	},
 	{
 		"id": "81",
 		"title": "Technical Mentorship Program",
 		"description": "Design comprehensive mentorship program for engineers\n-Career progression and skill development tracks",
 		"status": "planned",
-		"createdAt": "2025-07-29T12:45:00Z",
-		"start": "2025-07-29T13:00:00Z",
-		"end": "2025-07-29T14:30:00Z"
+		"createdAt": "2025-08-29T12:45:00Z",
+		"start": "2025-08-29T13:00:00Z",
+		"end": "2025-08-29T14:30:00Z"
 	},
 	{
 		"id": "82",
 		"title": "Cloud Native Transformation",
 		"description": "Lead transformation to cloud-native architecture patterns\n-Container orchestration and service mesh implementation",
 		"status": "planned",
-		"createdAt": "2025-07-29T14:15:00Z",
-		"start": "2025-07-29T14:30:00Z",
-		"end": "2025-07-29T16:00:00Z"
+		"createdAt": "2025-08-29T14:15:00Z",
+		"start": "2025-08-29T14:30:00Z",
+		"end": "2025-08-29T16:00:00Z"
 	},
 
 	{
@@ -755,45 +755,45 @@
 		"title": "Technical Vision Alignment",
 		"description": "Align technical vision with business strategy and goals\n-Create technical OKRs and success metrics",
 		"status": "planned",
-		"createdAt": "2025-07-30T07:30:00Z",
-		"start": "2025-07-30T08:00:00Z",
-		"end": "2025-07-30T10:00:00Z"
+		"createdAt": "2025-08-30T07:30:00Z",
+		"start": "2025-08-30T08:00:00Z",
+		"end": "2025-08-30T10:00:00Z"
 	},
 	{
 		"id": "84",
 		"title": "Observability Platform Design",
 		"description": "Design comprehensive observability and monitoring platform\n-https://github.com/company/observability/issues/890",
 		"status": "planned",
-		"createdAt": "2025-07-30T09:45:00Z",
-		"start": "2025-07-30T10:00:00Z",
-		"end": "2025-07-30T11:30:00Z"
+		"createdAt": "2025-08-30T09:45:00Z",
+		"start": "2025-08-30T10:00:00Z",
+		"end": "2025-08-30T11:30:00Z"
 	},
 	{
 		"id": "85",
 		"title": "Technical Debt Strategy Summit",
 		"description": "Quarterly technical debt assessment and prioritization\n-Create debt reduction roadmap for Q4",
 		"status": "planned",
-		"createdAt": "2025-07-30T11:15:00Z",
-		"start": "2025-07-30T11:30:00Z",
-		"end": "2025-07-30T13:00:00Z"
+		"createdAt": "2025-08-30T11:15:00Z",
+		"start": "2025-08-30T11:30:00Z",
+		"end": "2025-08-30T13:00:00Z"
 	},
 	{
 		"id": "86",
 		"title": "Engineering Culture Evolution",
 		"description": "Evolve engineering culture for innovation and excellence\n-Psychological safety and learning organization principles",
 		"status": "planned",
-		"createdAt": "2025-07-30T12:45:00Z",
-		"start": "2025-07-30T13:00:00Z",
-		"end": "2025-07-30T14:30:00Z"
+		"createdAt": "2025-08-30T12:45:00Z",
+		"start": "2025-08-30T13:00:00Z",
+		"end": "2025-08-30T14:30:00Z"
 	},
 	{
 		"id": "87",
 		"title": "Technology Ecosystem Mapping",
 		"description": "Map technology ecosystem and identify integration opportunities\n-Vendor landscape analysis and strategic partnerships",
 		"status": "planned",
-		"createdAt": "2025-07-30T14:15:00Z",
-		"start": "2025-07-30T14:30:00Z",
-		"end": "2025-07-30T16:00:00Z"
+		"createdAt": "2025-08-30T14:15:00Z",
+		"start": "2025-08-30T14:30:00Z",
+		"end": "2025-08-30T16:00:00Z"
 	},
 
 	{
@@ -801,44 +801,44 @@
 		"title": "Technical Excellence Review",
 		"description": "Monthly technical excellence review and team assessment\n-Engineering metrics analysis and improvement planning",
 		"status": "planned",
-		"createdAt": "2025-07-31T07:30:00Z",
-		"start": "2025-07-31T08:00:00Z",
-		"end": "2025-07-31T10:00:00Z"
+		"createdAt": "2025-08-31T07:30:00Z",
+		"start": "2025-08-31T08:00:00Z",
+		"end": "2025-08-31T10:00:00Z"
 	},
 	{
 		"id": "89",
 		"title": "Future Architecture Planning",
 		"description": "Plan next-generation architecture for scalability and performance\n-https://github.com/company/future-arch/issues/123",
 		"status": "planned",
-		"createdAt": "2025-07-31T09:45:00Z",
-		"start": "2025-07-31T10:00:00Z",
-		"end": "2025-07-31T11:30:00Z"
+		"createdAt": "2025-08-31T09:45:00Z",
+		"start": "2025-08-31T10:00:00Z",
+		"end": "2025-08-31T11:30:00Z"
 	},
 	{
 		"id": "90",
 		"title": "Q3 Technical Strategy Finalization",
 		"description": "Finalize Q3 technical strategy and prepare Q4 planning\n-Resource allocation and project prioritization",
 		"status": "planned",
-		"createdAt": "2025-07-31T11:15:00Z",
-		"start": "2025-07-31T11:30:00Z",
-		"end": "2025-07-31T13:00:00Z"
+		"createdAt": "2025-08-31T11:15:00Z",
+		"start": "2025-08-31T11:30:00Z",
+		"end": "2025-08-31T13:00:00Z"
 	},
 	{
 		"id": "91",
 		"title": "Innovation Pipeline Review",
 		"description": "Review innovation pipeline and emerging technology adoption\n-ROI analysis for experimental projects",
 		"status": "planned",
-		"createdAt": "2025-07-31T12:45:00Z",
-		"start": "2025-07-31T13:00:00Z",
-		"end": "2025-07-31T14:30:00Z"
+		"createdAt": "2025-08-31T12:45:00Z",
+		"start": "2025-08-31T13:00:00Z",
+		"end": "2025-08-31T14:30:00Z"
 	},
 	{
 		"id": "92",
 		"title": "Technical Leadership Reflection",
 		"description": "Quarterly reflection on technical leadership and team growth\n-Leadership development planning for Q4",
 		"status": "planned",
-		"createdAt": "2025-07-31T14:15:00Z",
-		"start": "2025-07-31T14:30:00Z",
-		"end": "2025-07-31T16:00:00Z"
+		"createdAt": "2025-08-31T14:15:00Z",
+		"start": "2025-08-31T14:30:00Z",
+		"end": "2025-08-31T16:00:00Z"
 	}
 ]

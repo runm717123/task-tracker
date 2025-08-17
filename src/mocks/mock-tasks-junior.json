@@ -1,1082 +1,1082 @@
 [
-  {
-    "id": "1",
-    "title": "Project Alpha - Feature Implementation",
-    "description": "Implement login page UI\n-https://github.com/company/project-alpha/issues/101",
-    "status": "done",
-    "createdAt": "2025-07-01T08:00:00Z",
-    "start": "2025-07-01T08:00:00Z",
-    "end": "2025-07-01T09:30:00Z"
-  },
-  {
-    "id": "2",
-    "title": "Project Beta - Bug Fix",
-    "description": "Fix navigation bug on dashboard\n-https://github.com/company/project-beta/issues/202",
-    "status": "done",
-    "createdAt": "2025-07-01T09:45:00Z",
-    "start": "2025-07-01T10:00:00Z",
-    "end": "2025-07-01T11:30:00Z"
-  },
-  {
-    "id": "3",
-    "title": "Client Meeting",
-    "description": "Weekly sync with client for Project Alpha requirements clarification",
-    "status": "done",
-    "createdAt": "2025-07-01T12:00:00Z",
-    "start": "2025-07-01T12:00:00Z",
-    "end": "2025-07-01T13:00:00Z"
-  },
-  {
-    "id": "4",
-    "title": "Project Alpha - Code Review",
-    "description": "Review pull request for registration flow\n-https://github.com/company/project-alpha/pull/103",
-    "status": "done",
-    "createdAt": "2025-07-01T13:30:00Z",
-    "start": "2025-07-01T13:30:00Z",
-    "end": "2025-07-01T14:30:00Z"
-  },
-  {
-    "id": "5",
-    "title": "Project Beta - Documentation Update",
-    "description": "Update API documentation for new endpoints",
-    "status": "done",
-    "createdAt": "2025-07-01T15:00:00Z",
-    "start": "2025-07-01T15:00:00Z",
-    "end": "2025-07-01T16:00:00Z"
-  },
-  {
-    "id": "6",
-    "title": "Project Alpha - Feature Implementation",
-    "description": "Implement password reset functionality\n-https://github.com/company/project-alpha/issues/104",
-    "status": "done",
-    "createdAt": "2025-07-02T08:00:00Z",
-    "start": "2025-07-02T08:00:00Z",
-    "end": "2025-07-02T09:30:00Z"
-  },
-  {
-    "id": "7",
-    "title": "Project Beta - UI Enhancement",
-    "description": "Improve dashboard responsiveness\n-https://github.com/company/project-beta/issues/203",
-    "status": "done",
-    "createdAt": "2025-07-02T10:00:00Z",
-    "start": "2025-07-02T10:00:00Z",
-    "end": "2025-07-02T11:30:00Z"
-  },
-  {
-    "id": "8",
-    "title": "Training - Svelte Basics",
-    "description": "Attend online training for Svelte fundamentals",
-    "status": "done",
-    "createdAt": "2025-07-02T12:00:00Z",
-    "start": "2025-07-02T12:00:00Z",
-    "end": "2025-07-02T13:30:00Z"
-  },
-  {
-    "id": "9",
-    "title": "Project Alpha - Code Review",
-    "description": "Review pull request for password reset\n-https://github.com/company/project-alpha/pull/105",
-    "status": "done",
-    "createdAt": "2025-07-02T14:00:00Z",
-    "start": "2025-07-02T14:00:00Z",
-    "end": "2025-07-02T15:00:00Z"
-  },
-  {
-    "id": "10",
-    "title": "Project Beta - Documentation Update",
-    "description": "Update user guide for dashboard features",
-    "status": "done",
-    "createdAt": "2025-07-02T15:30:00Z",
-    "start": "2025-07-02T15:30:00Z",
-    "end": "2025-07-02T16:30:00Z"
-  },
-  {
-    "id": "11",
-    "title": "Project Alpha - Feature Implementation",
-    "description": "Implement user profile page\n-https://github.com/company/project-alpha/issues/107",
-    "status": "done",
-    "createdAt": "2025-07-03T08:00:00Z",
-    "start": "2025-07-03T08:00:00Z",
-    "end": "2025-07-03T09:30:00Z"
-  },
-  {
-    "id": "12",
-    "title": "Project Beta - Bug Fix",
-    "description": "Fix issue with data export\n-https://github.com/company/project-beta/issues/204",
-    "status": "done",
-    "createdAt": "2025-07-03T10:00:00Z",
-    "start": "2025-07-03T10:00:00Z",
-    "end": "2025-07-03T11:30:00Z"
-  },
-  {
-    "id": "13",
-    "title": "Client Meeting",
-    "description": "Weekly sync with client for Project Beta feedback",
-    "status": "done",
-    "createdAt": "2025-07-03T12:00:00Z",
-    "start": "2025-07-03T12:00:00Z",
-    "end": "2025-07-03T13:00:00Z"
-  },
-  {
-    "id": "14",
-    "title": "Project Alpha - Code Review",
-    "description": "Review pull request for profile page\n-https://github.com/company/project-alpha/pull/108",
-    "status": "done",
-    "createdAt": "2025-07-03T14:00:00Z",
-    "start": "2025-07-03T14:00:00Z",
-    "end": "2025-07-03T15:00:00Z"
-  },
-  {
-    "id": "15",
-    "title": "Project Beta - Documentation Update",
-    "description": "Update API documentation for export feature",
-    "status": "done",
-    "createdAt": "2025-07-03T15:30:00Z",
-    "start": "2025-07-03T15:30:00Z",
-    "end": "2025-07-03T16:30:00Z"
-  },
-  {
-    "id": "16",
-    "title": "Project Alpha - Feature Implementation",
-    "description": "Implement notification settings page\n-https://github.com/company/project-alpha/issues/109",
-    "status": "done",
-    "createdAt": "2025-07-04T08:00:00Z",
-    "start": "2025-07-04T08:00:00Z",
-    "end": "2025-07-04T09:30:00Z"
-  },
-  {
-    "id": "17",
-    "title": "Project Beta - Bug Fix",
-    "description": "Fix issue with user avatar upload\n-https://github.com/company/project-beta/issues/205",
-    "status": "done",
-    "createdAt": "2025-07-04T10:00:00Z",
-    "start": "2025-07-04T10:00:00Z",
-    "end": "2025-07-04T11:30:00Z"
-  },
-  {
-    "id": "18",
-    "title": "Client Meeting",
-    "description": "Discuss feedback with client for Project Alpha",
-    "status": "done",
-    "createdAt": "2025-07-04T12:00:00Z",
-    "start": "2025-07-04T12:00:00Z",
-    "end": "2025-07-04T13:00:00Z"
-  },
-  {
-    "id": "19",
-    "title": "Project Alpha - Code Review",
-    "description": "Review pull request for notification settings\n-https://github.com/company/project-alpha/pull/110",
-    "status": "done",
-    "createdAt": "2025-07-04T14:00:00Z",
-    "start": "2025-07-04T14:00:00Z",
-    "end": "2025-07-04T15:00:00Z"
-  },
-  {
-    "id": "20",
-    "title": "Project Beta - Documentation Update",
-    "description": "Update API documentation for avatar upload",
-    "status": "done",
-    "createdAt": "2025-07-04T15:30:00Z",
-    "start": "2025-07-04T15:30:00Z",
-    "end": "2025-07-04T16:30:00Z"
-  },
-  {
-    "id": "21",
-    "title": "Project Alpha - Feature Implementation",
-    "description": "Implement two-factor authentication\n-https://github.com/company/project-alpha/issues/111",
-    "status": "done",
-    "createdAt": "2025-07-07T08:00:00Z",
-    "start": "2025-07-07T08:00:00Z",
-    "end": "2025-07-07T09:30:00Z"
-  },
-  {
-    "id": "22",
-    "title": "Project Beta - Bug Fix",
-    "description": "Fix issue with password reset email\n-https://github.com/company/project-beta/issues/206",
-    "status": "done",
-    "createdAt": "2025-07-07T10:00:00Z",
-    "start": "2025-07-07T10:00:00Z",
-    "end": "2025-07-07T11:30:00Z"
-  },
-  {
-    "id": "23",
-    "title": "Client Meeting",
-    "description": "Weekly sync with client for Project Alpha progress update",
-    "status": "done",
-    "createdAt": "2025-07-07T12:00:00Z",
-    "start": "2025-07-07T12:00:00Z",
-    "end": "2025-07-07T13:00:00Z"
-  },
-  {
-    "id": "24",
-    "title": "Project Alpha - Code Review",
-    "description": "Review pull request for two-factor authentication\n-https://github.com/company/project-alpha/pull/112",
-    "status": "done",
-    "createdAt": "2025-07-07T13:30:00Z",
-    "start": "2025-07-07T13:30:00Z",
-    "end": "2025-07-07T14:30:00Z"
-  },
-  {
-    "id": "25",
-    "title": "Project Beta - Documentation Update",
-    "description": "Update API documentation for password reset feature",
-    "status": "done",
-    "createdAt": "2025-07-07T15:00:00Z",
-    "start": "2025-07-07T15:00:00Z",
-    "end": "2025-07-07T16:00:00Z"
-  },
-  {
-    "id": "26",
-    "title": "Project Alpha - Feature Implementation",
-    "description": "Implement user roles and permissions\n-https://github.com/company/project-alpha/issues/113",
-    "status": "done",
-    "createdAt": "2025-07-08T08:00:00Z",
-    "start": "2025-07-08T08:00:00Z",
-    "end": "2025-07-08T09:30:00Z"
-  },
-  {
-    "id": "27",
-    "title": "Project Beta - UI Enhancement",
-    "description": "Enhance data visualization on dashboard\n-https://github.com/company/project-beta/issues/207",
-    "status": "done",
-    "createdAt": "2025-07-08T10:00:00Z",
-    "start": "2025-07-08T10:00:00Z",
-    "end": "2025-07-08T11:30:00Z"
-  },
-  {
-    "id": "28",
-    "title": "Training - Advanced Svelte",
-    "description": "Attend advanced training for Svelte and TypeScript",
-    "status": "done",
-    "createdAt": "2025-07-08T12:00:00Z",
-    "start": "2025-07-08T12:00:00Z",
-    "end": "2025-07-08T13:30:00Z"
-  },
-  {
-    "id": "29",
-    "title": "Project Alpha - Code Review",
-    "description": "Review pull request for user roles and permissions\n-https://github.com/company/project-alpha/pull/114",
-    "status": "done",
-    "createdAt": "2025-07-08T14:00:00Z",
-    "start": "2025-07-08T14:00:00Z",
-    "end": "2025-07-08T15:00:00Z"
-  },
-  {
-    "id": "30",
-    "title": "Project Beta - Documentation Update",
-    "description": "Update user manual for new dashboard features",
-    "status": "done",
-    "createdAt": "2025-07-08T15:30:00Z",
-    "start": "2025-07-08T15:30:00Z",
-    "end": "2025-07-08T16:30:00Z"
-  },
-  {
-    "id": "31",
-    "title": "Project Alpha - Feature Implementation",
-    "description": "Implement activity log feature\n-https://github.com/company/project-alpha/issues/115",
-    "status": "done",
-    "createdAt": "2025-07-09T08:00:00Z",
-    "start": "2025-07-09T08:00:00Z",
-    "end": "2025-07-09T09:30:00Z"
-  },
-  {
-    "id": "32",
-    "title": "Project Beta - Bug Fix",
-    "description": "Fix issue with chart data not loading\n-https://github.com/company/project-beta/issues/208",
-    "status": "done",
-    "createdAt": "2025-07-09T10:00:00Z",
-    "start": "2025-07-09T10:00:00Z",
-    "end": "2025-07-09T11:30:00Z"
-  },
-  {
-    "id": "33",
-    "title": "Client Meeting",
-    "description": "Weekly sync with client for Project Alpha and Beta updates",
-    "status": "done",
-    "createdAt": "2025-07-09T12:00:00Z",
-    "start": "2025-07-09T12:00:00Z",
-    "end": "2025-07-09T13:00:00Z"
-  },
-  {
-    "id": "34",
-    "title": "Project Alpha - Code Review",
-    "description": "Review pull request for activity log feature\n-https://github.com/company/project-alpha/pull/116",
-    "status": "done",
-    "createdAt": "2025-07-09T13:30:00Z",
-    "start": "2025-07-09T13:30:00Z",
-    "end": "2025-07-09T14:30:00Z"
-  },
-  {
-    "id": "35",
-    "title": "Project Beta - Documentation Update",
-    "description": "Update API documentation for chart feature",
-    "status": "done",
-    "createdAt": "2025-07-09T15:00:00Z",
-    "start": "2025-07-09T15:00:00Z",
-    "end": "2025-07-09T16:00:00Z"
-  },
-  {
-    "id": "36",
-    "title": "Project Alpha - Feature Implementation",
-    "description": "Implement export data feature\n-https://github.com/company/project-alpha/issues/117",
-    "status": "done",
-    "createdAt": "2025-07-10T08:00:00Z",
-    "start": "2025-07-10T08:00:00Z",
-    "end": "2025-07-10T09:30:00Z"
-  },
-  {
-    "id": "37",
-    "title": "Project Beta - UI Enhancement",
-    "description": "Redesign export data page on dashboard\n-https://github.com/company/project-beta/issues/209",
-    "status": "done",
-    "createdAt": "2025-07-10T10:00:00Z",
-    "start": "2025-07-10T10:00:00Z",
-    "end": "2025-07-10T11:30:00Z"
-  },
-  {
-    "id": "38",
-    "title": "Training - Svelte and TypeScript",
-    "description": "Complete training on Svelte with TypeScript integration",
-    "status": "done",
-    "createdAt": "2025-07-10T12:00:00Z",
-    "start": "2025-07-10T12:00:00Z",
-    "end": "2025-07-10T13:30:00Z"
-  },
-  {
-    "id": "39",
-    "title": "Project Alpha - Code Review",
-    "description": "Review pull request for export data feature\n-https://github.com/company/project-alpha/pull/118",
-    "status": "done",
-    "createdAt": "2025-07-10T14:00:00Z",
-    "start": "2025-07-10T14:00:00Z",
-    "end": "2025-07-10T15:00:00Z"
-  },
-  {
-    "id": "40",
-    "title": "Project Beta - Documentation Update",
-    "description": "Update user guide for export data features",
-    "status": "done",
-    "createdAt": "2025-07-10T15:30:00Z",
-    "start": "2025-07-10T15:30:00Z",
-    "end": "2025-07-10T16:30:00Z"
-  },
-  {
-    "id": "41",
-    "title": "Project Alpha - Feature Implementation",
-    "description": "Implement import data feature\n-https://github.com/company/project-alpha/issues/119",
-    "status": "done",
-    "createdAt": "2025-07-11T08:00:00Z",
-    "start": "2025-07-11T08:00:00Z",
-    "end": "2025-07-11T09:30:00Z"
-  },
-  {
-    "id": "42",
-    "title": "Project Beta - Bug Fix",
-    "description": "Fix issue with import data functionality\n-https://github.com/company/project-beta/issues/210",
-    "status": "done",
-    "createdAt": "2025-07-11T10:00:00Z",
-    "start": "2025-07-11T10:00:00Z",
-    "end": "2025-07-11T11:30:00Z"
-  },
-  {
-    "id": "43",
-    "title": "Client Meeting",
-    "description": "Weekly sync with client for Project Alpha and Beta",
-    "status": "done",
-    "createdAt": "2025-07-11T12:00:00Z",
-    "start": "2025-07-11T12:00:00Z",
-    "end": "2025-07-11T13:00:00Z"
-  },
-  {
-    "id": "44",
-    "title": "Project Alpha - Code Review",
-    "description": "Review pull request for import data feature\n-https://github.com/company/project-alpha/pull/120",
-    "status": "done",
-    "createdAt": "2025-07-11T13:30:00Z",
-    "start": "2025-07-11T13:30:00Z",
-    "end": "2025-07-11T14:30:00Z"
-  },
-  {
-    "id": "45",
-    "title": "Project Beta - Documentation Update",
-    "description": "Update API documentation for import data feature",
-    "status": "done",
-    "createdAt": "2025-07-11T15:00:00Z",
-    "start": "2025-07-11T15:00:00Z",
-    "end": "2025-07-11T16:00:00Z"
-  },
-  {
-    "id": "46",
-    "title": "Project Alpha - Feature Implementation",
-    "description": "Implement data synchronization feature\n-https://github.com/company/project-alpha/issues/120",
-    "status": "done",
-    "createdAt": "2025-07-14T08:00:00Z",
-    "start": "2025-07-14T08:00:00Z",
-    "end": "2025-07-14T09:30:00Z"
-  },
-  {
-    "id": "47",
-    "title": "Project Beta - UI Enhancement",
-    "description": "Improve UI for data synchronization status\n-https://github.com/company/project-beta/issues/211",
-    "status": "done",
-    "createdAt": "2025-07-14T10:00:00Z",
-    "start": "2025-07-14T10:00:00Z",
-    "end": "2025-07-14T11:30:00Z"
-  },
-  {
-    "id": "48",
-    "title": "Training - Svelte and Advanced Topics",
-    "description": "Online course on Svelte advanced patterns and TypeScript",
-    "status": "done",
-    "createdAt": "2025-07-14T12:00:00Z",
-    "start": "2025-07-14T12:00:00Z",
-    "end": "2025-07-14T13:30:00Z"
-  },
-  {
-    "id": "49",
-    "title": "Project Alpha - Code Review",
-    "description": "Review pull request for data synchronization feature\n-https://github.com/company/project-alpha/pull/121",
-    "status": "done",
-    "createdAt": "2025-07-14T14:00:00Z",
-    "start": "2025-07-14T14:00:00Z",
-    "end": "2025-07-14T15:00:00Z"
-  },
-  {
-    "id": "50",
-    "title": "Project Beta - Documentation Update",
-    "description": "Update user documentation for data synchronization",
-    "status": "done",
-    "createdAt": "2025-07-14T15:30:00Z",
-    "start": "2025-07-14T15:30:00Z",
-    "end": "2025-07-14T16:30:00Z"
-  },
-  {
-    "id": "51",
-    "title": "Project Alpha - Feature Implementation",
-    "description": "Implement data backup and restore feature\n-https://github.com/company/project-alpha/issues/121",
-    "status": "done",
-    "createdAt": "2025-07-15T08:00:00Z",
-    "start": "2025-07-15T08:00:00Z",
-    "end": "2025-07-15T09:30:00Z"
-  },
-  {
-    "id": "52",
-    "title": "Project Beta - Bug Fix",
-    "description": "Fix issue with data backup functionality\n-https://github.com/company/project-beta/issues/212",
-    "status": "done",
-    "createdAt": "2025-07-15T10:00:00Z",
-    "start": "2025-07-15T10:00:00Z",
-    "end": "2025-07-15T11:30:00Z"
-  },
-  {
-    "id": "53",
-    "title": "Client Meeting",
-    "description": "Weekly sync with client for Project Alpha and Beta",
-    "status": "done",
-    "createdAt": "2025-07-15T12:00:00Z",
-    "start": "2025-07-15T12:00:00Z",
-    "end": "2025-07-15T13:00:00Z"
-  },
-  {
-    "id": "54",
-    "title": "Project Alpha - Code Review",
-    "description": "Review pull request for data backup and restore feature\n-https://github.com/company/project-alpha/pull/122",
-    "status": "done",
-    "createdAt": "2025-07-15T13:30:00Z",
-    "start": "2025-07-15T13:30:00Z",
-    "end": "2025-07-15T14:30:00Z"
-  },
-  {
-    "id": "55",
-    "title": "Project Beta - Documentation Update",
-    "description": "Update API documentation for data backup feature",
-    "status": "done",
-    "createdAt": "2025-07-15T15:00:00Z",
-    "start": "2025-07-15T15:00:00Z",
-    "end": "2025-07-15T16:00:00Z"
-  },
-  {
-    "id": "56",
-    "title": "Project Alpha - Feature Implementation",
-    "description": "Implement user activity tracking\n-https://github.com/company/project-alpha/issues/122",
-    "status": "done",
-    "createdAt": "2025-07-16T08:00:00Z",
-    "start": "2025-07-16T08:00:00Z",
-    "end": "2025-07-16T09:30:00Z"
-  },
-  {
-    "id": "57",
-    "title": "Project Beta - UI Enhancement",
-    "description": "Enhance user profile and activity pages\n-https://github.com/company/project-beta/issues/213",
-    "status": "done",
-    "createdAt": "2025-07-16T10:00:00Z",
-    "start": "2025-07-16T10:00:00Z",
-    "end": "2025-07-16T11:30:00Z"
-  },
-  {
-    "id": "58",
-    "title": "Training - Svelte Advanced Patterns",
-    "description": "Deep dive into Svelte advanced patterns and best practices",
-    "status": "done",
-    "createdAt": "2025-07-16T12:00:00Z",
-    "start": "2025-07-16T12:00:00Z",
-    "end": "2025-07-16T13:30:00Z"
-  },
-  {
-    "id": "59",
-    "title": "Project Alpha - Code Review",
-    "description": "Review pull request for user activity tracking\n-https://github.com/company/project-alpha/pull/123",
-    "status": "done",
-    "createdAt": "2025-07-16T14:00:00Z",
-    "start": "2025-07-16T14:00:00Z",
-    "end": "2025-07-16T15:00:00Z"
-  },
-  {
-    "id": "60",
-    "title": "Project Beta - Documentation Update",
-    "description": "Update user manual for activity tracking features",
-    "status": "done",
-    "createdAt": "2025-07-16T15:30:00Z",
-    "start": "2025-07-16T15:30:00Z",
-    "end": "2025-07-16T16:30:00Z"
-  },
-  {
-    "id": "61",
-    "title": "Project Alpha - Feature Implementation",
-    "description": "Implement real-time data sync\n-https://github.com/company/project-alpha/issues/123",
-    "status": "done",
-    "createdAt": "2025-07-17T08:00:00Z",
-    "start": "2025-07-17T08:00:00Z",
-    "end": "2025-07-17T09:30:00Z"
-  },
-  {
-    "id": "62",
-    "title": "Project Beta - Bug Fix",
-    "description": "Fix issue with real-time data not updating\n-https://github.com/company/project-beta/issues/214",
-    "status": "done",
-    "createdAt": "2025-07-17T10:00:00Z",
-    "start": "2025-07-17T10:00:00Z",
-    "end": "2025-07-17T11:30:00Z"
-  },
-  {
-    "id": "63",
-    "title": "Client Meeting",
-    "description": "Weekly sync with client for Project Alpha and Beta",
-    "status": "done",
-    "createdAt": "2025-07-17T12:00:00Z",
-    "start": "2025-07-17T12:00:00Z",
-    "end": "2025-07-17T13:00:00Z"
-  },
-  {
-    "id": "64",
-    "title": "Project Alpha - Code Review",
-    "description": "Review pull request for real-time data sync\n-https://github.com/company/project-alpha/pull/124",
-    "status": "done",
-    "createdAt": "2025-07-17T13:30:00Z",
-    "start": "2025-07-17T13:30:00Z",
-    "end": "2025-07-17T14:30:00Z"
-  },
-  {
-    "id": "65",
-    "title": "Project Beta - Documentation Update",
-    "description": "Update API documentation for real-time data features",
-    "status": "done",
-    "createdAt": "2025-07-17T15:00:00Z",
-    "start": "2025-07-17T15:00:00Z",
-    "end": "2025-07-17T16:00:00Z"
-  },
-  {
-    "id": "66",
-    "title": "Project Alpha - Feature Implementation",
-    "description": "Implement data export to CSV\n-https://github.com/company/project-alpha/issues/124",
-    "status": "done",
-    "createdAt": "2025-07-18T08:00:00Z",
-    "start": "2025-07-18T08:00:00Z",
-    "end": "2025-07-18T09:30:00Z"
-  },
-  {
-    "id": "67",
-    "title": "Project Beta - UI Enhancement",
-    "description": "Improve CSV export functionality and UI\n-https://github.com/company/project-beta/issues/215",
-    "status": "done",
-    "createdAt": "2025-07-18T10:00:00Z",
-    "start": "2025-07-18T10:00:00Z",
-    "end": "2025-07-18T11:30:00Z"
-  },
-  {
-    "id": "68",
-    "title": "Training - Svelte and Data Handling",
-    "description": "Workshop on handling data in Svelte applications",
-    "status": "done",
-    "createdAt": "2025-07-18T12:00:00Z",
-    "start": "2025-07-18T12:00:00Z",
-    "end": "2025-07-18T13:30:00Z"
-  },
-  {
-    "id": "69",
-    "title": "Project Alpha - Code Review",
-    "description": "Review pull request for data export to CSV\n-https://github.com/company/project-alpha/pull/125",
-    "status": "done",
-    "createdAt": "2025-07-18T14:00:00Z",
-    "start": "2025-07-18T14:00:00Z",
-    "end": "2025-07-18T15:00:00Z"
-  },
-  {
-    "id": "70",
-    "title": "Project Beta - Documentation Update",
-    "description": "Update user guide for CSV export feature",
-    "status": "done",
-    "createdAt": "2025-07-18T15:30:00Z",
-    "start": "2025-07-18T15:30:00Z",
-    "end": "2025-07-18T16:30:00Z"
-  },
-  {
-    "id": "71",
-    "title": "Project Alpha - Feature Implementation",
-    "description": "Implement data import from CSV\n-https://github.com/company/project-alpha/issues/125",
-    "status": "done",
-    "createdAt": "2025-07-19T08:00:00Z",
-    "start": "2025-07-19T08:00:00Z",
-    "end": "2025-07-19T09:30:00Z"
-  },
-  {
-    "id": "72",
-    "title": "Project Beta - Bug Fix",
-    "description": "Fix issue with data import functionality\n-https://github.com/company/project-beta/issues/216",
-    "status": "done",
-    "createdAt": "2025-07-19T10:00:00Z",
-    "start": "2025-07-19T10:00:00Z",
-    "end": "2025-07-19T11:30:00Z"
-  },
-  {
-    "id": "73",
-    "title": "Client Meeting",
-    "description": "Weekly sync with client for Project Alpha and Beta",
-    "status": "done",
-    "createdAt": "2025-07-19T12:00:00Z",
-    "start": "2025-07-19T12:00:00Z",
-    "end": "2025-07-19T13:00:00Z"
-  },
-  {
-    "id": "74",
-    "title": "Project Alpha - Code Review",
-    "description": "Review pull request for data import from CSV\n-https://github.com/company/project-alpha/pull/126",
-    "status": "done",
-    "createdAt": "2025-07-19T13:30:00Z",
-    "start": "2025-07-19T13:30:00Z",
-    "end": "2025-07-19T14:30:00Z"
-  },
-  {
-    "id": "75",
-    "title": "Project Beta - Documentation Update",
-    "description": "Update API documentation for data import feature",
-    "status": "done",
-    "createdAt": "2025-07-19T15:00:00Z",
-    "start": "2025-07-19T15:00:00Z",
-    "end": "2025-07-19T16:00:00Z"
-  },
-  {
-    "id": "76",
-    "title": "Project Alpha - Feature Implementation",
-    "description": "Implement data visualization enhancements\n-https://github.com/company/project-alpha/issues/126",
-    "status": "done",
-    "createdAt": "2025-07-21T08:00:00Z",
-    "start": "2025-07-21T08:00:00Z",
-    "end": "2025-07-21T09:30:00Z"
-  },
-  {
-    "id": "77",
-    "title": "Project Beta - UI Enhancement",
-    "description": "Enhance data charts and graphs on dashboard\n-https://github.com/company/project-beta/issues/217",
-    "status": "done",
-    "createdAt": "2025-07-21T10:00:00Z",
-    "start": "2025-07-21T10:00:00Z",
-    "end": "2025-07-21T11:30:00Z"
-  },
-  {
-    "id": "78",
-    "title": "Training - Svelte and Data Visualization",
-    "description": "Workshop on data visualization techniques in Svelte",
-    "status": "done",
-    "createdAt": "2025-07-21T12:00:00Z",
-    "start": "2025-07-21T12:00:00Z",
-    "end": "2025-07-21T13:30:00Z"
-  },
-  {
-    "id": "79",
-    "title": "Project Alpha - Code Review",
-    "description": "Review pull request for data visualization enhancements\n-https://github.com/company/project-alpha/pull/127",
-    "status": "done",
-    "createdAt": "2025-07-21T14:00:00Z",
-    "start": "2025-07-21T14:00:00Z",
-    "end": "2025-07-21T15:00:00Z"
-  },
-  {
-    "id": "80",
-    "title": "Project Beta - Documentation Update",
-    "description": "Update user guide for data visualization features",
-    "status": "done",
-    "createdAt": "2025-07-21T15:30:00Z",
-    "start": "2025-07-21T15:30:00Z",
-    "end": "2025-07-21T16:30:00Z"
-  },
-  {
-    "id": "81",
-    "title": "Project Alpha - Feature Implementation",
-    "description": "Implement user feedback system\n-https://github.com/company/project-alpha/issues/127",
-    "status": "done",
-    "createdAt": "2025-07-22T08:00:00Z",
-    "start": "2025-07-22T08:00:00Z",
-    "end": "2025-07-22T09:30:00Z"
-  },
-  {
-    "id": "82",
-    "title": "Project Beta - Bug Fix",
-    "description": "Fix issue with feedback form submission\n-https://github.com/company/project-beta/issues/218",
-    "status": "done",
-    "createdAt": "2025-07-22T10:00:00Z",
-    "start": "2025-07-22T10:00:00Z",
-    "end": "2025-07-22T11:30:00Z"
-  },
-  {
-    "id": "83",
-    "title": "Client Meeting",
-    "description": "Weekly sync with client for Project Alpha and Beta",
-    "status": "done",
-    "createdAt": "2025-07-22T12:00:00Z",
-    "start": "2025-07-22T12:00:00Z",
-    "end": "2025-07-22T13:00:00Z"
-  },
-  {
-    "id": "84",
-    "title": "Project Alpha - Code Review",
-    "description": "Review pull request for user feedback system\n-https://github.com/company/project-alpha/pull/128",
-    "status": "done",
-    "createdAt": "2025-07-22T13:30:00Z",
-    "start": "2025-07-22T13:30:00Z",
-    "end": "2025-07-22T14:30:00Z"
-  },
-  {
-    "id": "85",
-    "title": "Project Beta - Documentation Update",
-    "description": "Update API documentation for feedback system",
-    "status": "done",
-    "createdAt": "2025-07-22T15:00:00Z",
-    "start": "2025-07-22T15:00:00Z",
-    "end": "2025-07-22T16:00:00Z"
-  },
-  {
-    "id": "86",
-    "title": "Project Alpha - Feature Implementation",
-    "description": "Implement user onboarding flow\n-https://github.com/company/project-alpha/issues/128",
-    "status": "done",
-    "createdAt": "2025-07-23T08:00:00Z",
-    "start": "2025-07-23T08:00:00Z",
-    "end": "2025-07-23T09:30:00Z"
-  },
-  {
-    "id": "87",
-    "title": "Project Beta - UI Enhancement",
-    "description": "Improve onboarding experience on dashboard\n-https://github.com/company/project-beta/issues/219",
-    "status": "done",
-    "createdAt": "2025-07-23T10:00:00Z",
-    "start": "2025-07-23T10:00:00Z",
-    "end": "2025-07-23T11:30:00Z"
-  },
-  {
-    "id": "88",
-    "title": "Training - Svelte and User Experience",
-    "description": "Course on enhancing user experience with Svelte",
-    "status": "done",
-    "createdAt": "2025-07-23T12:00:00Z",
-    "start": "2025-07-23T12:00:00Z",
-    "end": "2025-07-23T13:30:00Z"
-  },
-  {
-    "id": "89",
-    "title": "Project Alpha - Code Review",
-    "description": "Review pull request for user onboarding flow\n-https://github.com/company/project-alpha/pull/129",
-    "status": "done",
-    "createdAt": "2025-07-23T14:00:00Z",
-    "start": "2025-07-23T14:00:00Z",
-    "end": "2025-07-23T15:00:00Z"
-  },
-  {
-    "id": "90",
-    "title": "Project Beta - Documentation Update",
-    "description": "Update user manual for onboarding features",
-    "status": "done",
-    "createdAt": "2025-07-23T15:30:00Z",
-    "start": "2025-07-23T15:30:00Z",
-    "end": "2025-07-23T16:30:00Z"
-  },
-  {
-    "id": "91",
-    "title": "Project Alpha - Feature Implementation",
-    "description": "Implement user settings management\n-https://github.com/company/project-alpha/issues/129",
-    "status": "done",
-    "createdAt": "2025-07-24T08:00:00Z",
-    "start": "2025-07-24T08:00:00Z",
-    "end": "2025-07-24T09:30:00Z"
-  },
-  {
-    "id": "92",
-    "title": "Project Beta - Bug Fix",
-    "description": "Fix issue with user settings not saving\n-https://github.com/company/project-beta/issues/220",
-    "status": "done",
-    "createdAt": "2025-07-24T10:00:00Z",
-    "start": "2025-07-24T10:00:00Z",
-    "end": "2025-07-24T11:30:00Z"
-  },
-  {
-    "id": "93",
-    "title": "Client Meeting",
-    "description": "Weekly sync with client for Project Alpha and Beta",
-    "status": "done",
-    "createdAt": "2025-07-24T12:00:00Z",
-    "start": "2025-07-24T12:00:00Z",
-    "end": "2025-07-24T13:00:00Z"
-  },
-  {
-    "id": "94",
-    "title": "Project Alpha - Code Review",
-    "description": "Review pull request for user settings management\n-https://github.com/company/project-alpha/pull/130",
-    "status": "done",
-    "createdAt": "2025-07-24T13:30:00Z",
-    "start": "2025-07-24T13:30:00Z",
-    "end": "2025-07-24T14:30:00Z"
-  },
-  {
-    "id": "95",
-    "title": "Project Beta - Documentation Update",
-    "description": "Update API documentation for user settings feature",
-    "status": "done",
-    "createdAt": "2025-07-24T15:00:00Z",
-    "start": "2025-07-24T15:00:00Z",
-    "end": "2025-07-24T16:00:00Z"
-  },
-  {
-    "id": "96",
-    "title": "Project Alpha - Feature Implementation",
-    "description": "Implement user logout functionality\n-https://github.com/company/project-alpha/issues/130",
-    "status": "done",
-    "createdAt": "2025-07-25T08:00:00Z",
-    "start": "2025-07-25T08:00:00Z",
-    "end": "2025-07-25T09:30:00Z"
-  },
-  {
-    "id": "97",
-    "title": "Project Beta - UI Enhancement",
-    "description": "Improve logout process and UI\n-https://github.com/company/project-beta/issues/221",
-    "status": "done",
-    "createdAt": "2025-07-25T10:00:00Z",
-    "start": "2025-07-25T10:00:00Z",
-    "end": "2025-07-25T11:30:00Z"
-  },
-  {
-    "id": "98",
-    "title": "Training - Svelte and User Management",
-    "description": "Course on managing user sessions and data in Svelte",
-    "status": "done",
-    "createdAt": "2025-07-25T12:00:00Z",
-    "start": "2025-07-25T12:00:00Z",
-    "end": "2025-07-25T13:30:00Z"
-  },
-  {
-    "id": "99",
-    "title": "Project Alpha - Code Review",
-    "description": "Review pull request for user logout functionality\n-https://github.com/company/project-alpha/pull/131",
-    "status": "done",
-    "createdAt": "2025-07-25T14:00:00Z",
-    "start": "2025-07-25T14:00:00Z",
-    "end": "2025-07-25T15:00:00Z"
-  },
-  {
-    "id": "100",
-    "title": "Project Beta - Documentation Update",
-    "description": "Update user guide for logout feature",
-    "status": "done",
-    "createdAt": "2025-07-25T15:30:00Z",
-    "start": "2025-07-25T15:30:00Z",
-    "end": "2025-07-25T16:30:00Z"
-  },
-  {
-    "id": "101",
-    "title": "Project Alpha - Feature Implementation",
-    "description": "Implement session expiration handling\n-https://github.com/company/project-alpha/issues/131",
-    "status": "done",
-    "createdAt": "2025-07-28T08:00:00Z",
-    "start": "2025-07-28T08:00:00Z",
-    "end": "2025-07-28T09:30:00Z"
-  },
-  {
-    "id": "102",
-    "title": "Project Beta - Bug Fix",
-    "description": "Fix issue with session expiration not triggering\n-https://github.com/company/project-beta/issues/222",
-    "status": "done",
-    "createdAt": "2025-07-28T10:00:00Z",
-    "start": "2025-07-28T10:00:00Z",
-    "end": "2025-07-28T11:30:00Z"
-  },
-  {
-    "id": "103",
-    "title": "Client Meeting",
-    "description": "Weekly sync with client for Project Alpha and Beta",
-    "status": "done",
-    "createdAt": "2025-07-28T12:00:00Z",
-    "start": "2025-07-28T12:00:00Z",
-    "end": "2025-07-28T13:00:00Z"
-  },
-  {
-    "id": "104",
-    "title": "Project Alpha - Code Review",
-    "description": "Review pull request for session expiration handling\n-https://github.com/company/project-alpha/pull/132",
-    "status": "done",
-    "createdAt": "2025-07-28T13:30:00Z",
-    "start": "2025-07-28T13:30:00Z",
-    "end": "2025-07-28T14:30:00Z"
-  },
-  {
-    "id": "105",
-    "title": "Project Beta - Documentation Update",
-    "description": "Update API documentation for session management",
-    "status": "done",
-    "createdAt": "2025-07-28T15:00:00Z",
-    "start": "2025-07-28T15:00:00Z",
-    "end": "2025-07-28T16:00:00Z"
-  },
-  {
-    "id": "106",
-    "title": "Project Alpha - Feature Implementation",
-    "description": "Implement user role management\n-https://github.com/company/project-alpha/issues/132",
-    "status": "done",
-    "createdAt": "2025-07-29T08:00:00Z",
-    "start": "2025-07-29T08:00:00Z",
-    "end": "2025-07-29T09:30:00Z"
-  },
-  {
-    "id": "107",
-    "title": "Project Beta - UI Enhancement",
-    "description": "Enhance role management UI on dashboard\n-https://github.com/company/project-beta/issues/223",
-    "status": "done",
-    "createdAt": "2025-07-29T10:00:00Z",
-    "start": "2025-07-29T10:00:00Z",
-    "end": "2025-07-29T11:30:00Z"
-  },
-  {
-    "id": "108",
-    "title": "Training - Svelte and Role Management",
-    "description": "Course on managing user roles and permissions in Svelte",
-    "status": "done",
-    "createdAt": "2025-07-29T12:00:00Z",
-    "start": "2025-07-29T12:00:00Z",
-    "end": "2025-07-29T13:30:00Z"
-  },
-  {
-    "id": "109",
-    "title": "Project Alpha - Code Review",
-    "description": "Review pull request for user role management\n-https://github.com/company/project-alpha/pull/133",
-    "status": "done",
-    "createdAt": "2025-07-29T14:00:00Z",
-    "start": "2025-07-29T14:00:00Z",
-    "end": "2025-07-29T15:00:00Z"
-  },
-  {
-    "id": "110",
-    "title": "Project Beta - Documentation Update",
-    "description": "Update user manual for role management features",
-    "status": "done",
-    "createdAt": "2025-07-29T15:30:00Z",
-    "start": "2025-07-29T15:30:00Z",
-    "end": "2025-07-29T16:30:00Z"
-  },
-  {
-    "id": "111",
-    "title": "Project Alpha - Feature Implementation",
-    "description": "Implement user activity log\n-https://github.com/company/project-alpha/issues/133",
-    "status": "done",
-    "createdAt": "2025-07-30T08:00:00Z",
-    "start": "2025-07-30T08:00:00Z",
-    "end": "2025-07-30T09:30:00Z"
-  },
-  {
-    "id": "112",
-    "title": "Project Beta - Bug Fix",
-    "description": "Fix issue with activity log not displaying\n-https://github.com/company/project-beta/issues/224",
-    "status": "done",
-    "createdAt": "2025-07-30T10:00:00Z",
-    "start": "2025-07-30T10:00:00Z",
-    "end": "2025-07-30T11:30:00Z"
-  },
-  {
-    "id": "113",
-    "title": "Client Meeting",
-    "description": "Weekly sync with client for Project Alpha and Beta",
-    "status": "done",
-    "createdAt": "2025-07-30T12:00:00Z",
-    "start": "2025-07-30T12:00:00Z",
-    "end": "2025-07-30T13:00:00Z"
-  },
-  {
-    "id": "114",
-    "title": "Project Alpha - Code Review",
-    "description": "Review pull request for user activity log\n-https://github.com/company/project-alpha/pull/134",
-    "status": "done",
-    "createdAt": "2025-07-30T13:30:00Z",
-    "start": "2025-07-30T13:30:00Z",
-    "end": "2025-07-30T14:30:00Z"
-  },
-  {
-    "id": "115",
-    "title": "Project Beta - Documentation Update",
-    "description": "Update API documentation for activity log feature",
-    "status": "done",
-    "createdAt": "2025-07-30T15:00:00Z",
-    "start": "2025-07-30T15:00:00Z",
-    "end": "2025-07-30T16:00:00Z"
-  },
-  {
-    "id": "116",
-    "title": "Project Alpha - Feature Implementation",
-    "description": "Implement data retention policy\n-https://github.com/company/project-alpha/issues/134",
-    "status": "done",
-    "createdAt": "2025-07-31T08:00:00Z",
-    "start": "2025-07-31T08:00:00Z",
-    "end": "2025-07-31T09:30:00Z"
-  },
-  {
-    "id": "117",
-    "title": "Project Beta - UI Enhancement",
-    "description": "Enhance data retention settings UI\n-https://github.com/company/project-beta/issues/225",
-    "status": "done",
-    "createdAt": "2025-07-31T10:00:00Z",
-    "start": "2025-07-31T10:00:00Z",
-    "end": "2025-07-31T11:30:00Z"
-  },
-  {
-    "id": "118",
-    "title": "Training - Svelte and Data Policies",
-    "description": "Workshop on implementing data policies in Svelte",
-    "status": "done",
-    "createdAt": "2025-07-31T12:00:00Z",
-    "start": "2025-07-31T12:00:00Z",
-    "end": "2025-07-31T13:30:00Z"
-  },
-  {
-    "id": "119",
-    "title": "Project Alpha - Code Review",
-    "description": "Review pull request for data retention policy\n-https://github.com/company/project-alpha/pull/135",
-    "status": "done",
-    "createdAt": "2025-07-31T14:00:00Z",
-    "start": "2025-07-31T14:00:00Z",
-    "end": "2025-07-31T15:00:00Z"
-  },
-  {
-    "id": "120",
-    "title": "Project Beta - Documentation Update",
-    "description": "Update user guide for data retention features",
-    "status": "done",
-    "createdAt": "2025-07-31T15:30:00Z",
-    "start": "2025-07-31T15:30:00Z",
-    "end": "2025-07-31T16:30:00Z"
-  }
+	{
+		"id": "1",
+		"title": "Project Alpha - Feature Implementation",
+		"description": "Implement login page UI\n-https://github.com/company/project-alpha/issues/101",
+		"status": "done",
+		"createdAt": "2025-08-01T08:00:00Z",
+		"start": "2025-08-01T08:00:00Z",
+		"end": "2025-08-01T09:30:00Z"
+	},
+	{
+		"id": "2",
+		"title": "Project Beta - Bug Fix",
+		"description": "Fix navigation bug on dashboard\n-https://github.com/company/project-beta/issues/202",
+		"status": "done",
+		"createdAt": "2025-08-01T09:45:00Z",
+		"start": "2025-08-01T10:00:00Z",
+		"end": "2025-08-01T11:30:00Z"
+	},
+	{
+		"id": "3",
+		"title": "Client Meeting",
+		"description": "Weekly sync with client for Project Alpha requirements clarification",
+		"status": "done",
+		"createdAt": "2025-08-01T12:00:00Z",
+		"start": "2025-08-01T12:00:00Z",
+		"end": "2025-08-01T13:00:00Z"
+	},
+	{
+		"id": "4",
+		"title": "Project Alpha - Code Review",
+		"description": "Review pull request for registration flow\n-https://github.com/company/project-alpha/pull/103",
+		"status": "done",
+		"createdAt": "2025-08-01T13:30:00Z",
+		"start": "2025-08-01T13:30:00Z",
+		"end": "2025-08-01T14:30:00Z"
+	},
+	{
+		"id": "5",
+		"title": "Project Beta - Documentation Update",
+		"description": "Update API documentation for new endpoints",
+		"status": "done",
+		"createdAt": "2025-08-01T15:00:00Z",
+		"start": "2025-08-01T15:00:00Z",
+		"end": "2025-08-01T16:00:00Z"
+	},
+	{
+		"id": "6",
+		"title": "Project Alpha - Feature Implementation",
+		"description": "Implement password reset functionality\n-https://github.com/company/project-alpha/issues/104",
+		"status": "done",
+		"createdAt": "2025-08-02T08:00:00Z",
+		"start": "2025-08-02T08:00:00Z",
+		"end": "2025-08-02T09:30:00Z"
+	},
+	{
+		"id": "7",
+		"title": "Project Beta - UI Enhancement",
+		"description": "Improve dashboard responsiveness\n-https://github.com/company/project-beta/issues/203",
+		"status": "done",
+		"createdAt": "2025-08-02T10:00:00Z",
+		"start": "2025-08-02T10:00:00Z",
+		"end": "2025-08-02T11:30:00Z"
+	},
+	{
+		"id": "8",
+		"title": "Training - Svelte Basics",
+		"description": "Attend online training for Svelte fundamentals",
+		"status": "done",
+		"createdAt": "2025-08-02T12:00:00Z",
+		"start": "2025-08-02T12:00:00Z",
+		"end": "2025-08-02T13:30:00Z"
+	},
+	{
+		"id": "9",
+		"title": "Project Alpha - Code Review",
+		"description": "Review pull request for password reset\n-https://github.com/company/project-alpha/pull/105",
+		"status": "done",
+		"createdAt": "2025-08-02T14:00:00Z",
+		"start": "2025-08-02T14:00:00Z",
+		"end": "2025-08-02T15:00:00Z"
+	},
+	{
+		"id": "10",
+		"title": "Project Beta - Documentation Update",
+		"description": "Update user guide for dashboard features",
+		"status": "done",
+		"createdAt": "2025-08-02T15:30:00Z",
+		"start": "2025-08-02T15:30:00Z",
+		"end": "2025-08-02T16:30:00Z"
+	},
+	{
+		"id": "11",
+		"title": "Project Alpha - Feature Implementation",
+		"description": "Implement user profile page\n-https://github.com/company/project-alpha/issues/107",
+		"status": "done",
+		"createdAt": "2025-08-03T08:00:00Z",
+		"start": "2025-08-03T08:00:00Z",
+		"end": "2025-08-03T09:30:00Z"
+	},
+	{
+		"id": "12",
+		"title": "Project Beta - Bug Fix",
+		"description": "Fix issue with data export\n-https://github.com/company/project-beta/issues/204",
+		"status": "done",
+		"createdAt": "2025-08-03T10:00:00Z",
+		"start": "2025-08-03T10:00:00Z",
+		"end": "2025-08-03T11:30:00Z"
+	},
+	{
+		"id": "13",
+		"title": "Client Meeting",
+		"description": "Weekly sync with client for Project Beta feedback",
+		"status": "done",
+		"createdAt": "2025-08-03T12:00:00Z",
+		"start": "2025-08-03T12:00:00Z",
+		"end": "2025-08-03T13:00:00Z"
+	},
+	{
+		"id": "14",
+		"title": "Project Alpha - Code Review",
+		"description": "Review pull request for profile page\n-https://github.com/company/project-alpha/pull/108",
+		"status": "done",
+		"createdAt": "2025-08-03T14:00:00Z",
+		"start": "2025-08-03T14:00:00Z",
+		"end": "2025-08-03T15:00:00Z"
+	},
+	{
+		"id": "15",
+		"title": "Project Beta - Documentation Update",
+		"description": "Update API documentation for export feature",
+		"status": "done",
+		"createdAt": "2025-08-03T15:30:00Z",
+		"start": "2025-08-03T15:30:00Z",
+		"end": "2025-08-03T16:30:00Z"
+	},
+	{
+		"id": "16",
+		"title": "Project Alpha - Feature Implementation",
+		"description": "Implement notification settings page\n-https://github.com/company/project-alpha/issues/109",
+		"status": "done",
+		"createdAt": "2025-08-04T08:00:00Z",
+		"start": "2025-08-04T08:00:00Z",
+		"end": "2025-08-04T09:30:00Z"
+	},
+	{
+		"id": "17",
+		"title": "Project Beta - Bug Fix",
+		"description": "Fix issue with user avatar upload\n-https://github.com/company/project-beta/issues/205",
+		"status": "done",
+		"createdAt": "2025-08-04T10:00:00Z",
+		"start": "2025-08-04T10:00:00Z",
+		"end": "2025-08-04T11:30:00Z"
+	},
+	{
+		"id": "18",
+		"title": "Client Meeting",
+		"description": "Discuss feedback with client for Project Alpha",
+		"status": "done",
+		"createdAt": "2025-08-04T12:00:00Z",
+		"start": "2025-08-04T12:00:00Z",
+		"end": "2025-08-04T13:00:00Z"
+	},
+	{
+		"id": "19",
+		"title": "Project Alpha - Code Review",
+		"description": "Review pull request for notification settings\n-https://github.com/company/project-alpha/pull/110",
+		"status": "done",
+		"createdAt": "2025-08-04T14:00:00Z",
+		"start": "2025-08-04T14:00:00Z",
+		"end": "2025-08-04T15:00:00Z"
+	},
+	{
+		"id": "20",
+		"title": "Project Beta - Documentation Update",
+		"description": "Update API documentation for avatar upload",
+		"status": "done",
+		"createdAt": "2025-08-04T15:30:00Z",
+		"start": "2025-08-04T15:30:00Z",
+		"end": "2025-08-04T16:30:00Z"
+	},
+	{
+		"id": "21",
+		"title": "Project Alpha - Feature Implementation",
+		"description": "Implement two-factor authentication\n-https://github.com/company/project-alpha/issues/111",
+		"status": "done",
+		"createdAt": "2025-08-07T08:00:00Z",
+		"start": "2025-08-07T08:00:00Z",
+		"end": "2025-08-07T09:30:00Z"
+	},
+	{
+		"id": "22",
+		"title": "Project Beta - Bug Fix",
+		"description": "Fix issue with password reset email\n-https://github.com/company/project-beta/issues/206",
+		"status": "done",
+		"createdAt": "2025-08-07T10:00:00Z",
+		"start": "2025-08-07T10:00:00Z",
+		"end": "2025-08-07T11:30:00Z"
+	},
+	{
+		"id": "23",
+		"title": "Client Meeting",
+		"description": "Weekly sync with client for Project Alpha progress update",
+		"status": "done",
+		"createdAt": "2025-08-07T12:00:00Z",
+		"start": "2025-08-07T12:00:00Z",
+		"end": "2025-08-07T13:00:00Z"
+	},
+	{
+		"id": "24",
+		"title": "Project Alpha - Code Review",
+		"description": "Review pull request for two-factor authentication\n-https://github.com/company/project-alpha/pull/112",
+		"status": "done",
+		"createdAt": "2025-08-07T13:30:00Z",
+		"start": "2025-08-07T13:30:00Z",
+		"end": "2025-08-07T14:30:00Z"
+	},
+	{
+		"id": "25",
+		"title": "Project Beta - Documentation Update",
+		"description": "Update API documentation for password reset feature",
+		"status": "done",
+		"createdAt": "2025-08-07T15:00:00Z",
+		"start": "2025-08-07T15:00:00Z",
+		"end": "2025-08-07T16:00:00Z"
+	},
+	{
+		"id": "26",
+		"title": "Project Alpha - Feature Implementation",
+		"description": "Implement user roles and permissions\n-https://github.com/company/project-alpha/issues/113",
+		"status": "done",
+		"createdAt": "2025-08-08T08:00:00Z",
+		"start": "2025-08-08T08:00:00Z",
+		"end": "2025-08-08T09:30:00Z"
+	},
+	{
+		"id": "27",
+		"title": "Project Beta - UI Enhancement",
+		"description": "Enhance data visualization on dashboard\n-https://github.com/company/project-beta/issues/207",
+		"status": "done",
+		"createdAt": "2025-08-08T10:00:00Z",
+		"start": "2025-08-08T10:00:00Z",
+		"end": "2025-08-08T11:30:00Z"
+	},
+	{
+		"id": "28",
+		"title": "Training - Advanced Svelte",
+		"description": "Attend advanced training for Svelte and TypeScript",
+		"status": "done",
+		"createdAt": "2025-08-08T12:00:00Z",
+		"start": "2025-08-08T12:00:00Z",
+		"end": "2025-08-08T13:30:00Z"
+	},
+	{
+		"id": "29",
+		"title": "Project Alpha - Code Review",
+		"description": "Review pull request for user roles and permissions\n-https://github.com/company/project-alpha/pull/114",
+		"status": "done",
+		"createdAt": "2025-08-08T14:00:00Z",
+		"start": "2025-08-08T14:00:00Z",
+		"end": "2025-08-08T15:00:00Z"
+	},
+	{
+		"id": "30",
+		"title": "Project Beta - Documentation Update",
+		"description": "Update user manual for new dashboard features",
+		"status": "done",
+		"createdAt": "2025-08-08T15:30:00Z",
+		"start": "2025-08-08T15:30:00Z",
+		"end": "2025-08-08T16:30:00Z"
+	},
+	{
+		"id": "31",
+		"title": "Project Alpha - Feature Implementation",
+		"description": "Implement activity log feature\n-https://github.com/company/project-alpha/issues/115",
+		"status": "done",
+		"createdAt": "2025-08-09T08:00:00Z",
+		"start": "2025-08-09T08:00:00Z",
+		"end": "2025-08-09T09:30:00Z"
+	},
+	{
+		"id": "32",
+		"title": "Project Beta - Bug Fix",
+		"description": "Fix issue with chart data not loading\n-https://github.com/company/project-beta/issues/208",
+		"status": "done",
+		"createdAt": "2025-08-09T10:00:00Z",
+		"start": "2025-08-09T10:00:00Z",
+		"end": "2025-08-09T11:30:00Z"
+	},
+	{
+		"id": "33",
+		"title": "Client Meeting",
+		"description": "Weekly sync with client for Project Alpha and Beta updates",
+		"status": "done",
+		"createdAt": "2025-08-09T12:00:00Z",
+		"start": "2025-08-09T12:00:00Z",
+		"end": "2025-08-09T13:00:00Z"
+	},
+	{
+		"id": "34",
+		"title": "Project Alpha - Code Review",
+		"description": "Review pull request for activity log feature\n-https://github.com/company/project-alpha/pull/116",
+		"status": "done",
+		"createdAt": "2025-08-09T13:30:00Z",
+		"start": "2025-08-09T13:30:00Z",
+		"end": "2025-08-09T14:30:00Z"
+	},
+	{
+		"id": "35",
+		"title": "Project Beta - Documentation Update",
+		"description": "Update API documentation for chart feature",
+		"status": "done",
+		"createdAt": "2025-08-09T15:00:00Z",
+		"start": "2025-08-09T15:00:00Z",
+		"end": "2025-08-09T16:00:00Z"
+	},
+	{
+		"id": "36",
+		"title": "Project Alpha - Feature Implementation",
+		"description": "Implement export data feature\n-https://github.com/company/project-alpha/issues/117",
+		"status": "done",
+		"createdAt": "2025-08-10T08:00:00Z",
+		"start": "2025-08-10T08:00:00Z",
+		"end": "2025-08-10T09:30:00Z"
+	},
+	{
+		"id": "37",
+		"title": "Project Beta - UI Enhancement",
+		"description": "Redesign export data page on dashboard\n-https://github.com/company/project-beta/issues/209",
+		"status": "done",
+		"createdAt": "2025-08-10T10:00:00Z",
+		"start": "2025-08-10T10:00:00Z",
+		"end": "2025-08-10T11:30:00Z"
+	},
+	{
+		"id": "38",
+		"title": "Training - Svelte and TypeScript",
+		"description": "Complete training on Svelte with TypeScript integration",
+		"status": "done",
+		"createdAt": "2025-08-10T12:00:00Z",
+		"start": "2025-08-10T12:00:00Z",
+		"end": "2025-08-10T13:30:00Z"
+	},
+	{
+		"id": "39",
+		"title": "Project Alpha - Code Review",
+		"description": "Review pull request for export data feature\n-https://github.com/company/project-alpha/pull/118",
+		"status": "done",
+		"createdAt": "2025-08-10T14:00:00Z",
+		"start": "2025-08-10T14:00:00Z",
+		"end": "2025-08-10T15:00:00Z"
+	},
+	{
+		"id": "40",
+		"title": "Project Beta - Documentation Update",
+		"description": "Update user guide for export data features",
+		"status": "done",
+		"createdAt": "2025-08-10T15:30:00Z",
+		"start": "2025-08-10T15:30:00Z",
+		"end": "2025-08-10T16:30:00Z"
+	},
+	{
+		"id": "41",
+		"title": "Project Alpha - Feature Implementation",
+		"description": "Implement import data feature\n-https://github.com/company/project-alpha/issues/119",
+		"status": "done",
+		"createdAt": "2025-08-11T08:00:00Z",
+		"start": "2025-08-11T08:00:00Z",
+		"end": "2025-08-11T09:30:00Z"
+	},
+	{
+		"id": "42",
+		"title": "Project Beta - Bug Fix",
+		"description": "Fix issue with import data functionality\n-https://github.com/company/project-beta/issues/210",
+		"status": "done",
+		"createdAt": "2025-08-11T10:00:00Z",
+		"start": "2025-08-11T10:00:00Z",
+		"end": "2025-08-11T11:30:00Z"
+	},
+	{
+		"id": "43",
+		"title": "Client Meeting",
+		"description": "Weekly sync with client for Project Alpha and Beta",
+		"status": "done",
+		"createdAt": "2025-08-11T12:00:00Z",
+		"start": "2025-08-11T12:00:00Z",
+		"end": "2025-08-11T13:00:00Z"
+	},
+	{
+		"id": "44",
+		"title": "Project Alpha - Code Review",
+		"description": "Review pull request for import data feature\n-https://github.com/company/project-alpha/pull/120",
+		"status": "done",
+		"createdAt": "2025-08-11T13:30:00Z",
+		"start": "2025-08-11T13:30:00Z",
+		"end": "2025-08-11T14:30:00Z"
+	},
+	{
+		"id": "45",
+		"title": "Project Beta - Documentation Update",
+		"description": "Update API documentation for import data feature",
+		"status": "done",
+		"createdAt": "2025-08-11T15:00:00Z",
+		"start": "2025-08-11T15:00:00Z",
+		"end": "2025-08-11T16:00:00Z"
+	},
+	{
+		"id": "46",
+		"title": "Project Alpha - Feature Implementation",
+		"description": "Implement data synchronization feature\n-https://github.com/company/project-alpha/issues/120",
+		"status": "done",
+		"createdAt": "2025-08-14T08:00:00Z",
+		"start": "2025-08-14T08:00:00Z",
+		"end": "2025-08-14T09:30:00Z"
+	},
+	{
+		"id": "47",
+		"title": "Project Beta - UI Enhancement",
+		"description": "Improve UI for data synchronization status\n-https://github.com/company/project-beta/issues/211",
+		"status": "done",
+		"createdAt": "2025-08-14T10:00:00Z",
+		"start": "2025-08-14T10:00:00Z",
+		"end": "2025-08-14T11:30:00Z"
+	},
+	{
+		"id": "48",
+		"title": "Training - Svelte and Advanced Topics",
+		"description": "Online course on Svelte advanced patterns and TypeScript",
+		"status": "done",
+		"createdAt": "2025-08-14T12:00:00Z",
+		"start": "2025-08-14T12:00:00Z",
+		"end": "2025-08-14T13:30:00Z"
+	},
+	{
+		"id": "49",
+		"title": "Project Alpha - Code Review",
+		"description": "Review pull request for data synchronization feature\n-https://github.com/company/project-alpha/pull/121",
+		"status": "done",
+		"createdAt": "2025-08-14T14:00:00Z",
+		"start": "2025-08-14T14:00:00Z",
+		"end": "2025-08-14T15:00:00Z"
+	},
+	{
+		"id": "50",
+		"title": "Project Beta - Documentation Update",
+		"description": "Update user documentation for data synchronization",
+		"status": "done",
+		"createdAt": "2025-08-14T15:30:00Z",
+		"start": "2025-08-14T15:30:00Z",
+		"end": "2025-08-14T16:30:00Z"
+	},
+	{
+		"id": "51",
+		"title": "Project Alpha - Feature Implementation",
+		"description": "Implement data backup and restore feature\n-https://github.com/company/project-alpha/issues/121",
+		"status": "done",
+		"createdAt": "2025-08-15T08:00:00Z",
+		"start": "2025-08-15T08:00:00Z",
+		"end": "2025-08-15T09:30:00Z"
+	},
+	{
+		"id": "52",
+		"title": "Project Beta - Bug Fix",
+		"description": "Fix issue with data backup functionality\n-https://github.com/company/project-beta/issues/212",
+		"status": "done",
+		"createdAt": "2025-08-15T10:00:00Z",
+		"start": "2025-08-15T10:00:00Z",
+		"end": "2025-08-15T11:30:00Z"
+	},
+	{
+		"id": "53",
+		"title": "Client Meeting",
+		"description": "Weekly sync with client for Project Alpha and Beta",
+		"status": "done",
+		"createdAt": "2025-08-15T12:00:00Z",
+		"start": "2025-08-15T12:00:00Z",
+		"end": "2025-08-15T13:00:00Z"
+	},
+	{
+		"id": "54",
+		"title": "Project Alpha - Code Review",
+		"description": "Review pull request for data backup and restore feature\n-https://github.com/company/project-alpha/pull/122",
+		"status": "done",
+		"createdAt": "2025-08-15T13:30:00Z",
+		"start": "2025-08-15T13:30:00Z",
+		"end": "2025-08-15T14:30:00Z"
+	},
+	{
+		"id": "55",
+		"title": "Project Beta - Documentation Update",
+		"description": "Update API documentation for data backup feature",
+		"status": "done",
+		"createdAt": "2025-08-15T15:00:00Z",
+		"start": "2025-08-15T15:00:00Z",
+		"end": "2025-08-15T16:00:00Z"
+	},
+	{
+		"id": "56",
+		"title": "Project Alpha - Feature Implementation",
+		"description": "Implement user activity tracking\n-https://github.com/company/project-alpha/issues/122",
+		"status": "done",
+		"createdAt": "2025-08-16T08:00:00Z",
+		"start": "2025-08-16T08:00:00Z",
+		"end": "2025-08-16T09:30:00Z"
+	},
+	{
+		"id": "57",
+		"title": "Project Beta - UI Enhancement",
+		"description": "Enhance user profile and activity pages\n-https://github.com/company/project-beta/issues/213",
+		"status": "done",
+		"createdAt": "2025-08-16T10:00:00Z",
+		"start": "2025-08-16T10:00:00Z",
+		"end": "2025-08-16T11:30:00Z"
+	},
+	{
+		"id": "58",
+		"title": "Training - Svelte Advanced Patterns",
+		"description": "Deep dive into Svelte advanced patterns and best practices",
+		"status": "done",
+		"createdAt": "2025-08-16T12:00:00Z",
+		"start": "2025-08-16T12:00:00Z",
+		"end": "2025-08-16T13:30:00Z"
+	},
+	{
+		"id": "59",
+		"title": "Project Alpha - Code Review",
+		"description": "Review pull request for user activity tracking\n-https://github.com/company/project-alpha/pull/123",
+		"status": "done",
+		"createdAt": "2025-08-16T14:00:00Z",
+		"start": "2025-08-16T14:00:00Z",
+		"end": "2025-08-16T15:00:00Z"
+	},
+	{
+		"id": "60",
+		"title": "Project Beta - Documentation Update",
+		"description": "Update user manual for activity tracking features",
+		"status": "done",
+		"createdAt": "2025-08-16T15:30:00Z",
+		"start": "2025-08-16T15:30:00Z",
+		"end": "2025-08-16T16:30:00Z"
+	},
+	{
+		"id": "61",
+		"title": "Project Alpha - Feature Implementation",
+		"description": "Implement real-time data sync\n-https://github.com/company/project-alpha/issues/123",
+		"status": "done",
+		"createdAt": "2025-08-17T08:00:00Z",
+		"start": "2025-08-17T08:00:00Z",
+		"end": "2025-08-17T09:30:00Z"
+	},
+	{
+		"id": "62",
+		"title": "Project Beta - Bug Fix",
+		"description": "Fix issue with real-time data not updating\n-https://github.com/company/project-beta/issues/214",
+		"status": "done",
+		"createdAt": "2025-08-17T10:00:00Z",
+		"start": "2025-08-17T10:00:00Z",
+		"end": "2025-08-17T11:30:00Z"
+	},
+	{
+		"id": "63",
+		"title": "Client Meeting",
+		"description": "Weekly sync with client for Project Alpha and Beta",
+		"status": "done",
+		"createdAt": "2025-08-17T12:00:00Z",
+		"start": "2025-08-17T12:00:00Z",
+		"end": "2025-08-17T13:00:00Z"
+	},
+	{
+		"id": "64",
+		"title": "Project Alpha - Code Review",
+		"description": "Review pull request for real-time data sync\n-https://github.com/company/project-alpha/pull/124",
+		"status": "done",
+		"createdAt": "2025-08-17T13:30:00Z",
+		"start": "2025-08-17T13:30:00Z",
+		"end": "2025-08-17T14:30:00Z"
+	},
+	{
+		"id": "65",
+		"title": "Project Beta - Documentation Update",
+		"description": "Update API documentation for real-time data features",
+		"status": "done",
+		"createdAt": "2025-08-17T15:00:00Z",
+		"start": "2025-08-17T15:00:00Z",
+		"end": "2025-08-17T16:00:00Z"
+	},
+	{
+		"id": "66",
+		"title": "Project Alpha - Feature Implementation",
+		"description": "Implement data export to CSV\n-https://github.com/company/project-alpha/issues/124",
+		"status": "done",
+		"createdAt": "2025-08-18T08:00:00Z",
+		"start": "2025-08-18T08:00:00Z",
+		"end": "2025-08-18T09:30:00Z"
+	},
+	{
+		"id": "67",
+		"title": "Project Beta - UI Enhancement",
+		"description": "Improve CSV export functionality and UI\n-https://github.com/company/project-beta/issues/215",
+		"status": "done",
+		"createdAt": "2025-08-18T10:00:00Z",
+		"start": "2025-08-18T10:00:00Z",
+		"end": "2025-08-18T11:30:00Z"
+	},
+	{
+		"id": "68",
+		"title": "Training - Svelte and Data Handling",
+		"description": "Workshop on handling data in Svelte applications",
+		"status": "done",
+		"createdAt": "2025-08-18T12:00:00Z",
+		"start": "2025-08-18T12:00:00Z",
+		"end": "2025-08-18T13:30:00Z"
+	},
+	{
+		"id": "69",
+		"title": "Project Alpha - Code Review",
+		"description": "Review pull request for data export to CSV\n-https://github.com/company/project-alpha/pull/125",
+		"status": "done",
+		"createdAt": "2025-08-18T14:00:00Z",
+		"start": "2025-08-18T14:00:00Z",
+		"end": "2025-08-18T15:00:00Z"
+	},
+	{
+		"id": "70",
+		"title": "Project Beta - Documentation Update",
+		"description": "Update user guide for CSV export feature",
+		"status": "done",
+		"createdAt": "2025-08-18T15:30:00Z",
+		"start": "2025-08-18T15:30:00Z",
+		"end": "2025-08-18T16:30:00Z"
+	},
+	{
+		"id": "71",
+		"title": "Project Alpha - Feature Implementation",
+		"description": "Implement data import from CSV\n-https://github.com/company/project-alpha/issues/125",
+		"status": "done",
+		"createdAt": "2025-08-19T08:00:00Z",
+		"start": "2025-08-19T08:00:00Z",
+		"end": "2025-08-19T09:30:00Z"
+	},
+	{
+		"id": "72",
+		"title": "Project Beta - Bug Fix",
+		"description": "Fix issue with data import functionality\n-https://github.com/company/project-beta/issues/216",
+		"status": "done",
+		"createdAt": "2025-08-19T10:00:00Z",
+		"start": "2025-08-19T10:00:00Z",
+		"end": "2025-08-19T11:30:00Z"
+	},
+	{
+		"id": "73",
+		"title": "Client Meeting",
+		"description": "Weekly sync with client for Project Alpha and Beta",
+		"status": "done",
+		"createdAt": "2025-08-19T12:00:00Z",
+		"start": "2025-08-19T12:00:00Z",
+		"end": "2025-08-19T13:00:00Z"
+	},
+	{
+		"id": "74",
+		"title": "Project Alpha - Code Review",
+		"description": "Review pull request for data import from CSV\n-https://github.com/company/project-alpha/pull/126",
+		"status": "done",
+		"createdAt": "2025-08-19T13:30:00Z",
+		"start": "2025-08-19T13:30:00Z",
+		"end": "2025-08-19T14:30:00Z"
+	},
+	{
+		"id": "75",
+		"title": "Project Beta - Documentation Update",
+		"description": "Update API documentation for data import feature",
+		"status": "done",
+		"createdAt": "2025-08-19T15:00:00Z",
+		"start": "2025-08-19T15:00:00Z",
+		"end": "2025-08-19T16:00:00Z"
+	},
+	{
+		"id": "76",
+		"title": "Project Alpha - Feature Implementation",
+		"description": "Implement data visualization enhancements\n-https://github.com/company/project-alpha/issues/126",
+		"status": "done",
+		"createdAt": "2025-08-21T08:00:00Z",
+		"start": "2025-08-21T08:00:00Z",
+		"end": "2025-08-21T09:30:00Z"
+	},
+	{
+		"id": "77",
+		"title": "Project Beta - UI Enhancement",
+		"description": "Enhance data charts and graphs on dashboard\n-https://github.com/company/project-beta/issues/217",
+		"status": "done",
+		"createdAt": "2025-08-21T10:00:00Z",
+		"start": "2025-08-21T10:00:00Z",
+		"end": "2025-08-21T11:30:00Z"
+	},
+	{
+		"id": "78",
+		"title": "Training - Svelte and Data Visualization",
+		"description": "Workshop on data visualization techniques in Svelte",
+		"status": "done",
+		"createdAt": "2025-08-21T12:00:00Z",
+		"start": "2025-08-21T12:00:00Z",
+		"end": "2025-08-21T13:30:00Z"
+	},
+	{
+		"id": "79",
+		"title": "Project Alpha - Code Review",
+		"description": "Review pull request for data visualization enhancements\n-https://github.com/company/project-alpha/pull/127",
+		"status": "done",
+		"createdAt": "2025-08-21T14:00:00Z",
+		"start": "2025-08-21T14:00:00Z",
+		"end": "2025-08-21T15:00:00Z"
+	},
+	{
+		"id": "80",
+		"title": "Project Beta - Documentation Update",
+		"description": "Update user guide for data visualization features",
+		"status": "done",
+		"createdAt": "2025-08-21T15:30:00Z",
+		"start": "2025-08-21T15:30:00Z",
+		"end": "2025-08-21T16:30:00Z"
+	},
+	{
+		"id": "81",
+		"title": "Project Alpha - Feature Implementation",
+		"description": "Implement user feedback system\n-https://github.com/company/project-alpha/issues/127",
+		"status": "done",
+		"createdAt": "2025-08-22T08:00:00Z",
+		"start": "2025-08-22T08:00:00Z",
+		"end": "2025-08-22T09:30:00Z"
+	},
+	{
+		"id": "82",
+		"title": "Project Beta - Bug Fix",
+		"description": "Fix issue with feedback form submission\n-https://github.com/company/project-beta/issues/218",
+		"status": "done",
+		"createdAt": "2025-08-22T10:00:00Z",
+		"start": "2025-08-22T10:00:00Z",
+		"end": "2025-08-22T11:30:00Z"
+	},
+	{
+		"id": "83",
+		"title": "Client Meeting",
+		"description": "Weekly sync with client for Project Alpha and Beta",
+		"status": "done",
+		"createdAt": "2025-08-22T12:00:00Z",
+		"start": "2025-08-22T12:00:00Z",
+		"end": "2025-08-22T13:00:00Z"
+	},
+	{
+		"id": "84",
+		"title": "Project Alpha - Code Review",
+		"description": "Review pull request for user feedback system\n-https://github.com/company/project-alpha/pull/128",
+		"status": "done",
+		"createdAt": "2025-08-22T13:30:00Z",
+		"start": "2025-08-22T13:30:00Z",
+		"end": "2025-08-22T14:30:00Z"
+	},
+	{
+		"id": "85",
+		"title": "Project Beta - Documentation Update",
+		"description": "Update API documentation for feedback system",
+		"status": "done",
+		"createdAt": "2025-08-22T15:00:00Z",
+		"start": "2025-08-22T15:00:00Z",
+		"end": "2025-08-22T16:00:00Z"
+	},
+	{
+		"id": "86",
+		"title": "Project Alpha - Feature Implementation",
+		"description": "Implement user onboarding flow\n-https://github.com/company/project-alpha/issues/128",
+		"status": "done",
+		"createdAt": "2025-08-23T08:00:00Z",
+		"start": "2025-08-23T08:00:00Z",
+		"end": "2025-08-23T09:30:00Z"
+	},
+	{
+		"id": "87",
+		"title": "Project Beta - UI Enhancement",
+		"description": "Improve onboarding experience on dashboard\n-https://github.com/company/project-beta/issues/219",
+		"status": "done",
+		"createdAt": "2025-08-23T10:00:00Z",
+		"start": "2025-08-23T10:00:00Z",
+		"end": "2025-08-23T11:30:00Z"
+	},
+	{
+		"id": "88",
+		"title": "Training - Svelte and User Experience",
+		"description": "Course on enhancing user experience with Svelte",
+		"status": "done",
+		"createdAt": "2025-08-23T12:00:00Z",
+		"start": "2025-08-23T12:00:00Z",
+		"end": "2025-08-23T13:30:00Z"
+	},
+	{
+		"id": "89",
+		"title": "Project Alpha - Code Review",
+		"description": "Review pull request for user onboarding flow\n-https://github.com/company/project-alpha/pull/129",
+		"status": "done",
+		"createdAt": "2025-08-23T14:00:00Z",
+		"start": "2025-08-23T14:00:00Z",
+		"end": "2025-08-23T15:00:00Z"
+	},
+	{
+		"id": "90",
+		"title": "Project Beta - Documentation Update",
+		"description": "Update user manual for onboarding features",
+		"status": "done",
+		"createdAt": "2025-08-23T15:30:00Z",
+		"start": "2025-08-23T15:30:00Z",
+		"end": "2025-08-23T16:30:00Z"
+	},
+	{
+		"id": "91",
+		"title": "Project Alpha - Feature Implementation",
+		"description": "Implement user settings management\n-https://github.com/company/project-alpha/issues/129",
+		"status": "done",
+		"createdAt": "2025-08-24T08:00:00Z",
+		"start": "2025-08-24T08:00:00Z",
+		"end": "2025-08-24T09:30:00Z"
+	},
+	{
+		"id": "92",
+		"title": "Project Beta - Bug Fix",
+		"description": "Fix issue with user settings not saving\n-https://github.com/company/project-beta/issues/220",
+		"status": "done",
+		"createdAt": "2025-08-24T10:00:00Z",
+		"start": "2025-08-24T10:00:00Z",
+		"end": "2025-08-24T11:30:00Z"
+	},
+	{
+		"id": "93",
+		"title": "Client Meeting",
+		"description": "Weekly sync with client for Project Alpha and Beta",
+		"status": "done",
+		"createdAt": "2025-08-24T12:00:00Z",
+		"start": "2025-08-24T12:00:00Z",
+		"end": "2025-08-24T13:00:00Z"
+	},
+	{
+		"id": "94",
+		"title": "Project Alpha - Code Review",
+		"description": "Review pull request for user settings management\n-https://github.com/company/project-alpha/pull/130",
+		"status": "done",
+		"createdAt": "2025-08-24T13:30:00Z",
+		"start": "2025-08-24T13:30:00Z",
+		"end": "2025-08-24T14:30:00Z"
+	},
+	{
+		"id": "95",
+		"title": "Project Beta - Documentation Update",
+		"description": "Update API documentation for user settings feature",
+		"status": "done",
+		"createdAt": "2025-08-24T15:00:00Z",
+		"start": "2025-08-24T15:00:00Z",
+		"end": "2025-08-24T16:00:00Z"
+	},
+	{
+		"id": "96",
+		"title": "Project Alpha - Feature Implementation",
+		"description": "Implement user logout functionality\n-https://github.com/company/project-alpha/issues/130",
+		"status": "done",
+		"createdAt": "2025-08-25T08:00:00Z",
+		"start": "2025-08-25T08:00:00Z",
+		"end": "2025-08-25T09:30:00Z"
+	},
+	{
+		"id": "97",
+		"title": "Project Beta - UI Enhancement",
+		"description": "Improve logout process and UI\n-https://github.com/company/project-beta/issues/221",
+		"status": "done",
+		"createdAt": "2025-08-25T10:00:00Z",
+		"start": "2025-08-25T10:00:00Z",
+		"end": "2025-08-25T11:30:00Z"
+	},
+	{
+		"id": "98",
+		"title": "Training - Svelte and User Management",
+		"description": "Course on managing user sessions and data in Svelte",
+		"status": "done",
+		"createdAt": "2025-08-25T12:00:00Z",
+		"start": "2025-08-25T12:00:00Z",
+		"end": "2025-08-25T13:30:00Z"
+	},
+	{
+		"id": "99",
+		"title": "Project Alpha - Code Review",
+		"description": "Review pull request for user logout functionality\n-https://github.com/company/project-alpha/pull/131",
+		"status": "done",
+		"createdAt": "2025-08-25T14:00:00Z",
+		"start": "2025-08-25T14:00:00Z",
+		"end": "2025-08-25T15:00:00Z"
+	},
+	{
+		"id": "100",
+		"title": "Project Beta - Documentation Update",
+		"description": "Update user guide for logout feature",
+		"status": "done",
+		"createdAt": "2025-08-25T15:30:00Z",
+		"start": "2025-08-25T15:30:00Z",
+		"end": "2025-08-25T16:30:00Z"
+	},
+	{
+		"id": "101",
+		"title": "Project Alpha - Feature Implementation",
+		"description": "Implement session expiration handling\n-https://github.com/company/project-alpha/issues/131",
+		"status": "done",
+		"createdAt": "2025-08-28T08:00:00Z",
+		"start": "2025-08-28T08:00:00Z",
+		"end": "2025-08-28T09:30:00Z"
+	},
+	{
+		"id": "102",
+		"title": "Project Beta - Bug Fix",
+		"description": "Fix issue with session expiration not triggering\n-https://github.com/company/project-beta/issues/222",
+		"status": "done",
+		"createdAt": "2025-08-28T10:00:00Z",
+		"start": "2025-08-28T10:00:00Z",
+		"end": "2025-08-28T11:30:00Z"
+	},
+	{
+		"id": "103",
+		"title": "Client Meeting",
+		"description": "Weekly sync with client for Project Alpha and Beta",
+		"status": "done",
+		"createdAt": "2025-08-28T12:00:00Z",
+		"start": "2025-08-28T12:00:00Z",
+		"end": "2025-08-28T13:00:00Z"
+	},
+	{
+		"id": "104",
+		"title": "Project Alpha - Code Review",
+		"description": "Review pull request for session expiration handling\n-https://github.com/company/project-alpha/pull/132",
+		"status": "done",
+		"createdAt": "2025-08-28T13:30:00Z",
+		"start": "2025-08-28T13:30:00Z",
+		"end": "2025-08-28T14:30:00Z"
+	},
+	{
+		"id": "105",
+		"title": "Project Beta - Documentation Update",
+		"description": "Update API documentation for session management",
+		"status": "done",
+		"createdAt": "2025-08-28T15:00:00Z",
+		"start": "2025-08-28T15:00:00Z",
+		"end": "2025-08-28T16:00:00Z"
+	},
+	{
+		"id": "106",
+		"title": "Project Alpha - Feature Implementation",
+		"description": "Implement user role management\n-https://github.com/company/project-alpha/issues/132",
+		"status": "done",
+		"createdAt": "2025-08-29T08:00:00Z",
+		"start": "2025-08-29T08:00:00Z",
+		"end": "2025-08-29T09:30:00Z"
+	},
+	{
+		"id": "107",
+		"title": "Project Beta - UI Enhancement",
+		"description": "Enhance role management UI on dashboard\n-https://github.com/company/project-beta/issues/223",
+		"status": "done",
+		"createdAt": "2025-08-29T10:00:00Z",
+		"start": "2025-08-29T10:00:00Z",
+		"end": "2025-08-29T11:30:00Z"
+	},
+	{
+		"id": "108",
+		"title": "Training - Svelte and Role Management",
+		"description": "Course on managing user roles and permissions in Svelte",
+		"status": "done",
+		"createdAt": "2025-08-29T12:00:00Z",
+		"start": "2025-08-29T12:00:00Z",
+		"end": "2025-08-29T13:30:00Z"
+	},
+	{
+		"id": "109",
+		"title": "Project Alpha - Code Review",
+		"description": "Review pull request for user role management\n-https://github.com/company/project-alpha/pull/133",
+		"status": "done",
+		"createdAt": "2025-08-29T14:00:00Z",
+		"start": "2025-08-29T14:00:00Z",
+		"end": "2025-08-29T15:00:00Z"
+	},
+	{
+		"id": "110",
+		"title": "Project Beta - Documentation Update",
+		"description": "Update user manual for role management features",
+		"status": "done",
+		"createdAt": "2025-08-29T15:30:00Z",
+		"start": "2025-08-29T15:30:00Z",
+		"end": "2025-08-29T16:30:00Z"
+	},
+	{
+		"id": "111",
+		"title": "Project Alpha - Feature Implementation",
+		"description": "Implement user activity log\n-https://github.com/company/project-alpha/issues/133",
+		"status": "done",
+		"createdAt": "2025-08-30T08:00:00Z",
+		"start": "2025-08-30T08:00:00Z",
+		"end": "2025-08-30T09:30:00Z"
+	},
+	{
+		"id": "112",
+		"title": "Project Beta - Bug Fix",
+		"description": "Fix issue with activity log not displaying\n-https://github.com/company/project-beta/issues/224",
+		"status": "done",
+		"createdAt": "2025-08-30T10:00:00Z",
+		"start": "2025-08-30T10:00:00Z",
+		"end": "2025-08-30T11:30:00Z"
+	},
+	{
+		"id": "113",
+		"title": "Client Meeting",
+		"description": "Weekly sync with client for Project Alpha and Beta",
+		"status": "done",
+		"createdAt": "2025-08-30T12:00:00Z",
+		"start": "2025-08-30T12:00:00Z",
+		"end": "2025-08-30T13:00:00Z"
+	},
+	{
+		"id": "114",
+		"title": "Project Alpha - Code Review",
+		"description": "Review pull request for user activity log\n-https://github.com/company/project-alpha/pull/134",
+		"status": "done",
+		"createdAt": "2025-08-30T13:30:00Z",
+		"start": "2025-08-30T13:30:00Z",
+		"end": "2025-08-30T14:30:00Z"
+	},
+	{
+		"id": "115",
+		"title": "Project Beta - Documentation Update",
+		"description": "Update API documentation for activity log feature",
+		"status": "done",
+		"createdAt": "2025-08-30T15:00:00Z",
+		"start": "2025-08-30T15:00:00Z",
+		"end": "2025-08-30T16:00:00Z"
+	},
+	{
+		"id": "116",
+		"title": "Project Alpha - Feature Implementation",
+		"description": "Implement data retention policy\n-https://github.com/company/project-alpha/issues/134",
+		"status": "done",
+		"createdAt": "2025-08-31T08:00:00Z",
+		"start": "2025-08-31T08:00:00Z",
+		"end": "2025-08-31T09:30:00Z"
+	},
+	{
+		"id": "117",
+		"title": "Project Beta - UI Enhancement",
+		"description": "Enhance data retention settings UI\n-https://github.com/company/project-beta/issues/225",
+		"status": "done",
+		"createdAt": "2025-08-31T10:00:00Z",
+		"start": "2025-08-31T10:00:00Z",
+		"end": "2025-08-31T11:30:00Z"
+	},
+	{
+		"id": "118",
+		"title": "Training - Svelte and Data Policies",
+		"description": "Workshop on implementing data policies in Svelte",
+		"status": "done",
+		"createdAt": "2025-08-31T12:00:00Z",
+		"start": "2025-08-31T12:00:00Z",
+		"end": "2025-08-31T13:30:00Z"
+	},
+	{
+		"id": "119",
+		"title": "Project Alpha - Code Review",
+		"description": "Review pull request for data retention policy\n-https://github.com/company/project-alpha/pull/135",
+		"status": "done",
+		"createdAt": "2025-08-31T14:00:00Z",
+		"start": "2025-08-31T14:00:00Z",
+		"end": "2025-08-31T15:00:00Z"
+	},
+	{
+		"id": "120",
+		"title": "Project Beta - Documentation Update",
+		"description": "Update user guide for data retention features",
+		"status": "done",
+		"createdAt": "2025-08-31T15:30:00Z",
+		"start": "2025-08-31T15:30:00Z",
+		"end": "2025-08-31T16:30:00Z"
+	}
 ]
