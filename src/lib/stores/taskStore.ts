@@ -1,7 +1,10 @@
 import { storage } from '#imports';
 import { mockTasks } from '../../mocks/tasks';
 import { settingsStore } from './settingsStore';
+import isBetween from 'dayjs/plugin/isBetween';
 import dayjs from 'dayjs';
+
+dayjs.extend(isBetween);
 
 export class TaskStore {
 	private static instance: TaskStore;
@@ -37,7 +40,7 @@ export class TaskStore {
 	/**
 	 * Get tasks from storage with optional time range filtering
 	 */
-	async getTasks(timeRange: 'all' | 'daily' | 'weekly' | 'monthly' = 'all', date: string | Date = new Date()): Promise<ITrackedTask[]> {
+	async getTasks(timeRange: 'all' | 'daily' | 'weekly' | 'monthly' | 'custom' = 'all', date: string | Date = new Date(), customStartDate?: string | Date, customEndDate?: string | Date): Promise<ITrackedTask[]> {
 		const tasks = await storage.getItem<ITrackedTask[]>(this.storageKey);
 		const allTasks = tasks || [];
 
@@ -64,6 +67,14 @@ export class TaskStore {
 					const taskDate = dayjs(task.createdAt);
 					return taskDate.isBetween(startOfMonth, endOfMonth, null, '[]');
 				});
+			case 'custom':
+				if (customStartDate && customEndDate) {
+					return allTasks.filter((task) => {
+						const taskDate = dayjs(task.start);
+						return taskDate.isBetween(customStartDate, customEndDate, 'date', '[]');
+					});
+				}
+				return allTasks;
 			default:
 				return allTasks;
 		}
@@ -72,7 +83,7 @@ export class TaskStore {
 	/**
 	 * Reset tasks based on time range
 	 */
-	async resetTasks(timeRange: 'all' | 'daily' | 'weekly' | 'monthly' = 'all'): Promise<void> {
+	async resetTasks(timeRange: 'all' | 'daily' | 'weekly' | 'monthly' | 'custom' = 'all', customStartDate?: string | Date, customEndDate?: string | Date): Promise<void> {
 		const settings = await settingsStore.getSettings();
 
 		if (timeRange === 'all') {
@@ -109,6 +120,19 @@ export class TaskStore {
 					const taskDate = dayjs(task.createdAt);
 					return !taskDate.isBetween(startOfMonth, endOfMonth, null, '[]');
 				});
+				break;
+			case 'custom':
+				if (customStartDate && customEndDate) {
+					const startDate = dayjs(customStartDate).startOf('day');
+					const endDate = dayjs(customEndDate).endOf('day');
+					tasksToKeep = tasks.filter((task) => {
+						const taskDate = dayjs(task.createdAt);
+						return !taskDate.isBetween(startDate, endDate, null, '[]');
+					});
+				} else {
+					// If no custom dates provided, don't delete anything
+					tasksToKeep = tasks;
+				}
 				break;
 			default:
 				await this.saveTasks([]);

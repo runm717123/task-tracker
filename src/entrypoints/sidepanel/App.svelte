@@ -20,8 +20,10 @@
 
 	let trackedTasks: ITrackedTask[] = $state([]);
 	let copiedItems: Set<string> = new SvelteSet();
-	let timeRangeFilter: 'daily' | 'weekly' | 'monthly' | 'all' = $state('daily');
+	let timeRangeFilter: 'daily' | 'weekly' | 'monthly' | 'all' | 'custom' = $state('daily');
 	let selectedDate = $state(new Date());
+	let customStartDate = $state(new Date());
+	let customEndDate = $state(new Date());
 	let taskFormData: ITrackedTask | null = $state(null);
 	let isTaskFormOpen = $state(false);
 	let viewMode: 'list' | 'summary' = $state('list');
@@ -60,7 +62,7 @@
 	});
 
 	const loadTasksForTimeRange = async () => {
-		trackedTasks = await taskStore.getTasks(timeRangeFilter, selectedDate);
+		trackedTasks = await taskStore.getTasks(timeRangeFilter, selectedDate, customStartDate, customEndDate);
 
 		// Generate summary data when tasks are loaded
 		if (viewMode === 'summary') {
@@ -119,7 +121,7 @@
 
 		if (!dateInput || timeRangeFilter === 'all') return;
 
-		let mode: 'single' = 'single';
+		let mode: 'single' | 'range' = 'single';
 		let dateFormat = 'Y-m-d';
 		let defaultDate = selectedDate;
 
@@ -130,7 +132,11 @@
 			maxDate: new Date(),
 			onChange: (selectedDates) => {
 				if (selectedDates.length > 0) {
-					handleFlatpickrChange(selectedDates[0]);
+					if (timeRangeFilter === 'custom' && selectedDates.length === 2) {
+						handleFlatpickrChange(selectedDates[0], selectedDates[1]);
+					} else if (timeRangeFilter !== 'custom') {
+						handleFlatpickrChange(selectedDates[0]);
+					}
 				}
 			},
 		};
@@ -161,21 +167,33 @@
 					altFormat: 'F Y',
 				});
 				break;
+			case 'custom':
+				flatpickrInstance = flatpickr(dateInput, {
+					...baseOptions,
+					mode: 'range',
+					defaultDate: [customStartDate, customEndDate],
+				});
+				break;
 		}
 	};
 
-	const handleFlatpickrChange = async (date: Date) => {
+	const handleFlatpickrChange = async (startDate: Date, endDate?: Date) => {
 		let newDate: Date;
 
 		switch (timeRangeFilter) {
 			case 'daily':
-				newDate = date;
+				newDate = startDate;
 				break;
 			case 'weekly':
-				newDate = dayjs(date).startOf('week').toDate();
+				newDate = dayjs(startDate).startOf('week').toDate();
 				break;
 			case 'monthly':
-				newDate = dayjs(date).startOf('month').toDate();
+				newDate = dayjs(startDate).startOf('month').toDate();
+				break;
+			case 'custom':
+				customStartDate = startDate;
+				customEndDate = endDate!;
+				newDate = startDate;
 				break;
 			default:
 				newDate = new Date();
@@ -267,7 +285,14 @@
 		const dataStr = JSON.stringify(trackedTasks, null, 2);
 		const dataUri = 'data:application/json;charset=utf-8,' + encodeURIComponent(dataStr);
 
-		const exportFileDefaultName = `${timeRangeFilter}-tasks-${dayjs(selectedDate).format('YYYY-MM-DD-HH-mm-ss')}.json`;
+		let exportFileDefaultName: string;
+		if (timeRangeFilter === 'custom') {
+			const startStr = dayjs(customStartDate).format('YYYY-MM-DD');
+			const endStr = dayjs(customEndDate).format('YYYY-MM-DD');
+			exportFileDefaultName = `custom-range-${startStr}-to-${endStr}-tasks-${dayjs().format('YYYY-MM-DD-HH-mm-ss')}.json`;
+		} else {
+			exportFileDefaultName = `${timeRangeFilter}-tasks-${dayjs(selectedDate).format('YYYY-MM-DD-HH-mm-ss')}.json`;
+		}
 
 		const linkElement = document.createElement('a');
 		linkElement.setAttribute('href', dataUri);
@@ -276,12 +301,16 @@
 	};
 
 	const clearTasks = async () => {
-		const filterText = timeRangeFilter === 'all' ? 'all' : timeRangeFilter;
-		if (confirm(`Are you sure you want to clear ${filterText} tasks? This action cannot be undone.`)) {
-			await taskStore.resetTasks(timeRangeFilter);
+		const filterText = timeRangeFilter === 'all' ? 'all' : timeRangeFilter === 'custom' ? 'custom range' : timeRangeFilter;
+		if (confirm(`Are you sure you want to clear all ${filterText} tasks? This action cannot be undone.`)) {
+			if (timeRangeFilter === 'custom') {
+				await taskStore.resetTasks(timeRangeFilter, customStartDate, customEndDate);
+			} else {
+				await taskStore.resetTasks(timeRangeFilter);
+			}
+			await loadTasksForTimeRange();
 		}
 	};
-
 	const importTasks = () => {
 		fileInput.click();
 	};
@@ -391,12 +420,18 @@
 							{ value: 'daily', label: 'Daily' },
 							{ value: 'weekly', label: 'Weekly' },
 							{ value: 'monthly', label: 'Monthly' },
+							{ value: 'custom', label: 'Custom Range' },
 							{ value: 'all', label: 'All' },
 						]}
 					/>
 					{#if timeRangeFilter !== 'all'}
 						<div class="relative h-full">
-							<input bind:this={dateInput as any} class="w-full p-2 pr-6 py-[0.55rem] text-xs bg-bg-darker border-2 text-fg-dark focus:outline-none cursor-pointer" placeholder="Select date" readonly />
+							<input
+								bind:this={dateInput as any}
+								class="w-full p-2 pr-6 py-[0.55rem] text-xs bg-bg-darker border-2 text-fg-dark focus:outline-none cursor-pointer"
+								placeholder={timeRangeFilter === 'custom' ? 'Select date range' : 'Select date'}
+								readonly
+							/>
 							<svg class="absolute right-2 top-1/2 transform -translate-y-1/2 w-3 h-3 text-fg-muted pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
 							</svg>
@@ -410,10 +445,10 @@
 					<Button size="sm" onclick={importTasks} className="flex items-center gap-2 px-3 py-2" title="Import tasks from JSON file">
 						<Upload size={14} />
 					</Button>
-					<Button size="sm" onclick={downloadTasks} className="flex items-center gap-2 px-3 py-2" title={`Download ${timeRangeFilter} tasks as JSON`}>
+					<Button size="sm" onclick={downloadTasks} className="flex items-center gap-2 px-3 py-2" title={`Download ${timeRangeFilter === 'custom' ? 'custom range' : timeRangeFilter} tasks as JSON`}>
 						<Download size={14} />
 					</Button>
-					<Button size="sm" onclick={clearTasks} className="flex items-center gap-2 px-3 py-2" variant="destructive" title={`Clear ${timeRangeFilter} tasks`}>
+					<Button size="sm" onclick={clearTasks} className="flex items-center gap-2 px-3 py-2" variant="destructive" title={`Clear ${timeRangeFilter === 'custom' ? 'custom range' : timeRangeFilter} tasks`}>
 						<Trash2 size={14} />
 					</Button>
 				</div>
@@ -537,7 +572,9 @@
 				{/if}
 			{:else}
 				<div class="flex flex-col justify-center items-center text-center flex-1">
-					<p class="text-fg-dark text-lg mb-2">No tasks recorded for {timeRangeFilter === 'daily' ? 'today' : timeRangeFilter === 'all' ? 'any period' : `this ${timeRangeFilter.replace('ly', '')}`}</p>
+					<p class="text-fg-dark text-lg mb-2">
+						No tasks recorded for {timeRangeFilter === 'daily' ? 'today' : timeRangeFilter === 'all' ? 'any period' : timeRangeFilter === 'custom' ? 'selected date range' : `this ${timeRangeFilter.replace('ly', '')}`}
+					</p>
 					<p class="text-fg-muted text-sm mb-6">Start tracking your tasks to see them here!</p>
 					<div class="text-sm text-fg-muted space-y-2">
 						<p>✨ Click the <Plus size={12} class="inline" /> button above to create your first task</p>
