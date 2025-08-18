@@ -57,9 +57,6 @@
 			}
 		};
 		document.addEventListener('keydown', handleKeydown);
-
-		// Initialize flatpickr
-		initializeFlatpickr();
 	});
 
 	const loadTasksForTimeRange = async () => {
@@ -113,8 +110,6 @@
 		// Reset view mode to list when changing periods
 		viewMode = 'list';
 		await loadTasksForTimeRange();
-		// Reinitialize flatpickr with new settings
-		initializeFlatpickr();
 	};
 
 	const initializeFlatpickr = () => {
