@@ -8,9 +8,9 @@
 	import flatpickr from 'flatpickr';
 	import 'flatpickr/dist/flatpickr.css';
 	import { onDestroy, onMount, tick } from 'svelte';
-	import { SvelteSet } from 'svelte/reactivity';
 	import pkg from '../../../package.json';
 	import SummaryView from '../../lib/components/SummaryView.svelte';
+	import TrackedTaskCard from '../../lib/components/TrackedTaskCard.svelte';
 	import { taskStore } from '../../lib/stores/taskStore';
 	import { summarizeTasks } from '../../lib/utils/summarize';
 	import TaskFormPage from '../popup/ui/TaskFormPage.svelte';
@@ -19,7 +19,6 @@
 	dayjs.extend(isBetween);
 
 	let trackedTasks: ITrackedTask[] = $state([]);
-	let copiedItems: Set<string> = new SvelteSet();
 	let timeRangeFilter: 'daily' | 'weekly' | 'monthly' | 'all' | 'custom' = $state('daily');
 	let selectedDate = $state(new Date());
 	let customStartDate = $state(new Date());
@@ -265,21 +264,6 @@
 		isTaskFormOpen = true;
 	};
 
-	const getTimeRange = (start: string | null, end: string | null) => {
-		if (!start || !end) return null;
-
-		const startDate = dayjs(start);
-		const endDate = dayjs(end);
-
-		// Make sure end time is after start time
-		if (endDate.isBefore(startDate)) return null;
-
-		return `${startDate.format('HH:mm')} - ${endDate.format('HH:mm')}`;
-	};
-
-	const getRelativeTime = (dateString: string) => {
-		return dayjs(dateString).fromNow();
-	};
 
 	const downloadTasks = () => {
 		const dataStr = JSON.stringify(trackedTasks, null, 2);
@@ -341,32 +325,6 @@
 		}
 	};
 
-	const copyToClipboard = async (text: string, taskId: string, field: keyof ITrackedTask) => {
-		try {
-			await navigator.clipboard.writeText(text);
-			// Add to copied items set
-			copiedItems.add(`${taskId}-${field}`);
-			// Remove from copied items after 3 seconds
-			setTimeout(() => {
-				copiedItems.delete(`${taskId}-${field}`);
-			}, 3000);
-		} catch (error) {
-			console.error('Failed to copy to clipboard:', error);
-		}
-	};
-
-	const handleCardClick = (task: ITrackedTask, field: keyof ITrackedTask) => {
-		const text = task[field];
-		if (text) {
-			copyToClipboard(text, task.id, field);
-		}
-	};
-
-	const getDisplayText = (task: ITrackedTask, field: keyof ITrackedTask, text: string) => {
-		if (!text) return '';
-		const isCopied = copiedItems.has(`${task.id}-${field}`);
-		return isCopied ? `${text} (copied)` : text;
-	};
 
 	const getHeaderText = () => {
 		const referenceDate = dayjs(selectedDate);
@@ -458,81 +416,7 @@
 				{#if viewMode === 'list'}
 					<div class="space-y-2 flex flex-col flex-1">
 						{#each trackedTasks as task (task.id)}
-							<div class="bg-bg-darker border border-border rounded-lg p-3 hover:bg-bg-light transition-colors">
-								<div class="flex flex-col items-start justify-between">
-									<div class="flex items-center justify-between w-full mb-1">
-										<div class="flex items-center">
-											<!-- <div
-									role="button"
-									tabindex="0"
-									class="text-accent-primary font-medium bg-accent-primary/10 pr-2 py-0.5 rounded text-xs whitespace-nowrap"
-									onclick={() => handleCardClick(task, 'status')}
-									onkeydown={(e) => e.key === 'Enter' && handleCardClick(task, 'status')}
-									title="Click to copy status"
-								>
-									{getDisplayText(task, 'status', task.status ? getStatusLabel(task.status) : '')}
-								</div> -->
-											{#if getTimeRange(task.start, task.end)}
-												<!-- svelte-ignore a11y_click_events_have_key_events -->
-												<div
-													role="button"
-													tabindex="0"
-													class="text-accent-primary text-sm font-medium bg-accent-primary/10 px-2 py-0.5 rounded whitespace-nowrap"
-													onclick={() => copyToClipboard(getTimeRange(task.start, task.end) || '', task.id, 'start')}
-													title="Click to copy time range"
-												>
-													{getDisplayText(task, 'start', getTimeRange(task.start, task.end) || '')}
-												</div>
-											{:else}
-												<ClockAlert class="text-fg-dark mr-4" size={16} />
-											{/if}
-										</div>
-										<div class="flex items-center gap-1 flex-shrink-0">
-											<button class="p-1 text-fg-muted hover:text-fg-dark hover:bg-blue-50 rounded-md transition-colors" onclick={() => openTaskForm(task)} title="Edit task">
-												<EditIcon size={16} />
-											</button>
-											<button class="p-1 text-fg-muted hover:text-red-600 hover:bg-red-50 rounded-md transition-colors" onclick={() => deleteTask(task.id)} title="Delete task">
-												<XIcon size={16} />
-											</button>
-										</div>
-									</div>
-
-									<div
-										role="button"
-										tabindex="0"
-										class="font-semibold text-base text-fg-dark truncate mr-4 text-left w-full"
-										onclick={() => handleCardClick(task, 'title')}
-										onkeydown={(e) => e.key === 'Enter' && handleCardClick(task, 'title')}
-										title="Click to copy title"
-									>
-										{getDisplayText(task, 'title', task.title)}
-									</div>
-
-									<div
-										role="button"
-										tabindex="0"
-										class="text-fg-muted text-xs mb-1 leading-relaxed line-clamp-3 text-left w-full whitespace-pre-wrap"
-										onclick={() => handleCardClick(task, 'description')}
-										onkeydown={(e) => e.key === 'Enter' && handleCardClick(task, 'description')}
-										title="Click to copy description"
-									>
-										{getDisplayText(task, 'description', task.description)}
-									</div>
-
-									<div class="text-xs text-fg-muted">
-										<div
-											role="button"
-											tabindex="0"
-											class="text-xs text-fg-muted"
-											onclick={() => copyToClipboard(getRelativeTime(task.createdAt), task.id, 'createdAt')}
-											onkeydown={(e) => e.key === 'Enter' && copyToClipboard(getRelativeTime(task.createdAt), task.id, 'createdAt')}
-											title="Click to copy created time"
-										>
-											Created {getDisplayText(task, 'createdAt', getRelativeTime(task.createdAt))}
-										</div>
-									</div>
-								</div>
-							</div>
+								<TrackedTaskCard {task} onEdit={openTaskForm} onDelete={deleteTask} />
 						{/each}
 
 						<div class="mb-3 text-center">
