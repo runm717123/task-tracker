@@ -9,11 +9,11 @@ importers:
   .:
     dependencies:
       '@bios-ui/core':
-        specifier: link:../bios-ui/packages/core
-        version: link:../bios-ui/packages/core
+        specifier: link:../../bios-ui/code/packages/core
+        version: link:../../bios-ui/code/packages/core
       '@bios-ui/svelte':
-        specifier: link:../bios-ui/packages/svelte
-        version: link:../bios-ui/packages/svelte
+        specifier: link:../../bios-ui/code/packages/svelte
+        version: link:../../bios-ui/code/packages/svelte
       '@lucide/svelte':
         specifier: ^0.525.0
         version: 0.525.0(svelte@5.34.9)

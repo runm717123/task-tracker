@@ -1,8 +1,8 @@
 import { storage } from '#imports';
+import dayjs from 'dayjs';
+import isBetween from 'dayjs/plugin/isBetween';
 import { mockTasks } from '../../mocks/tasks';
 import { settingsStore } from './settingsStore';
-import isBetween from 'dayjs/plugin/isBetween';
-import dayjs from 'dayjs';
 
 dayjs.extend(isBetween);
 
@@ -167,19 +167,6 @@ export class TaskStore {
 		await storage.setItem(this.storageKey, tasks);
 	}
 
-	async getTodayLastTimeEndedTask(): Promise<string> {
-		const today = dayjs().startOf('day');
-		let lastTimeEndedTask = await this.getLastTimeEndedTask();
-
-		// Check if lastTimeEndedTask is from today, if not reset to settings start time
-		if (!dayjs(lastTimeEndedTask).isSame(today, 'day')) {
-			const settings = await settingsStore.getSettings();
-			lastTimeEndedTask = settings.startTime;
-		}
-
-		return lastTimeEndedTask;
-	}
-
 	/**
 	 * Get the last time a task was ended
 	 */
@@ -193,6 +180,19 @@ export class TaskStore {
 		// Fallback to settings store's start time
 		const settings = await settingsStore.getSettings();
 		return settings.startTime;
+	}
+
+	async getTodayLastTimeEndedTask(): Promise<string> {
+		const today = dayjs().startOf('day');
+		let lastTimeEndedTask = await this.getLastTimeEndedTask();
+
+		// Check if lastTimeEndedTask is from today, if not reset to settings start time
+		if (!dayjs(lastTimeEndedTask).isSame(today, 'day')) {
+			const settings = settingsStore.getDefaultSettings();
+			lastTimeEndedTask = settings.startTime;
+		}
+
+		return lastTimeEndedTask;
 	}
 
 	/**
