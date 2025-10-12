@@ -11,6 +11,7 @@
 	import pkg from '../../../package.json';
 	import SummaryView from '../../lib/components/SummaryView.svelte';
 	import TrackedTaskCard from '../../lib/components/TrackedTaskCard.svelte';
+	import { settingsStore } from '../../lib/stores/settingsStore';
 	import { taskStore } from '../../lib/stores/taskStore';
 	import { summarizeTasks } from '../../lib/utils/summarize';
 	import TaskFormPage from '../popup/ui/TaskFormPage.svelte';
@@ -39,6 +40,12 @@
 		const initializeStorage = async () => {
 			// Initialize storage with mock data if needed
 			// await taskStore.initializeStorage();
+
+			// Load settings and set default date if needed
+			const settings = await settingsStore.getSettings();
+			if (settings.defaultToYesterday && timeRangeFilter === 'daily') {
+				selectedDate = dayjs().subtract(1, 'day').toDate();
+			}
 
 			// Load initial tasks based on filter
 			await loadTasksForTimeRange();
@@ -106,8 +113,13 @@
 	};
 
 	const handleTimeRangeChange = async () => {
-		// Reset to current date when changing time range
-		selectedDate = new Date();
+		// Reset to current date when changing time range, or yesterday if setting is enabled for daily
+		const settings = await settingsStore.getSettings();
+		if (settings.defaultToYesterday && timeRangeFilter === 'daily') {
+			selectedDate = dayjs().subtract(1, 'day').toDate();
+		} else {
+			selectedDate = new Date();
+		}
 		// Reset view mode to list when changing periods
 		viewMode = 'list';
 		await loadTasksForTimeRange();

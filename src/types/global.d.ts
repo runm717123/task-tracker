@@ -24,6 +24,9 @@ interface ISettings {
 	startTime: string; // ISO 8601 date string
 	autoFocusDescription?: boolean;
 	taskCreateDefaultValue?: Partial<ICreateTask>;
+	// if true, in sidepanel when in "daily" timeRangeFilter
+	// the date will default to yesterday's date
+	defaultToYesterday?: boolean;
 }
 
 interface ISummaryGroup {

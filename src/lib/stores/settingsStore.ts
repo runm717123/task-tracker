@@ -23,6 +23,7 @@ export class SettingsStore {
 				title: 'No title',
 				description: '',
 			},
+			defaultToYesterday: false,
 		};
 	}
 
