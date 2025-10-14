@@ -9,7 +9,6 @@ dayjs.extend(isBetween);
 export class TaskStore {
 	private static instance: TaskStore;
 	private readonly storageKey = 'local:tasks';
-	private readonly lastTimeEndedTaskKey = 'local:lastTimeEndedTask';
 
 	static getInstance(): TaskStore {
 		if (!TaskStore.instance) {
@@ -25,15 +24,6 @@ export class TaskStore {
 		const existingTasks = await this.getTasks();
 		if (existingTasks.length === 0) {
 			await storage.setItem(this.storageKey, mockTasks);
-			// Initialize lastTimeEndedTask with the latest end time from mock data
-			const latestEndTime = mockTasks
-				.filter((task) => task.end)
-				.map((task) => task.end!)
-				.sort((a, b) => dayjs(b).diff(dayjs(a)))[0];
-
-			if (latestEndTime) {
-				await this.saveLastTimeEndedTask(latestEndTime);
-			}
 		}
 	}
 
@@ -84,11 +74,8 @@ export class TaskStore {
 	 * Reset tasks based on time range
 	 */
 	async resetTasks(timeRange: 'all' | 'daily' | 'weekly' | 'monthly' | 'custom' = 'all', customStartDate?: string | Date, customEndDate?: string | Date): Promise<void> {
-		const settings = await settingsStore.getSettings();
-
 		if (timeRange === 'all') {
 			await this.saveTasks([]);
-			await this.saveLastTimeEndedTask(settings.startTime);
 			return;
 		}
 
@@ -136,20 +123,9 @@ export class TaskStore {
 				break;
 			default:
 				await this.saveTasks([]);
-				await this.saveLastTimeEndedTask(settings.startTime);
 		}
 
 		await this.saveTasks(tasksToKeep);
-
-		// Adjust lastTimeEndedTask based on remaining tasks
-		if (tasksToKeep.length > 0) {
-			const todayTasks = tasksToKeep.filter((task) => dayjs(task.createdAt).isSame(now, 'day'));
-			const latestTodayTask = todayTasks[todayTasks.length - 1];
-
-			await this.saveLastTimeEndedTask(latestTodayTask.end!);
-		} else {
-			await this.saveLastTimeEndedTask(settings.startTime);
-		}
 	}
 
 	/**
@@ -168,49 +144,11 @@ export class TaskStore {
 	}
 
 	/**
-	 * Get the last time a task was ended
-	 */
-	async getLastTimeEndedTask(): Promise<string> {
-		const lastTime = await storage.getItem<string>(this.lastTimeEndedTaskKey);
-
-		if (lastTime) {
-			return lastTime;
-		}
-
-		// Fallback to settings store's start time
-		const settings = await settingsStore.getSettings();
-		return settings.startTime;
-	}
-
-	async getTodayLastTimeEndedTask(): Promise<string> {
-		const today = dayjs().startOf('day');
-		let lastTimeEndedTask = await this.getLastTimeEndedTask();
-
-		// Check if lastTimeEndedTask is from today, if not reset to settings start time
-		if (!dayjs(lastTimeEndedTask).isSame(today, 'day')) {
-			const settings = settingsStore.getDefaultSettings();
-			lastTimeEndedTask = settings.startTime;
-		}
-
-		return lastTimeEndedTask;
-	}
-
-	/**
-	 * Save the last time a task was ended
-	 */
-	async saveLastTimeEndedTask(endTime: string): Promise<void> {
-		await storage.setItem(this.lastTimeEndedTaskKey, endTime);
-	}
-
-	/**
 	 * Add a new task with proper timing logic
 	 * @param task - Task data with optional startTime and endTime
 	 * If startTime is provided but endTime is not, endTime will be set to startTime + 30 minutes
 	 */
 	async addTask(task: ICreateTask): Promise<void> {
-		const tasks = await this.getTasks();
-		const lastTimeEndedTask = await this.getTodayLastTimeEndedTask();
-
 		const currentTime = dayjs().toISOString();
 
 		// Determine start and end times based on provided parameters
@@ -229,8 +167,24 @@ export class TaskStore {
 				endTime = dayjs(task.start).add(30, 'minutes').toISOString();
 			}
 		} else {
-			// Use existing logic: lastTimeEndedTask as start, current time as end
-			startTime = lastTimeEndedTask;
+			// Determine the date to search for latest ended task based on task.end
+			const endDate = task.end ? new Date(task.end) : new Date();
+			
+			// Find the latest ended task from the same day as endDate
+			const tasksFromEndDate = await this.getTasks('daily', endDate);
+			const latestEndedTask = tasksFromEndDate
+				.filter((task) => task.end)
+				.sort((a, b) => dayjs(b.end!).diff(dayjs(a.end!)))[0];
+
+			if (latestEndedTask && latestEndedTask.end) {
+				// Use the latest task's end time as start time
+				startTime = latestEndedTask.end;
+			} else {
+				// No tasks on that day, fall back to settings start time
+				const settings = await settingsStore.getSettings();
+				startTime = settings.startTime;
+			}
+
 			endTime = task.end ? dayjs(task.end).toISOString() : currentTime;
 		}
 
@@ -245,15 +199,9 @@ export class TaskStore {
 			createdAt: currentTime,
 		};
 
+		const tasks = await this.getTasks();
 		tasks.push(newTask);
 		await this.saveTasks(tasks);
-
-		// if endTime is not today's date, don't update lastTimeEndedTask
-		const today = dayjs().startOf('day');
-		if (dayjs(endTime).isSame(today, 'day')) {
-			// Update lastTimeEndedTask to the end time of this task
-			await this.saveLastTimeEndedTask(endTime);
-		}
 	}
 
 	/**
@@ -261,20 +209,8 @@ export class TaskStore {
 	 */
 	async updateTask(updatedTask: ITrackedTask): Promise<void> {
 		const tasks = await this.getTasks();
-		const originalTask = tasks.find((task) => task.id === updatedTask.id);
-
 		const updatedTasks = tasks.map((task) => (task.id === updatedTask.id ? updatedTask : task));
 		await this.saveTasks(updatedTasks);
-
-		// If the task's end time was updated and it's the most recent end time, update lastTimeEndedTask
-		if (originalTask?.end !== updatedTask.end && updatedTask.end) {
-			const currentLastTimeEndedTask = await this.getLastTimeEndedTask();
-
-			// Update lastTimeEndedTask if this is the most recent end time
-			if (dayjs(updatedTask.end).isAfter(dayjs(currentLastTimeEndedTask))) {
-				await this.saveLastTimeEndedTask(updatedTask.end);
-			}
-		}
 	}
 
 	/**
@@ -284,18 +220,6 @@ export class TaskStore {
 		const tasks = await this.getTasks();
 		const filteredTasks = tasks.filter((task) => task.id !== taskId);
 		await this.saveTasks(filteredTasks);
-
-		// Update lastTimeEndedTask to the previous item's end time
-		if (filteredTasks.length > 0) {
-			const lastTask = filteredTasks[filteredTasks.length - 1];
-			if (lastTask.end) {
-				await this.saveLastTimeEndedTask(lastTask.end);
-			}
-		} else {
-			// If no tasks remain, fall back to settings start time
-			const settings = await settingsStore.getSettings();
-			await this.saveLastTimeEndedTask(settings.startTime);
-		}
 	}
 
 	/**
@@ -342,19 +266,6 @@ export class TaskStore {
 			const allTasks = [...existingTasks, ...newTasks].sort((a, b) => dayjs(a.createdAt).diff(dayjs(b.createdAt)));
 
 			await this.saveTasks(allTasks);
-
-			// Update lastTimeEndedTask if necessary
-			const latestEndTime = allTasks
-				.filter((task) => task.end)
-				.map((task) => task.end!)
-				.sort((a, b) => dayjs(b).diff(dayjs(a)))[0];
-
-			if (latestEndTime) {
-				const currentLastTime = await this.getLastTimeEndedTask();
-				if (dayjs(latestEndTime).isAfter(dayjs(currentLastTime))) {
-					await this.saveLastTimeEndedTask(latestEndTime);
-				}
-			}
 
 			return {
 				success: true,

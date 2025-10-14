@@ -36,6 +36,7 @@ describe('SettingsStore', () => {
 			expect(defaultSettings).toEqual({
 				startTime: '2025-07-07T08:00:00.000Z',
 				autoFocusDescription: false,
+				defaultToYesterday: false,
 				taskCreateDefaultValue: {
 					title: 'No title',
 					description: '',
@@ -51,6 +52,7 @@ describe('SettingsStore', () => {
 			expect(settings).toEqual({
 				startTime: '2025-07-07T08:00:00.000Z',
 				autoFocusDescription: false,
+				defaultToYesterday: false,
 				taskCreateDefaultValue: {
 					title: 'No title',
 					description: '',

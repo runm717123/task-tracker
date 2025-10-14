@@ -11,6 +11,16 @@ vi.mock('../settingsStore', () => ({
 		getSettings: vi.fn().mockResolvedValue({
 			startTime: '2025-07-07T08:00:00.000Z',
 			autoFocusDescription: false,
+			defaultToYesterday: false,
+			taskCreateDefaultValue: {
+				title: 'No title',
+				description: '',
+			},
+		}),
+		getDefaultSettings: vi.fn().mockReturnValue({
+			startTime: '2025-07-07T08:00:00.000Z',
+			autoFocusDescription: false,
+			defaultToYesterday: false,
 			taskCreateDefaultValue: {
 				title: 'No title',
 				description: '',
@@ -19,14 +29,7 @@ vi.mock('../settingsStore', () => ({
 	},
 }));
 
-// Mock dayjs
-vi.mock('dayjs', () => ({
-	default: vi.fn(() => ({
-		toISOString: () => '2025-07-07T10:00:00.000Z',
-		isAfter: vi.fn().mockReturnValue(false),
-		diff: vi.fn().mockReturnValue(0),
-	})),
-}));
+// Don't mock dayjs - use the actual implementation
 
 describe('TaskStore', () => {
 	let taskStore: TaskStore;
@@ -96,7 +99,7 @@ describe('TaskStore', () => {
 	});
 
 	describe('resetTasks', () => {
-		it('should clear all tasks and reset lastTimeEndedTask', async () => {
+		it('should clear all tasks', async () => {
 			const testTask: ITrackedTask = {
 				id: 'test-1',
 				title: 'Test Task',
@@ -111,25 +114,7 @@ describe('TaskStore', () => {
 			await taskStore.resetTasks();
 
 			const tasks = await taskStore.getTasks();
-			const lastTimeEndedTask = await taskStore.getLastTimeEndedTask();
-
 			expect(tasks).toEqual([]);
-			expect(lastTimeEndedTask).toBe('2025-07-07T08:00:00.000Z');
-		});
-	});
-
-	describe('lastTimeEndedTask', () => {
-		it('should return stored lastTimeEndedTask', async () => {
-			const testTime = '2025-07-07T09:30:00.000Z';
-			await taskStore.saveLastTimeEndedTask(testTime);
-
-			const lastTime = await taskStore.getLastTimeEndedTask();
-			expect(lastTime).toBe(testTime);
-		});
-
-		it('should fallback to settings start time when no lastTimeEndedTask exists', async () => {
-			const lastTime = await taskStore.getLastTimeEndedTask();
-			expect(lastTime).toBe('2025-07-07T08:00:00.000Z');
 		});
 	});
 
@@ -151,32 +136,72 @@ describe('TaskStore', () => {
 			expect(addedTask.description).toBe('New Description');
 			expect(addedTask.status).toBe('pending');
 			expect(addedTask.id).toBeDefined();
-			expect(addedTask.createdAt).toBe('2025-07-07T10:00:00.000Z');
+			expect(addedTask.createdAt).toBeDefined();
+			expect(addedTask.start).toBeDefined();
+			expect(addedTask.end).toBeDefined();
 		});
 
-		it('should update lastTimeEndedTask after adding task', async () => {
+		it('should use settings start time when no tasks exist for today', async () => {
 			const newTask: ICreateTask = {
 				title: 'New Task',
 				description: 'New Description',
 				status: 'pending',
 			};
 
+			// Get settings start time to compare
+			const settings = await settingsStore.getSettings();
+			const expectedStartTime = settings.startTime;
+
 			await taskStore.addTask(newTask);
 
-			const lastTimeEndedTask = await taskStore.getLastTimeEndedTask();
-			expect(lastTimeEndedTask).toBe('2025-07-07T10:00:00.000Z');
+			const tasks = await taskStore.getTasks();
+			expect(tasks).toHaveLength(1);
+
+			const addedTask = tasks[0];
+			// Should use settings start time since no previous tasks exist
+			expect(addedTask.start).toBe(expectedStartTime);
 		});
 
-		it('should use provided startTime and endTime', async () => {
-			const startTime = '2025-07-07T09:00:00.000Z';
-			const endTime = '2025-07-07T11:00:00.000Z';
+		it('should use latest ended task from today as start time', async () => {
+			const today = dayjs().format('YYYY-MM-DD');
+			const firstTaskEndTime = `${today}T09:30:00.000Z`;
+			
+			// Add first task
+			await taskStore.addTask({
+				title: 'First Task',
+				description: 'First Description',
+				status: 'pending',
+				start: `${today}T09:00:00.000Z`,
+				end: firstTaskEndTime,
+			});
+
+			// Add second task without explicit start time
+			await taskStore.addTask({
+				title: 'Second Task',
+				description: 'Second Description',
+				status: 'pending',
+			});
+
+			const tasks = await taskStore.getTasks();
+			expect(tasks).toHaveLength(2);
+
+			const firstTask = tasks[0];
+			const secondTask = tasks[1];
+			// Should use the end time of the first task as start time
+			expect(secondTask.start).toBe(firstTask.end);
+			expect(secondTask.start).toBe(firstTaskEndTime);
+		});
+
+		it('should use provided start and end times', async () => {
+			const start = '2025-07-07T09:00:00.000Z';
+			const end = '2025-07-07T11:00:00.000Z';
 
 			const newTask: ICreateTask = {
 				title: 'Task with Times',
 				description: 'Task Description',
 				status: 'pending',
-				startTime,
-				endTime,
+				start,
+				end,
 			};
 
 			await taskStore.addTask(newTask);
@@ -185,18 +210,18 @@ describe('TaskStore', () => {
 			expect(tasks).toHaveLength(1);
 
 			const addedTask = tasks[0];
-			expect(addedTask.start).toBe(startTime);
-			expect(addedTask.end).toBe(endTime);
+			expect(addedTask.start).toBe(start);
+			expect(addedTask.end).toBe(end);
 		});
 
-		it('should auto-set endTime to 30 minutes after startTime when only startTime is provided', async () => {
-			const startTime = '2025-07-07T09:00:00.000Z';
+		it('should auto-set end to 30 minutes after start when only start is provided', async () => {
+			const start = '2025-07-07T09:00:00.000Z';
 
 			const newTask: ICreateTask = {
 				title: 'Task with Start Time Only',
 				description: 'Task Description',
 				status: 'pending',
-				startTime,
+				start,
 			};
 
 			await taskStore.addTask(newTask);
@@ -205,27 +230,63 @@ describe('TaskStore', () => {
 			expect(tasks).toHaveLength(1);
 
 			const addedTask = tasks[0];
-			expect(addedTask.start).toBe(startTime);
+			expect(addedTask.start).toBe(start);
 			expect(addedTask.end).toBe('2025-07-07T09:30:00.000Z'); // 30 minutes later
 		});
 
-		it('should update lastTimeEndedTask to custom endTime when provided', async () => {
-			const startTime = '2025-07-07T09:00:00.000Z';
-			const endTime = '2025-07-07T11:00:00.000Z';
-
-			const newTask: ICreateTask = {
-				title: 'Task with Custom Times',
-				description: 'Task Description',
+		it('should use latest ended task from the same day as task.end when start is not provided', async () => {
+			const yesterday = dayjs().subtract(1, 'day').format('YYYY-MM-DD');
+			
+			// Add a task from yesterday
+			await taskStore.addTask({
+				title: 'Yesterday Task',
+				description: 'Task from yesterday',
 				status: 'pending',
-				startTime,
-				endTime,
-			};
+				start: `${yesterday}T14:00:00.000Z`,
+				end: `${yesterday}T15:00:00.000Z`,
+			});
 
-			await taskStore.addTask(newTask);
+			// Add a new task with only end time set to yesterday (no start time)
+			await taskStore.addTask({
+				title: 'New Task',
+				description: 'New task ending yesterday',
+				status: 'pending',
+				end: `${yesterday}T16:00:00.000Z`,
+			});
 
-			const lastTimeEnded = await taskStore.getLastTimeEndedTask();
-			expect(lastTimeEnded).toBe(endTime);
+			const tasks = await taskStore.getTasks();
+			expect(tasks).toHaveLength(2);
+
+			const newTask = tasks[1];
+			// Should use the end time of yesterday's task as start time (15:00)
+			expect(newTask.start).toBe(`${yesterday}T15:00:00.000Z`);
+			expect(newTask.end).toBe(`${yesterday}T16:00:00.000Z`);
 		});
+
+		it('should use settings start time when no tasks exist on the end date', async () => {
+			const futureDate = dayjs().add(5, 'day').format('YYYY-MM-DD');
+			
+			// Get settings start time to compare
+			const settings = await settingsStore.getSettings();
+			const expectedStartTime = settings.startTime;
+
+			// Add a task with end time in the future (no existing tasks on that day)
+			await taskStore.addTask({
+				title: 'Future Task',
+				description: 'Task in the future',
+				status: 'pending',
+				end: `${futureDate}T10:00:00.000Z`,
+			});
+
+			const tasks = await taskStore.getTasks();
+			expect(tasks).toHaveLength(1);
+
+			const addedTask = tasks[0];
+			// Should use settings start time since no tasks exist on that future date
+			expect(addedTask.start).toBe(expectedStartTime);
+			expect(addedTask.end).toBe(`${futureDate}T10:00:00.000Z`);
+		});
+
 	});
 
 	describe('updateTask', () => {
@@ -258,85 +319,37 @@ describe('TaskStore', () => {
 			expect(tasks[0].status).toBe('done');
 		});
 
-		it('should update lastTimeEndedTask when task end time is more recent', async () => {
-			const mockDayjs = dayjs as any;
-			mockDayjs.mockReturnValue({
-				toISOString: () => '2025-07-07T10:00:00.000Z',
-				isAfter: vi.fn().mockReturnValue(true),
-				diff: vi.fn().mockReturnValue(0),
-			});
-
-			const originalTask: ITrackedTask = {
-				id: 'test-1',
-				title: 'Original Task',
-				description: 'Original Description',
-				status: 'pending',
-				createdAt: '2025-07-07T09:00:00.000Z',
-				start: '2025-07-07T09:00:00.000Z',
-				end: '2025-07-07T09:30:00.000Z',
-			};
-
-			await taskStore.saveTasks([originalTask]);
-
-			const updatedTask: ITrackedTask = {
-				...originalTask,
-				end: '2025-07-07T10:30:00.000Z',
-			};
-
-			await taskStore.updateTask(updatedTask);
-
-			const lastTimeEndedTask = await taskStore.getLastTimeEndedTask();
-			expect(lastTimeEndedTask).toBe('2025-07-07T10:30:00.000Z');
-		});
 	});
 
 	describe('deleteTask', () => {
 		it('should delete task from storage', async () => {
-			const testTasks: ITrackedTask[] = [
-				{
-					id: 'test-1',
-					title: 'Task 1',
-					description: 'Description 1',
-					status: 'pending',
-					createdAt: '2025-07-07T09:00:00.000Z',
-					start: '2025-07-07T09:00:00.000Z',
-					end: null,
-				},
-				{
-					id: 'test-2',
-					title: 'Task 2',
-					description: 'Description 2',
-					status: 'done',
-					createdAt: '2025-07-07T09:30:00.000Z',
-					start: '2025-07-07T09:30:00.000Z',
-					end: '2025-07-07T10:00:00.000Z',
-				},
-			];
-
-			await taskStore.saveTasks(testTasks);
-			await taskStore.deleteTask('test-1');
-
-			const tasks = await taskStore.getTasks();
-			expect(tasks).toHaveLength(1);
-			expect(tasks[0].id).toBe('test-2');
-		});
-
-		it('should fallback to settings start time when no tasks remain', async () => {
-			const testTask: ITrackedTask = {
-				id: 'test-1',
+			const today = dayjs().format('YYYY-MM-DD');
+			
+			await taskStore.addTask({
 				title: 'Task 1',
 				description: 'Description 1',
 				status: 'pending',
-				createdAt: '2025-07-07T09:00:00.000Z',
-				start: '2025-07-07T09:00:00.000Z',
-				end: '2025-07-07T09:30:00.000Z',
-			};
+				start: `${today}T09:00:00.000Z`,
+				end: `${today}T09:30:00.000Z`,
+			});
 
-			await taskStore.saveTasks([testTask]);
-			await taskStore.deleteTask('test-1');
+			await taskStore.addTask({
+				title: 'Task 2',
+				description: 'Description 2',
+				status: 'done',
+				start: `${today}T09:30:00.000Z`,
+				end: `${today}T10:00:00.000Z`,
+			});
 
-			const lastTimeEndedTask = await taskStore.getLastTimeEndedTask();
-			expect(lastTimeEndedTask).toBe('2025-07-07T08:00:00.000Z');
+			const tasks = await taskStore.getTasks();
+			expect(tasks).toHaveLength(2);
+
+			// Delete the second task
+			await taskStore.deleteTask(tasks[1].id);
+
+			const remainingTasks = await taskStore.getTasks();
+			expect(remainingTasks).toHaveLength(1);
+			expect(remainingTasks[0].title).toBe('Task 1');
 		});
 	});
 
