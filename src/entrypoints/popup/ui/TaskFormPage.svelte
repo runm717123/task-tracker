@@ -27,9 +27,9 @@
 	let startTimePicker: flatpickr.Instance;
 	let endTimePicker: flatpickr.Instance;
 
-	onMount(() => {
+	onMount(async () => {
 		initializeFlatpickr();
-		handleAutoFocus();
+		await handleAutoFocus();
 	});
 
 	onDestroy(() => {
@@ -87,6 +87,16 @@
 		try {
 			const settings = await settingsStore.getSettings();
 			const shouldFocusDescription = settings.autoFocusDescription;
+
+			// Prepopulate fields based on settings
+			if (settings.taskCreateDefaultValue) {
+				if (shouldFocusDescription && settings.taskCreateDefaultValue.title) {
+					title = settings.taskCreateDefaultValue.title;
+				}
+				if (!shouldFocusDescription && settings.taskCreateDefaultValue.description) {
+					description = settings.taskCreateDefaultValue.description;
+				}
+			}
 
 			// Use setTimeout to ensure DOM is ready
 			setTimeout(() => {
