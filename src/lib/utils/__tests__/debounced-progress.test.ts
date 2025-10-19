@@ -1,118 +1,118 @@
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { DebouncedProgressReporter } from '../debounced-progress';
+import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
+import { DebouncedProgressReporter } from "../debounced-progress";
 
-describe('DebouncedProgressReporter', () => {
-	beforeEach(() => {
-		vi.useFakeTimers();
-	});
+describe("DebouncedProgressReporter", () => {
+  beforeEach(() => {
+    vi.useFakeTimers();
+  });
 
-	afterEach(() => {
-		vi.restoreAllMocks();
-	});
+  afterEach(() => {
+    vi.restoreAllMocks();
+  });
 
-	it('should call onProgress immediately on first report', () => {
-		const onProgress = vi.fn();
-		const reporter = new DebouncedProgressReporter(onProgress, 100);
+  it("should call onProgress immediately on first report", () => {
+    const onProgress = vi.fn();
+    const reporter = new DebouncedProgressReporter(onProgress, 100);
 
-		reporter.report('First update');
+    reporter.report("First update");
 
-		expect(onProgress).toHaveBeenCalledTimes(1);
-		expect(onProgress).toHaveBeenCalledWith('First update');
-	});
+    expect(onProgress).toHaveBeenCalledTimes(1);
+    expect(onProgress).toHaveBeenCalledWith("First update");
+  });
 
-	it('should debounce rapid consecutive reports', () => {
-		const onProgress = vi.fn();
-		const reporter = new DebouncedProgressReporter(onProgress, 100);
+  it("should debounce rapid consecutive reports", () => {
+    const onProgress = vi.fn();
+    const reporter = new DebouncedProgressReporter(onProgress, 100);
 
-		reporter.report('Update 1');
-		reporter.report('Update 2');
-		reporter.report('Update 3');
+    reporter.report("Update 1");
+    reporter.report("Update 2");
+    reporter.report("Update 3");
 
-		expect(onProgress).toHaveBeenCalledTimes(1);
-		expect(onProgress).toHaveBeenCalledWith('Update 1');
+    expect(onProgress).toHaveBeenCalledTimes(1);
+    expect(onProgress).toHaveBeenCalledWith("Update 1");
 
-		vi.advanceTimersByTime(100);
+    vi.advanceTimersByTime(100);
 
-		expect(onProgress).toHaveBeenCalledTimes(2);
-		expect(onProgress).toHaveBeenCalledWith('Update 3');
-	});
+    expect(onProgress).toHaveBeenCalledTimes(2);
+    expect(onProgress).toHaveBeenCalledWith("Update 3");
+  });
 
-	it('should report immediately if enough time has passed', () => {
-		const onProgress = vi.fn();
-		const reporter = new DebouncedProgressReporter(onProgress, 100);
+  it("should report immediately if enough time has passed", () => {
+    const onProgress = vi.fn();
+    const reporter = new DebouncedProgressReporter(onProgress, 100);
 
-		reporter.report('First');
-		vi.advanceTimersByTime(100);
-		reporter.report('Second');
+    reporter.report("First");
+    vi.advanceTimersByTime(100);
+    reporter.report("Second");
 
-		expect(onProgress).toHaveBeenCalledTimes(2);
-		expect(onProgress).toHaveBeenNthCalledWith(1, 'First');
-		expect(onProgress).toHaveBeenNthCalledWith(2, 'Second');
-	});
+    expect(onProgress).toHaveBeenCalledTimes(2);
+    expect(onProgress).toHaveBeenNthCalledWith(1, "First");
+    expect(onProgress).toHaveBeenNthCalledWith(2, "Second");
+  });
 
-	it('should flush pending status immediately', () => {
-		const onProgress = vi.fn();
-		const reporter = new DebouncedProgressReporter(onProgress, 100);
+  it("should flush pending status immediately", () => {
+    const onProgress = vi.fn();
+    const reporter = new DebouncedProgressReporter(onProgress, 100);
 
-		reporter.report('First');
-		reporter.report('Pending');
-		
-		expect(onProgress).toHaveBeenCalledTimes(1);
+    reporter.report("First");
+    reporter.report("Pending");
 
-		reporter.flush();
+    expect(onProgress).toHaveBeenCalledTimes(1);
 
-		expect(onProgress).toHaveBeenCalledTimes(2);
-		expect(onProgress).toHaveBeenCalledWith('Pending');
-	});
+    reporter.flush();
 
-	it('should not call onProgress when flushing with no pending status', () => {
-		const onProgress = vi.fn();
-		const reporter = new DebouncedProgressReporter(onProgress, 100);
+    expect(onProgress).toHaveBeenCalledTimes(2);
+    expect(onProgress).toHaveBeenCalledWith("Pending");
+  });
 
-		reporter.flush();
+  it("should not call onProgress when flushing with no pending status", () => {
+    const onProgress = vi.fn();
+    const reporter = new DebouncedProgressReporter(onProgress, 100);
 
-		expect(onProgress).not.toHaveBeenCalled();
-	});
+    reporter.flush();
 
-	it('should clear pending status after flush', () => {
-		const onProgress = vi.fn();
-		const reporter = new DebouncedProgressReporter(onProgress, 100);
+    expect(onProgress).not.toHaveBeenCalled();
+  });
 
-		reporter.report('First');
-		reporter.report('Pending');
-		reporter.flush();
+  it("should clear pending status after flush", () => {
+    const onProgress = vi.fn();
+    const reporter = new DebouncedProgressReporter(onProgress, 100);
 
-		onProgress.mockClear();
-		reporter.flush();
+    reporter.report("First");
+    reporter.report("Pending");
+    reporter.flush();
 
-		expect(onProgress).not.toHaveBeenCalled();
-	});
+    onProgress.mockClear();
+    reporter.flush();
 
-	it('should clean up timeout on destroy', () => {
-		const onProgress = vi.fn();
-		const reporter = new DebouncedProgressReporter(onProgress, 100);
+    expect(onProgress).not.toHaveBeenCalled();
+  });
 
-		reporter.report('First');
-		reporter.report('Pending');
-		reporter.destroy();
+  it("should clean up timeout on destroy", () => {
+    const onProgress = vi.fn();
+    const reporter = new DebouncedProgressReporter(onProgress, 100);
 
-		vi.advanceTimersByTime(100);
+    reporter.report("First");
+    reporter.report("Pending");
+    reporter.destroy();
 
-		expect(onProgress).toHaveBeenCalledTimes(1);
-	});
+    vi.advanceTimersByTime(100);
 
-	it('should use custom debounce time', () => {
-		const onProgress = vi.fn();
-		const reporter = new DebouncedProgressReporter(onProgress, 200);
+    expect(onProgress).toHaveBeenCalledTimes(1);
+  });
 
-		reporter.report('First');
-		reporter.report('Second');
+  it("should use custom debounce time", () => {
+    const onProgress = vi.fn();
+    const reporter = new DebouncedProgressReporter(onProgress, 200);
 
-		vi.advanceTimersByTime(100);
-		expect(onProgress).toHaveBeenCalledTimes(1);
+    reporter.report("First");
+    reporter.report("Second");
 
-		vi.advanceTimersByTime(100);
-		expect(onProgress).toHaveBeenCalledTimes(2);
-		expect(onProgress).toHaveBeenCalledWith('Second');
-	});
+    vi.advanceTimersByTime(100);
+    expect(onProgress).toHaveBeenCalledTimes(1);
+
+    vi.advanceTimersByTime(100);
+    expect(onProgress).toHaveBeenCalledTimes(2);
+    expect(onProgress).toHaveBeenCalledWith("Second");
+  });
 });

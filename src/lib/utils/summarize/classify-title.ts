@@ -1,13 +1,13 @@
-import type { Tensor } from '@tensorflow/tfjs';
-import { getClassifier, getModel } from './get-model';
+import type { Tensor } from "@tensorflow/tfjs";
+import { getClassifier, getModel } from "./get-model";
 
 export const CLASSIFIED_TITLE_KEYS_DICT = {
-	valid_title: 'Valid Title',
-	background_task: 'Background Task',
-	meetings: 'Meetings',
-	general_tasks: 'General Tasks',
-	general_activities: 'General Activities',
-	project_tasks: 'Project Tasks',
+  valid_title: "Valid Title",
+  background_task: "Background Task",
+  meetings: "Meetings",
+  general_tasks: "General Tasks",
+  general_activities: "General Activities",
+  project_tasks: "Project Tasks",
 };
 
 /**
@@ -16,7 +16,14 @@ export const CLASSIFIED_TITLE_KEYS_DICT = {
  *
  * @see classifyTasksTitles
  */
-export const CLASSIFIED_TITLES_KEYS = ['valid_title', 'background_task', 'meetings', 'general_tasks', 'general_activities', 'project_tasks'];
+export const CLASSIFIED_TITLES_KEYS = [
+  "valid_title",
+  "background_task",
+  "meetings",
+  "general_tasks",
+  "general_activities",
+  "project_tasks",
+];
 
 /**
  * Classifies task titles into predefined categories using a machine learning model.
@@ -34,29 +41,37 @@ export const CLASSIFIED_TITLES_KEYS = ['valid_title', 'background_task', 'meetin
  *
  * @see https://github.com/runm717123/task-tracker-models-dev for more details
  */
-export async function classifyTasksTitles(titles: string[], onProgress?: (status: string) => void) {
-	const embedModel = await getModel();
-	const classifier = await getClassifier(onProgress);
+export async function classifyTasksTitles(
+  titles: string[],
+  onProgress?: (status: string) => void,
+) {
+  const embedModel = await getModel();
+  const classifier = await getClassifier(onProgress);
 
-	const embeddings = await embedModel.embed(titles);
-	const predictions = classifier.predict(embeddings);
+  const embeddings = await embedModel.embed(titles);
+  const predictions = classifier.predict(embeddings);
 
-	const predictionTensor = predictions as Tensor;
-	const predictionArray = (await predictionTensor.array()) as number[][];
-	const predictedIndices = predictionArray.map((row) => row.indexOf(Math.max(...row)));
+  const predictionTensor = predictions as Tensor;
+  const predictionArray = (await predictionTensor.array()) as number[][];
+  const predictedIndices = predictionArray.map((row) =>
+    row.indexOf(Math.max(...row)),
+  );
 
-	return predictedIndices;
+  return predictedIndices;
 }
 
-export async function clusterTitles(titles: string[], onProgress?: (status: string) => void): Promise<Record<string, string[]>> {
-	const classified = await classifyTasksTitles(titles, onProgress);
-	const clusters: Record<string, string[]> = {};
-	for (let i = 0; i < titles.length; i++) {
-		const key = CLASSIFIED_TITLES_KEYS[classified[i]];
-		if (!clusters[key]) {
-			clusters[key] = [];
-		}
-		clusters[key].push(titles[i]);
-	}
-	return clusters;
+export async function clusterTitles(
+  titles: string[],
+  onProgress?: (status: string) => void,
+): Promise<Record<string, string[]>> {
+  const classified = await classifyTasksTitles(titles, onProgress);
+  const clusters: Record<string, string[]> = {};
+  for (let i = 0; i < titles.length; i++) {
+    const key = CLASSIFIED_TITLES_KEYS[classified[i]];
+    if (!clusters[key]) {
+      clusters[key] = [];
+    }
+    clusters[key].push(titles[i]);
+  }
+  return clusters;
 }

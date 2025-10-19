@@ -1,8 +1,8 @@
-@import '../global.css';
+@import "../global.css";
 
 body {
-	margin: 0;
-	display: flex;
-	place-items: center;
-	min-width: 450px;
+  margin: 0;
+  display: flex;
+  place-items: center;
+  min-width: 450px;
 }

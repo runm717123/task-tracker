@@ -1,14 +1,14 @@
 // this file is service worker
 
-import { openTaskPopup } from '../lib/utils/newTaskFormPopup';
+import { openTaskPopup } from "../lib/utils/newTaskFormPopup";
 
 export default defineBackground(async () => {
-	console.log('Hello background!', { id: browser.runtime.id });
+  console.log("Hello background!", { id: browser.runtime.id });
 
-	// Listen for keyboard commands
-	browser.commands.onCommand.addListener(async (command) => {
-		if (command === 'open-new-task-popup') {
-			await openTaskPopup();
-		}
-	});
+  // Listen for keyboard commands
+  browser.commands.onCommand.addListener(async (command) => {
+    if (command === "open-new-task-popup") {
+      await openTaskPopup();
+    }
+  });
 });

@@ -3,7 +3,6 @@
 [![WXT](https://img.shields.io/badge/WXT-Framework-blue)](https://wxt.dev/)
 [![@bios-ui/svelte](https://img.shields.io/npm/v/@bios-ui/svelte?label=@bios-ui/svelte)](https://www.npmjs.com/package/@bios-ui/svelte)
 
-
 A Chrome extension for task tracking built with WXT and Svelte.
 
 **Published on Chrome Web Store:** https://chromewebstore.google.com/detail/ndev-task-tracker/occmebddclnpjgckigmgkahbckfmmpml
@@ -15,6 +14,7 @@ A Chrome extension for task tracking built with WXT and Svelte.
 ### Setup
 
 1. Install dependencies:
+
    ```bash
    pnpm install
    ```
@@ -26,10 +26,13 @@ A Chrome extension for task tracking built with WXT and Svelte.
    ```
 
 2. Start development server:
+
    ```bash
    pnpm dev:watch
    ```
+
    or without nodemon
+
    ```bash
    pnpm dev
    ```
@@ -51,6 +54,7 @@ A Chrome extension for task tracking built with WXT and Svelte.
 To prepare a production release:
 
 1. **Update the version** in `package.json`:
+
    ```json
    {
      "version": "x.x.x"
@@ -58,21 +62,22 @@ To prepare a production release:
    ```
 
 2. **Build for production:**
+
    ```bash
    pnpm build:prod
    ```
-   
+
    This command will:
    - Build the extension in production mode
    - Create a zip file ready for Chrome Web Store submission
    - Output will be in the `/.output` directory
-   
+
 ## Project Structure
 
 This Chrome extension has 3 main UI sections:
 
 - **`src/entrypoints/popup/`** - Extension popup UI (when clicking the extension icon)
-- **`src/entrypoints/sidepanel/`** - Extension sidepanel UI  
+- **`src/entrypoints/sidepanel/`** - Extension sidepanel UI
 - **`src/entrypoints/new-task-form-popup/`** - Custom task popup UI for new task form
 
 ### Folder Structure

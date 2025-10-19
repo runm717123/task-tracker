@@ -3,33 +3,37 @@ import { calculateCosineSimilarity } from "./calc-cosine-similarity";
 /**
  * Performs semantic clustering on texts using cosine similarity
  */
-export async function performSemanticClustering(texts: string[], vectors: number[][], threshold: number): Promise<string[][]> {
-	const used = new Array(texts.length).fill(false);
-	const clusters: string[][] = [];
+export async function performSemanticClustering(
+  texts: string[],
+  vectors: number[][],
+  threshold: number,
+): Promise<string[][]> {
+  const used = new Array(texts.length).fill(false);
+  const clusters: string[][] = [];
 
-	for (let i = 0; i < vectors.length; i++) {
-		if (used[i]) continue;
+  for (let i = 0; i < vectors.length; i++) {
+    if (used[i]) continue;
 
-		const cluster = [texts[i]];
-		used[i] = true;
+    const cluster = [texts[i]];
+    used[i] = true;
 
-		for (let j = i + 1; j < vectors.length; j++) {
-			if (used[j]) continue;
+    for (let j = i + 1; j < vectors.length; j++) {
+      if (used[j]) continue;
 
-			const similarity = calculateCosineSimilarity(vectors[i], vectors[j]);
-			if (similarity > threshold) {
-				cluster.push(texts[j]);
-				used[j] = true;
-			}
-		}
+      const similarity = calculateCosineSimilarity(vectors[i], vectors[j]);
+      if (similarity > threshold) {
+        cluster.push(texts[j]);
+        used[j] = true;
+      }
+    }
 
-		clusters.push(cluster);
+    clusters.push(cluster);
 
-		// Yield control every 10 iterations to prevent blocking
-		if (i % 10 === 0) {
-			await new Promise((resolve) => setTimeout(resolve, 0));
-		}
-	}
+    // Yield control every 10 iterations to prevent blocking
+    if (i % 10 === 0) {
+      await new Promise((resolve) => setTimeout(resolve, 0));
+    }
+  }
 
-	return clusters.sort((a, b) => b.length - a.length);
+  return clusters.sort((a, b) => b.length - a.length);
 }
