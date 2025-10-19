@@ -319,6 +319,156 @@ describe('TaskStore', () => {
 			expect(tasks[0].status).toBe('done');
 		});
 
+		it('should adjust adjacent tasks when updating task times', async () => {
+			const today = dayjs().format('YYYY-MM-DD');
+			
+			const task1: ITrackedTask = {
+				id: 'task-1',
+				title: 'Task 1',
+				description: 'First task',
+				status: 'done',
+				createdAt: `${today}T09:00:00.000Z`,
+				start: `${today}T09:00:00.000Z`,
+				end: `${today}T10:00:00.000Z`,
+			};
+
+			const task2: ITrackedTask = {
+				id: 'task-2',
+				title: 'Task 2',
+				description: 'Second task',
+				status: 'done',
+				createdAt: `${today}T10:00:00.000Z`,
+				start: `${today}T10:00:00.000Z`,
+				end: `${today}T11:00:00.000Z`,
+			};
+
+			const task3: ITrackedTask = {
+				id: 'task-3',
+				title: 'Task 3',
+				description: 'Third task',
+				status: 'pending',
+				createdAt: `${today}T11:00:00.000Z`,
+				start: `${today}T11:00:00.000Z`,
+				end: `${today}T12:00:00.000Z`,
+			};
+
+			await taskStore.saveTasks([task1, task2, task3]);
+
+			// Update task2's both start and end times
+			const updatedTask2: ITrackedTask = {
+				...task2,
+				start: `${today}T10:15:00.000Z`,
+				end: `${today}T10:45:00.000Z`,
+			};
+
+			await taskStore.updateTask(updatedTask2);
+
+			const tasks = await taskStore.getTasks();
+			expect(tasks).toHaveLength(3);
+
+			const updatedTask1 = tasks.find((t) => t.id === 'task-1');
+			const updatedTask2Result = tasks.find((t) => t.id === 'task-2');
+			const updatedTask3 = tasks.find((t) => t.id === 'task-3');
+
+			// Task 1's end time should match task 2's new start time
+			expect(updatedTask1?.end).toBe(updatedTask2.start);
+			// Task 2 should have new times
+			expect(updatedTask2Result?.start).toBe(updatedTask2.start);
+			expect(updatedTask2Result?.end).toBe(updatedTask2.end);
+			// Task 3's start time should match task 2's new end time
+			expect(updatedTask3?.start).toBe(updatedTask2.end);
+		});
+
+		it('should not adjust previous task when updating start time of first task', async () => {
+			const today = dayjs().format('YYYY-MM-DD');
+			
+			const task1: ITrackedTask = {
+				id: 'task-1',
+				title: 'Task 1',
+				description: 'First task',
+				status: 'done',
+				createdAt: `${today}T09:00:00.000Z`,
+				start: `${today}T09:00:00.000Z`,
+				end: `${today}T10:00:00.000Z`,
+			};
+
+			const task2: ITrackedTask = {
+				id: 'task-2',
+				title: 'Task 2',
+				description: 'Second task',
+				status: 'pending',
+				createdAt: `${today}T10:00:00.000Z`,
+				start: `${today}T10:00:00.000Z`,
+				end: `${today}T11:00:00.000Z`,
+			};
+
+			await taskStore.saveTasks([task1, task2]);
+
+			// Update task1's start time (first task of the day)
+			const updatedTask1: ITrackedTask = {
+				...task1,
+				start: `${today}T08:30:00.000Z`,
+			};
+
+			await taskStore.updateTask(updatedTask1);
+
+			const tasks = await taskStore.getTasks();
+			expect(tasks).toHaveLength(2);
+
+			const updatedTask1Result = tasks.find((t) => t.id === 'task-1');
+			const updatedTask2 = tasks.find((t) => t.id === 'task-2');
+
+			// Task 1's start time should be updated
+			expect(updatedTask1Result?.start).toBe(updatedTask1.start);
+			// Task 2 should remain unchanged
+			expect(updatedTask2?.start).toBe(task2.start);
+		});
+
+		it('should not adjust next task when updating end time of last task', async () => {
+			const today = dayjs().format('YYYY-MM-DD');
+			
+			const task1: ITrackedTask = {
+				id: 'task-1',
+				title: 'Task 1',
+				description: 'First task',
+				status: 'done',
+				createdAt: `${today}T09:00:00.000Z`,
+				start: `${today}T09:00:00.000Z`,
+				end: `${today}T10:00:00.000Z`,
+			};
+
+			const task2: ITrackedTask = {
+				id: 'task-2',
+				title: 'Task 2',
+				description: 'Second task',
+				status: 'pending',
+				createdAt: `${today}T10:00:00.000Z`,
+				start: `${today}T10:00:00.000Z`,
+				end: `${today}T11:00:00.000Z`,
+			};
+
+			await taskStore.saveTasks([task1, task2]);
+
+			// Update task2's end time (last task of the day)
+			const updatedTask2: ITrackedTask = {
+				...task2,
+				end: `${today}T11:30:00.000Z`,
+			};
+
+			await taskStore.updateTask(updatedTask2);
+
+			const tasks = await taskStore.getTasks();
+			expect(tasks).toHaveLength(2);
+
+			const updatedTask1 = tasks.find((t) => t.id === 'task-1');
+			const updatedTask2Result = tasks.find((t) => t.id === 'task-2');
+
+			// Task 1 should remain unchanged
+			expect(updatedTask1?.end).toBe(task1.end);
+			// Task 2's end time should be updated
+			expect(updatedTask2Result?.end).toBe(updatedTask2.end);
+		});
+
 	});
 
 	describe('deleteTask', () => {

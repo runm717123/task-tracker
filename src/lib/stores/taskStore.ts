@@ -206,12 +206,66 @@ export class TaskStore {
 
 	/**
 	 * Update an existing task
+	 * If updating startTime and not the first task of the day, adjusts previous task's end time
+	 * If updating endTime and not the last task of the day, adjusts next task's start time
 	 */
 	async updateTask(updatedTask: ITrackedTask): Promise<void> {
 		const tasks = await this.getTasks();
-		const updatedTasks = tasks.map((task) => (task.id === updatedTask.id ? updatedTask : task));
-		await this.saveTasks(updatedTasks);
-	}
+		const originalTask = tasks.find((task) => task.id === updatedTask.id);
+		
+		if (!originalTask) {
+			throw new Error(`Task with id ${updatedTask.id} not found`);
+		}
+
+		if(tasks.length > 1) {
+			// Get tasks from the same day as the updated task (use createdAt as fallback)
+			const referenceDate = updatedTask.start || updatedTask.createdAt;
+			const tasksForDay = await this.getTasks('daily', referenceDate);
+			
+			// Sort tasks by start time
+			const sortedTasks = tasksForDay.sort((a, b) => dayjs(a.start).diff(dayjs(b.start)));
+			
+			// Find the index of the current task
+			const currentIndex = sortedTasks.findIndex((task) => task.id === updatedTask.id);
+
+			// Check if start time changed and there's a previous task
+			const startTimeChanged = originalTask.start !== updatedTask.start
+			if (startTimeChanged && currentIndex > 0) {
+				const previousTask = sortedTasks[currentIndex - 1];
+				// Update previous task's end time to match this task's new start time
+				previousTask.end = updatedTask.start;
+			}
+
+			// Check if end time changed and there's a next task
+			const endTimeChanged = originalTask.end !== updatedTask.end;
+			if (endTimeChanged && currentIndex < sortedTasks.length - 1) {
+				const nextTask = sortedTasks[currentIndex + 1];
+				// Update next task's start time to match this task's new end time
+				nextTask.start = updatedTask.end;
+			}
+
+
+			// Update all tasks in storage
+			const updatedTasks = tasks.map((task) => {
+				if (task.id === updatedTask.id) {
+					return updatedTask;
+				}
+				// Find if this task was modified (previous or next task)
+				const modifiedTask = sortedTasks.find((t) => t.id === task.id);
+				return modifiedTask || task;
+			});
+			await this.saveTasks(updatedTasks);
+		} else {
+			// Update all tasks in storage
+			const updatedTasks = tasks.map((task) => {
+				if (task.id === updatedTask.id) {
+					return updatedTask;
+				}
+				return task;
+			});
+			await this.saveTasks(updatedTasks);
+		}
+}
 
 	/**
 	 * Delete a task
