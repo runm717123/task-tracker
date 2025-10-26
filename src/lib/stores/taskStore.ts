@@ -196,7 +196,8 @@ export class TaskStore {
       } else {
         // No tasks on that day, fall back to settings start time
         const settings = await settingsStore.getSettings();
-        startTime = settings.startTime;
+        const startTimeDayjs = dayjs(settings.startTime);
+				startTime = dayjs().set('hour', startTimeDayjs.hour()).set('minute', startTimeDayjs.minute()).toISOString();
       }
 
       endTime = task.end ? dayjs(task.end).toISOString() : currentTime;

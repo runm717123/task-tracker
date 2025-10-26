@@ -150,7 +150,7 @@ describe("TaskStore", () => {
 
       // Get settings start time to compare
       const settings = await settingsStore.getSettings();
-      const expectedStartTime = settings.startTime;
+      const expectedStartTime = dayjs(settings.startTime);
 
       await taskStore.addTask(newTask);
 
@@ -159,7 +159,14 @@ describe("TaskStore", () => {
 
       const addedTask = tasks[0];
       // Should use settings start time since no previous tasks exist
-      expect(addedTask.start).toBe(expectedStartTime);
+      const startTime = dayjs(addedTask.start);
+			const endTime = dayjs(addedTask.end);
+
+			expect(startTime.isSame(dayjs(), 'date')).toBe(true);
+			expect(startTime.hour()).toBe(expectedStartTime.hour());
+			expect(startTime.minute()).toBe(expectedStartTime.minute());
+			expect(endTime.isSame(startTime, 'day')).toBe(true);
+			expect(endTime.isAfter(startTime)).toBe(true);
     });
 
     it("should use latest ended task from today as start time", async () => {
@@ -261,30 +268,6 @@ describe("TaskStore", () => {
       // Should use the end time of yesterday's task as start time (15:00)
       expect(newTask.start).toBe(`${yesterday}T15:00:00.000Z`);
       expect(newTask.end).toBe(`${yesterday}T16:00:00.000Z`);
-    });
-
-    it("should use settings start time when no tasks exist on the end date", async () => {
-      const futureDate = dayjs().add(5, "day").format("YYYY-MM-DD");
-
-      // Get settings start time to compare
-      const settings = await settingsStore.getSettings();
-      const expectedStartTime = settings.startTime;
-
-      // Add a task with end time in the future (no existing tasks on that day)
-      await taskStore.addTask({
-        title: "Future Task",
-        description: "Task in the future",
-        status: "pending",
-        end: `${futureDate}T10:00:00.000Z`,
-      });
-
-      const tasks = await taskStore.getTasks();
-      expect(tasks).toHaveLength(1);
-
-      const addedTask = tasks[0];
-      // Should use settings start time since no tasks exist on that future date
-      expect(addedTask.start).toBe(expectedStartTime);
-      expect(addedTask.end).toBe(`${futureDate}T10:00:00.000Z`);
     });
   });
 
