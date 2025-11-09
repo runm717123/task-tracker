@@ -1,9 +1,7 @@
 /**
  * Formats grouped tasks into summary groups with proper ordering
  */
-export async function formatSummaryGroups(
-  groups: Map<string, string[]>,
-): Promise<ISummaryGroup[]> {
+export async function formatSummaryGroups(groups: Map<string, string[]>): Promise<ISummaryGroup[]> {
   const result = Array.from(groups.entries()).map(([title, tasks]) => ({
     title: title || "General Tasks",
     tasks: tasks,

@@ -14,7 +14,7 @@ export class ProgressTracker {
     this.stepNames = steps;
     this.progressReporter = new DebouncedProgressReporter(
       onProgress || (() => {}),
-      150, // 150ms debounce for smoother updates
+      150 // 150ms debounce for smoother updates
     );
   }
 
@@ -24,9 +24,7 @@ export class ProgressTracker {
   reportStepComplete(stepName: string, customMessage?: string) {
     this.completedSteps++;
     const message = customMessage || stepName;
-    const percentage = Math.round(
-      (this.completedSteps / this.totalSteps) * 100,
-    );
+    const percentage = Math.round((this.completedSteps / this.totalSteps) * 100);
     this.progressReporter.report(`${message} (${percentage}%)`);
   }
 
@@ -38,37 +36,25 @@ export class ProgressTracker {
     // Add a small amount for sub-progress to show activity without inflating percentage
     const subProgressBonus = Math.min(5, (1 / this.totalSteps) * 50); // Max 5% bonus for sub-progress
     const totalProgress = Math.round(baseProgress + subProgressBonus);
-    this.progressReporter.report(
-      `${customMessage} (${Math.min(totalProgress, 100)}%)`,
-    );
+    this.progressReporter.report(`${customMessage} (${Math.min(totalProgress, 100)}%)`);
   }
 
   /**
    * Update current step with sub-step progress tracking
    */
-  updateCurrentStepWithSubProgress(
-    baseMessage: string,
-    currentIndex: number,
-    totalItems: number,
-  ) {
+  updateCurrentStepWithSubProgress(baseMessage: string, currentIndex: number, totalItems: number) {
     const baseProgress = (this.completedSteps / this.totalSteps) * 100;
     const subStepProgress =
-      totalItems > 0
-        ? (currentIndex / totalItems) * (100 / this.totalSteps)
-        : 0;
+      totalItems > 0 ? (currentIndex / totalItems) * (100 / this.totalSteps) : 0;
     const totalProgress = Math.round(baseProgress + subStepProgress);
 
     if (totalItems > 0) {
-      const subStepPercentage = Math.round(
-        ((currentIndex + 1) / totalItems) * 100,
-      );
+      const subStepPercentage = Math.round(((currentIndex + 1) / totalItems) * 100);
       this.progressReporter.report(
-        `${baseMessage} ${subStepPercentage}% (${Math.min(totalProgress, 100)}%)`,
+        `${baseMessage} ${subStepPercentage}% (${Math.min(totalProgress, 100)}%)`
       );
     } else {
-      this.progressReporter.report(
-        `${baseMessage} (${Math.min(totalProgress, 100)}%)`,
-      );
+      this.progressReporter.report(`${baseMessage} (${Math.min(totalProgress, 100)}%)`);
     }
   }
 
@@ -79,9 +65,7 @@ export class ProgressTracker {
   nextStep(customMessage?: string) {
     if (this.completedSteps < this.totalSteps) {
       const message = customMessage || this.stepNames[this.completedSteps];
-      const percentage = Math.round(
-        ((this.completedSteps + 1) / this.totalSteps) * 100,
-      );
+      const percentage = Math.round(((this.completedSteps + 1) / this.totalSteps) * 100);
       this.progressReporter.report(`${message} (${percentage}%)`);
       this.completedSteps++;
     }
@@ -97,9 +81,7 @@ export class ProgressTracker {
       const baseProgress = (this.completedSteps / this.totalSteps) * 100;
       const stepProgress = (subProgress / this.totalSteps) * 100;
       const totalProgress = Math.round(baseProgress + stepProgress);
-      this.progressReporter.report(
-        `${message} (${Math.min(totalProgress, 100)}%)`,
-      );
+      this.progressReporter.report(`${message} (${Math.min(totalProgress, 100)}%)`);
     }
   }
 

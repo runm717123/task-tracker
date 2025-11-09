@@ -8,7 +8,7 @@ import { removeSimilarSentences } from "./remove-similiar-sentences";
 export async function removeSimilarDescriptions(
   tasksMap: Map<string, string[]>,
   model: UniversalSentenceEncoder,
-  threshold: number = 0.7,
+  threshold: number = 0.7
 ): Promise<TTasksMap> {
   const result: TTasksMap = new Map();
 
@@ -27,11 +27,7 @@ export async function removeSimilarDescriptions(
 
   // Batch process all tasks at once for better performance
   const allTaskStrings = allTasks.map((item) => item.task);
-  const uniqueTaskStrings = await removeSimilarSentences(
-    allTaskStrings,
-    model,
-    threshold,
-  );
+  const uniqueTaskStrings = await removeSimilarSentences(allTaskStrings, model, threshold);
 
   await tick();
 
@@ -68,16 +64,14 @@ function collectAllTasksWithGroups(tasksMap: Map<string, string[]>) {
  */
 function rebuildGroupedStructure(
   originalTasksMap: Map<string, string[]>,
-  uniqueTaskStrings: string[],
+  uniqueTaskStrings: string[]
 ): TTasksMap {
   const result: TTasksMap = new Map();
   const uniqueTaskSet = new Set(uniqueTaskStrings);
 
   for (const [title, originalTasks] of originalTasksMap) {
     const exactlyUniqueTasks = [...new Set(originalTasks)];
-    const filteredUniqueTasks = exactlyUniqueTasks.filter((task) =>
-      uniqueTaskSet.has(task),
-    );
+    const filteredUniqueTasks = exactlyUniqueTasks.filter((task) => uniqueTaskSet.has(task));
 
     if (filteredUniqueTasks.length > 0) {
       result.set(title, filteredUniqueTasks);

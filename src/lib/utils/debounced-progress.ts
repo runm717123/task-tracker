@@ -42,7 +42,7 @@ export class DebouncedProgressReporter {
           this.clearPending();
         }
       },
-      this.debounceMs - (now - this.lastUpdate),
+      this.debounceMs - (now - this.lastUpdate)
     ) as unknown as number;
   }
 

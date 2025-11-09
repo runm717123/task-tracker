@@ -160,13 +160,13 @@ describe("TaskStore", () => {
       const addedTask = tasks[0];
       // Should use settings start time since no previous tasks exist
       const startTime = dayjs(addedTask.start);
-			const endTime = dayjs(addedTask.end);
+      const endTime = dayjs(addedTask.end);
 
-			expect(startTime.isSame(dayjs(), 'date')).toBe(true);
-			expect(startTime.hour()).toBe(expectedStartTime.hour());
-			expect(startTime.minute()).toBe(expectedStartTime.minute());
-			expect(endTime.isSame(startTime, 'day')).toBe(true);
-			expect(endTime.isAfter(startTime)).toBe(true);
+      expect(startTime.isSame(dayjs(), "date")).toBe(true);
+      expect(startTime.hour()).toBe(expectedStartTime.hour());
+      expect(startTime.minute()).toBe(expectedStartTime.minute());
+      expect(endTime.isSame(startTime, "day")).toBe(true);
+      expect(endTime.isAfter(startTime)).toBe(true);
     });
 
     it("should use latest ended task from today as start time", async () => {

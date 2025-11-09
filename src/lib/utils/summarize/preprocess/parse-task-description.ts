@@ -18,10 +18,7 @@ export async function parseTaskDescription(description: string) {
   for (const line of lines) {
     const statusWords = "(done|in progress|completed|pending|todo|finished)";
     const statusRegexStart = new RegExp(`^${statusWords}\\s*(-|->)\\s*`, "i");
-    const statusRegexEnd = new RegExp(
-      `\\s*(-|->|\\()\\s*${statusWords}\\s*\\)?$`,
-      "i",
-    );
+    const statusRegexEnd = new RegExp(`\\s*(-|->|\\()\\s*${statusWords}\\s*\\)?$`, "i");
 
     const filteredLine = line
       // Filter the line using regex, remove initial characters that are not alphabet or number
@@ -39,7 +36,7 @@ export async function parseTaskDescription(description: string) {
     // Push filtered line to task
     if (filteredLine) {
       const parsed = await parseSplittedTasks(
-        filteredLine.split(",").filter((t) => !!t.trim().length),
+        filteredLine.split(",").filter((t) => !!t.trim().length)
       );
       tasks.push(...parsed);
     }
@@ -55,9 +52,7 @@ export async function parseTaskDescription(description: string) {
   return tasks;
 }
 
-export const parseSplittedTasks = async (
-  splittedTasks: string[],
-): Promise<string[]> => {
+export const parseSplittedTasks = async (splittedTasks: string[]): Promise<string[]> => {
   if (!splittedTasks) return [];
 
   // If only one task, return as is
@@ -76,7 +71,7 @@ export const parseSplittedTasks = async (
   // turn [0, 0, 1, 0] into [1, 1, 1, 0]
   const firstValidIndex = validationResults.findIndex((result) => result === 1);
   const transformedIndexes = validationResults.map((result, index) =>
-    index < firstValidIndex ? 1 : result,
+    index < firstValidIndex ? 1 : result
   );
 
   // turn [1, 1, 1, 0] into [1, 1, 1]

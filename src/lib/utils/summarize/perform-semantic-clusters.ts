@@ -6,7 +6,7 @@ import { calculateCosineSimilarity } from "./calc-cosine-similarity";
 export async function performSemanticClustering(
   texts: string[],
   vectors: number[][],
-  threshold: number,
+  threshold: number
 ): Promise<string[][]> {
   const used = new Array(texts.length).fill(false);
   const clusters: string[][] = [];

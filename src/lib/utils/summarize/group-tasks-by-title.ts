@@ -5,24 +5,16 @@ import { CLASSIFIED_TITLE_KEYS_DICT, clusterTitles } from "./classify-title";
  * Groups tasks by their titles using ML-based classification
  * Returns a map of group names to the tasks that belong to each group
  */
-export async function groupTasksByTitle(
-  tasks: IParsedTask[],
-): Promise<Map<string, IParsedTask[]>> {
+export async function groupTasksByTitle(tasks: IParsedTask[]): Promise<Map<string, IParsedTask[]>> {
   const groups = new Map<string, IParsedTask[]>();
   const titles = tasks.map((task) => task.title);
 
   await tick();
 
   const titleClusters = await clusterTitles(titles);
-  const categoryEntries = Object.entries(titleClusters).filter(
-    ([_, titles]) => titles.length > 0,
-  );
+  const categoryEntries = Object.entries(titleClusters).filter(([_, titles]) => titles.length > 0);
 
-  for (
-    let categoryIndex = 0;
-    categoryIndex < categoryEntries.length;
-    categoryIndex++
-  ) {
+  for (let categoryIndex = 0; categoryIndex < categoryEntries.length; categoryIndex++) {
     const [categoryKey, categoryTitles] = categoryEntries[categoryIndex];
 
     // For valid_title and project_tasks categories, group each title separately
@@ -45,7 +37,7 @@ export async function groupTasksByTitle(
 async function groupValidTitles(
   categoryTitles: string[],
   tasks: IParsedTask[],
-  groups: Map<string, IParsedTask[]>,
+  groups: Map<string, IParsedTask[]>
 ): Promise<void> {
   for (const title of categoryTitles) {
     const matchingTasks = tasks.filter((task) => task.title === title);
@@ -63,7 +55,7 @@ async function groupCategoryTitles(
   categoryKey: string,
   categoryTitles: string[],
   tasks: IParsedTask[],
-  groups: Map<string, IParsedTask[]>,
+  groups: Map<string, IParsedTask[]>
 ): Promise<void> {
   const allMatchingTasks: IParsedTask[] = [];
 
@@ -74,10 +66,8 @@ async function groupCategoryTitles(
 
   if (allMatchingTasks.length > 0) {
     groups.set(
-      CLASSIFIED_TITLE_KEYS_DICT[
-        categoryKey as keyof typeof CLASSIFIED_TITLE_KEYS_DICT
-      ],
-      allMatchingTasks,
+      CLASSIFIED_TITLE_KEYS_DICT[categoryKey as keyof typeof CLASSIFIED_TITLE_KEYS_DICT],
+      allMatchingTasks
     );
   }
 }

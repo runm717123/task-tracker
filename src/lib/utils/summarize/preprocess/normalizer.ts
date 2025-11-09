@@ -2,7 +2,7 @@
  * Converts ITrackedTask array to ParsedTask array
  */
 export function normalizeTasks(
-  tasks: ITrackedTask[],
+  tasks: ITrackedTask[]
 ): Pick<ITrackedTask, "title" | "description">[] {
   return tasks.map((task) => {
     const title = normalizeSentence(task.title) || "General Task";

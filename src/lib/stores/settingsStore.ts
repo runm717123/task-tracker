@@ -45,10 +45,7 @@ export class SettingsStore {
   /**
    * Update specific setting
    */
-  async updateSetting<K extends keyof ISettings>(
-    key: K,
-    value: ISettings[K],
-  ): Promise<void> {
+  async updateSetting<K extends keyof ISettings>(key: K, value: ISettings[K]): Promise<void> {
     const settings = await this.getSettings();
     settings[key] = value;
     await this.saveSettings(settings);

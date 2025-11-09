@@ -4,7 +4,7 @@ import { calculateCosineSimilarity } from "./calc-cosine-similarity";
 export async function removeSimilarSentences(
   sentences: string[],
   model: UniversalSentenceEncoder,
-  threshold: number,
+  threshold: number
 ) {
   // Early exit for small datasets
   if (sentences.length <= 1) return sentences;
@@ -14,9 +14,7 @@ export async function removeSimilarSentences(
   if (uniqueSentences.length <= 1) return uniqueSentences;
 
   // Filter out very short sentences that are likely not meaningful
-  const meaningfulSentences = uniqueSentences.filter(
-    (s) => s.trim().length > 3,
-  );
+  const meaningfulSentences = uniqueSentences.filter((s) => s.trim().length > 3);
   if (meaningfulSentences.length <= 1) return meaningfulSentences;
 
   // Yield control before heavy computation
@@ -43,10 +41,7 @@ export async function removeSimilarSentences(
     // Only check remaining sentences to avoid duplicate comparisons
     for (let j = i + 1; j < embeddingVectors.length; j++) {
       if (used[j]) continue;
-      const similarity = calculateCosineSimilarity(
-        embeddingVectors[i],
-        embeddingVectors[j],
-      );
+      const similarity = calculateCosineSimilarity(embeddingVectors[i], embeddingVectors[j]);
       if (similarity > threshold) {
         used[j] = true;
       }

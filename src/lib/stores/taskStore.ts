@@ -34,7 +34,7 @@ export class TaskStore {
     timeRange: "all" | "daily" | "weekly" | "monthly" | "custom" = "all",
     date: string | Date = new Date(),
     customStartDate?: string | Date,
-    customEndDate?: string | Date,
+    customEndDate?: string | Date
   ): Promise<ITrackedTask[]> {
     const tasks = await storage.getItem<ITrackedTask[]>(this.storageKey);
     const allTasks = tasks || [];
@@ -66,12 +66,7 @@ export class TaskStore {
         if (customStartDate && customEndDate) {
           return allTasks.filter((task) => {
             const taskDate = dayjs(task.start);
-            return taskDate.isBetween(
-              customStartDate,
-              customEndDate,
-              "date",
-              "[]",
-            );
+            return taskDate.isBetween(customStartDate, customEndDate, "date", "[]");
           });
         }
         return allTasks;
@@ -86,7 +81,7 @@ export class TaskStore {
   async resetTasks(
     timeRange: "all" | "daily" | "weekly" | "monthly" | "custom" = "all",
     customStartDate?: string | Date,
-    customEndDate?: string | Date,
+    customEndDate?: string | Date
   ): Promise<void> {
     if (timeRange === "all") {
       await this.saveTasks([]);
@@ -197,7 +192,10 @@ export class TaskStore {
         // No tasks on that day, fall back to settings start time
         const settings = await settingsStore.getSettings();
         const startTimeDayjs = dayjs(settings.startTime);
-				startTime = dayjs().set('hour', startTimeDayjs.hour()).set('minute', startTimeDayjs.minute()).toISOString();
+        startTime = dayjs()
+          .set("hour", startTimeDayjs.hour())
+          .set("minute", startTimeDayjs.minute())
+          .toISOString();
       }
 
       endTime = task.end ? dayjs(task.end).toISOString() : currentTime;
@@ -238,14 +236,10 @@ export class TaskStore {
       const tasksForDay = await this.getTasks("daily", referenceDate);
 
       // Sort tasks by start time
-      const sortedTasks = tasksForDay.sort((a, b) =>
-        dayjs(a.start).diff(dayjs(b.start)),
-      );
+      const sortedTasks = tasksForDay.sort((a, b) => dayjs(a.start).diff(dayjs(b.start)));
 
       // Find the index of the current task
-      const currentIndex = sortedTasks.findIndex(
-        (task) => task.id === updatedTask.id,
-      );
+      const currentIndex = sortedTasks.findIndex((task) => task.id === updatedTask.id);
 
       // Check if start time changed and there's a previous task
       const startTimeChanged = originalTask.start !== updatedTask.start;
@@ -298,7 +292,7 @@ export class TaskStore {
    * Import tasks from JSON data
    */
   async importTasks(
-    jsonData: ITrackedTask[],
+    jsonData: ITrackedTask[]
   ): Promise<{ success: boolean; message: string; imported: number }> {
     try {
       // Validate the JSON data structure
@@ -350,7 +344,7 @@ export class TaskStore {
 
       // Merge with existing tasks and sort by createdAt
       const allTasks = [...existingTasks, ...newTasks].sort((a, b) =>
-        dayjs(a.createdAt).diff(dayjs(b.createdAt)),
+        dayjs(a.createdAt).diff(dayjs(b.createdAt))
       );
 
       await this.saveTasks(allTasks);

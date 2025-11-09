@@ -41,10 +41,7 @@ export const CLASSIFIED_TITLES_KEYS = [
  *
  * @see https://github.com/runm717123/task-tracker-models-dev for more details
  */
-export async function classifyTasksTitles(
-  titles: string[],
-  onProgress?: (status: string) => void,
-) {
+export async function classifyTasksTitles(titles: string[], onProgress?: (status: string) => void) {
   const embedModel = await getModel();
   const classifier = await getClassifier(onProgress);
 
@@ -53,16 +50,14 @@ export async function classifyTasksTitles(
 
   const predictionTensor = predictions as Tensor;
   const predictionArray = (await predictionTensor.array()) as number[][];
-  const predictedIndices = predictionArray.map((row) =>
-    row.indexOf(Math.max(...row)),
-  );
+  const predictedIndices = predictionArray.map((row) => row.indexOf(Math.max(...row)));
 
   return predictedIndices;
 }
 
 export async function clusterTitles(
   titles: string[],
-  onProgress?: (status: string) => void,
+  onProgress?: (status: string) => void
 ): Promise<Record<string, string[]>> {
   const classified = await classifyTasksTitles(titles, onProgress);
   const clusters: Record<string, string[]> = {};

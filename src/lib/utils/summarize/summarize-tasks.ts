@@ -18,7 +18,7 @@ import { formatSummaryGroups } from "./format-summary-groups";
 export async function summarizeTasks(
   tasks: ITrackedTask[],
   similarityThreshold: number = 0.7,
-  onProgress?: (status: string) => void,
+  onProgress?: (status: string) => void
 ): Promise<ISummaryGroup[]> {
   if (tasks.length === 0) return [];
 
@@ -43,11 +43,7 @@ export async function summarizeTasks(
 
     progressReporter.report("removeSimilarDescriptions");
     // Remove similar descriptions
-    const minimized = await removeSimilarDescriptions(
-      grouped,
-      model,
-      similarityThreshold,
-    );
+    const minimized = await removeSimilarDescriptions(grouped, model, similarityThreshold);
 
     progressReporter.report("finalizing");
     // Format final results
@@ -82,9 +78,7 @@ function createProgressReporter(onProgress?: (status: string) => void) {
 /**
  * Loads the model with progress reporting
  */
-async function loadModelWithProgress(
-  progressReporter: ProgressReporter<typeof PROGRESS_CONFIG>,
-) {
+async function loadModelWithProgress(progressReporter: ProgressReporter<typeof PROGRESS_CONFIG>) {
   progressReporter.report("loadingEmbeddingModel");
   await tick();
   return await getModel();
@@ -95,7 +89,7 @@ async function loadModelWithProgress(
  */
 async function preprocessTasks(
   tasks: ITrackedTask[],
-  progressReporter: ProgressReporter<typeof PROGRESS_CONFIG>,
+  progressReporter: ProgressReporter<typeof PROGRESS_CONFIG>
 ) {
   progressReporter.report("preprocess");
   await tick();

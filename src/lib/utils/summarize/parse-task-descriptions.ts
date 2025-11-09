@@ -5,7 +5,7 @@ import { parseTaskDescription } from "./preprocess/parse-task-description";
  * @returns Array of tasks with parsed description items
  */
 export async function parseTaskDescriptions(
-  tasks: IParsedTask[],
+  tasks: IParsedTask[]
 ): Promise<ITaskWithParsedDescription[]> {
   const tasksWithParsedDescriptions: ITaskWithParsedDescription[] = [];
 
@@ -26,7 +26,7 @@ export async function parseTaskDescriptions(
  * @returns Map of group names to arrays of parsed description items
  */
 export async function parseGroupedTaskDescriptions(
-  groupedTasks: Map<string, IParsedTask[]>,
+  groupedTasks: Map<string, IParsedTask[]>
 ): Promise<Map<string, string[]>> {
   const result = new Map<string, string[]>();
 

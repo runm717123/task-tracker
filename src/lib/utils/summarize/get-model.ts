@@ -22,9 +22,7 @@ export async function getModel() {
     isModelLoading = true;
 
     if (import.meta.env.WXT_ENV === "dev") {
-      const localModelUrl = chrome.runtime.getURL(
-        "models/universal-sentence-encoder/model.json",
-      );
+      const localModelUrl = chrome.runtime.getURL("models/universal-sentence-encoder/model.json");
       modelCache = await use.load({
         modelUrl: localModelUrl,
       });
@@ -94,9 +92,7 @@ export async function getSentenceValidatorModel() {
   try {
     isSentenceValidatorModelLoading = true;
 
-    const modelUrl = chrome.runtime.getURL(
-      "models/sentence-validator/model.json",
-    );
+    const modelUrl = chrome.runtime.getURL("models/sentence-validator/model.json");
     sentenceValidatorModelCache = await tf.loadLayersModel(modelUrl);
 
     return sentenceValidatorModelCache;

@@ -118,10 +118,7 @@ describe("SettingsStore", () => {
         description: "New Default Description",
       };
 
-      await settingsStore.updateSetting(
-        "taskCreateDefaultValue",
-        newDefaultValue,
-      );
+      await settingsStore.updateSetting("taskCreateDefaultValue", newDefaultValue);
       const settings = await settingsStore.getSettings();
 
       expect(settings.taskCreateDefaultValue).toEqual(newDefaultValue);

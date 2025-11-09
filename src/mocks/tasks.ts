@@ -3,8 +3,7 @@ export const mockTasks: ITrackedTask[] = [
   {
     id: "1",
     title: "Setup development environment",
-    description:
-      "Install Node.js, VS Code extensions, and configure Git settings",
+    description: "Install Node.js, VS Code extensions, and configure Git settings",
     status: "done",
     createdAt: "2025-08-01T08:00:00Z",
     start: "2025-08-01T08:30:00Z",
@@ -82,8 +81,7 @@ export const mockTasks: ITrackedTask[] = [
   {
     id: "9",
     title: "Write unit tests for auth module",
-    description:
-      "Create comprehensive test coverage for authentication functions",
+    description: "Create comprehensive test coverage for authentication functions",
     status: "done",
     createdAt: "2025-08-02T15:15:00Z",
     start: "2025-08-02T15:30:00Z",
@@ -142,8 +140,7 @@ export const mockTasks: ITrackedTask[] = [
   {
     id: "15",
     title: "Team retrospective meeting",
-    description:
-      "Weekly retrospective to discuss what went well and areas for improvement",
+    description: "Weekly retrospective to discuss what went well and areas for improvement",
     status: "done",
     createdAt: "2025-08-03T17:30:00Z",
     start: "2025-08-03T17:45:00Z",
@@ -163,8 +160,7 @@ export const mockTasks: ITrackedTask[] = [
   {
     id: "17",
     title: "Personal project planning",
-    description:
-      "Plan architecture for side project\nCreate repository and initial setup",
+    description: "Plan architecture for side project\nCreate repository and initial setup",
     status: "done",
     createdAt: "2025-08-04T14:00:00Z",
     start: "2025-08-04T14:30:00Z",
@@ -272,8 +268,7 @@ export const mockTasks: ITrackedTask[] = [
   {
     id: "28",
     title: "Error handling improvements",
-    description:
-      "Add comprehensive error boundaries and user-friendly error messages",
+    description: "Add comprehensive error boundaries and user-friendly error messages",
     status: "done",
     createdAt: "2025-08-06T14:45:00Z",
     start: "2025-08-06T15:00:00Z",
@@ -351,8 +346,7 @@ export const mockTasks: ITrackedTask[] = [
   {
     id: "36",
     title: "API rate limiting",
-    description:
-      "Implement rate limiting to prevent abuse\nAdd proper headers and error responses",
+    description: "Implement rate limiting to prevent abuse\nAdd proper headers and error responses",
     status: "done",
     createdAt: "2025-08-08T08:00:00Z",
     start: "2025-08-08T08:30:00Z",
@@ -428,8 +422,7 @@ export const mockTasks: ITrackedTask[] = [
   {
     id: "44",
     title: "Payment integration",
-    description:
-      "Integrate Stripe payment processing\nHandle webhooks and subscription management",
+    description: "Integrate Stripe payment processing\nHandle webhooks and subscription management",
     status: "done",
     createdAt: "2025-08-09T15:45:00Z",
     start: "2025-08-09T16:00:00Z",
@@ -449,8 +442,7 @@ export const mockTasks: ITrackedTask[] = [
   {
     id: "46",
     title: "Update dependencies",
-    description:
-      "Upgrade to latest versions of packages and resolve breaking changes",
+    description: "Upgrade to latest versions of packages and resolve breaking changes",
     status: "in-progress",
     createdAt: "2025-08-10T08:00:00Z",
     start: "2025-08-10T08:30:00Z",
@@ -508,8 +500,7 @@ export const mockTasks: ITrackedTask[] = [
   {
     id: "52",
     title: "GraphQL API development",
-    description:
-      "Implement GraphQL endpoint as alternative to REST\nCreate schema and resolvers",
+    description: "Implement GraphQL endpoint as alternative to REST\nCreate schema and resolvers",
     status: "pending",
     createdAt: "2025-08-11T09:00:00Z",
     start: "2025-08-11T09:15:00Z",
@@ -558,8 +549,7 @@ export const mockTasks: ITrackedTask[] = [
   {
     id: "57",
     title: "Advanced user permissions",
-    description:
-      "Implement role-based access control with granular permissions",
+    description: "Implement role-based access control with granular permissions",
     status: "pending",
     createdAt: "2025-08-12T09:00:00Z",
     start: "2025-08-12T09:45:00Z",
@@ -656,8 +646,7 @@ export const mockTasks: ITrackedTask[] = [
   {
     id: "67",
     title: "Progressive Web App features",
-    description:
-      "Add PWA capabilities with offline support and push notifications",
+    description: "Add PWA capabilities with offline support and push notifications",
     status: "pending",
     createdAt: "2025-08-14T09:00:00Z",
     start: "2025-08-14T09:30:00Z",
@@ -675,8 +664,7 @@ export const mockTasks: ITrackedTask[] = [
   {
     id: "69",
     title: "Automated deployment pipeline",
-    description:
-      "Enhance CI/CD with blue-green deployments and rollback capabilities",
+    description: "Enhance CI/CD with blue-green deployments and rollback capabilities",
     status: "pending",
     createdAt: "2025-08-14T11:00:00Z",
     start: "2025-08-14T11:30:00Z",
@@ -685,8 +673,7 @@ export const mockTasks: ITrackedTask[] = [
   {
     id: "70",
     title: "Technical debt assessment",
-    description:
-      "Identify and prioritize technical debt items for future sprints",
+    description: "Identify and prioritize technical debt items for future sprints",
     status: "pending",
     createdAt: "2025-08-14T12:00:00Z",
     start: "2025-08-14T12:15:00Z",
@@ -716,8 +703,7 @@ export const mockTasks: ITrackedTask[] = [
   {
     id: "73",
     title: "Multi-tenant architecture",
-    description:
-      "Design and implement tenant isolation and resource management",
+    description: "Design and implement tenant isolation and resource management",
     status: "pending",
     createdAt: "2025-08-15T10:00:00Z",
     start: "2025-08-15T10:15:00Z",
@@ -765,8 +751,7 @@ export const mockTasks: ITrackedTask[] = [
   {
     id: "78",
     title: "Advanced reporting system",
-    description:
-      "Create customizable reports with scheduling and email delivery",
+    description: "Create customizable reports with scheduling and email delivery",
     status: "pending",
     createdAt: "2025-08-16T10:00:00Z",
     start: "2025-08-16T10:45:00Z",
@@ -775,8 +760,7 @@ export const mockTasks: ITrackedTask[] = [
   {
     id: "79",
     title: "API gateway implementation",
-    description:
-      "Set up API gateway for rate limiting, authentication, and routing",
+    description: "Set up API gateway for rate limiting, authentication, and routing",
     status: "pending",
     createdAt: "2025-08-16T11:00:00Z",
     start: "2025-08-16T11:15:00Z",
@@ -796,8 +780,7 @@ export const mockTasks: ITrackedTask[] = [
   {
     id: "81",
     title: "Advanced caching strategies",
-    description:
-      "Implement multi-level caching with cache invalidation strategies",
+    description: "Implement multi-level caching with cache invalidation strategies",
     status: "pending",
     createdAt: "2025-08-17T08:00:00Z",
     start: "2025-08-17T08:30:00Z",
@@ -873,8 +856,7 @@ export const mockTasks: ITrackedTask[] = [
   {
     id: "89",
     title: "Cross-platform testing",
-    description:
-      "Implement automated testing across different browsers and devices",
+    description: "Implement automated testing across different browsers and devices",
     status: "pending",
     createdAt: "2025-08-18T11:00:00Z",
     start: "2025-08-18T11:15:00Z",
@@ -883,8 +865,7 @@ export const mockTasks: ITrackedTask[] = [
   {
     id: "90",
     title: "Team knowledge sharing session",
-    description:
-      "Organize technical presentation on recent learnings and best practices",
+    description: "Organize technical presentation on recent learnings and best practices",
     status: "pending",
     createdAt: "2025-08-18T12:00:00Z",
     start: "2025-08-18T12:30:00Z",

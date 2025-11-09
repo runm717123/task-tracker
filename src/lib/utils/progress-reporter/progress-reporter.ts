@@ -43,9 +43,7 @@ export class ProgressReporter<
 
     const stage = this.progressConfig[targetStageName];
     if (!stage) {
-      console.warn(
-        `Progress stage '${String(targetStageName)}' not found in configuration`,
-      );
+      console.warn(`Progress stage '${String(targetStageName)}' not found in configuration`);
       return;
     }
 
@@ -111,9 +109,7 @@ export class ProgressReporter<
     return [...this.stageNames] as (keyof T & string)[];
   }
 
-  private getTargetStageName(
-    stageName?: keyof T & string,
-  ): (keyof T & string) | null {
+  private getTargetStageName(stageName?: keyof T & string): (keyof T & string) | null {
     if (stageName) {
       return stageName;
     }
@@ -133,10 +129,7 @@ export class ProgressReporter<
     }
   }
 
-  private executeProgressCallback(
-    stage: ProgressStage,
-    stageName: keyof T & string,
-  ): void {
+  private executeProgressCallback(stage: ProgressStage, stageName: keyof T & string): void {
     if (this.onProgressCallback) {
       this.onProgressCallback(stage, stageName);
     }
