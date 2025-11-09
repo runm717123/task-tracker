@@ -15,7 +15,7 @@
     "dev:watch": "nodemon --exec \"pnpm run dev\"",
     "test": "vitest",
     "test:ui": "vitest --ui",
-    "format": "prettier --write ."
+    "format": "prettier --write . --ignore-path .gitignore '!public' '!public-dev'"
   },
   "nodemonConfig": {
     "ignore": [
