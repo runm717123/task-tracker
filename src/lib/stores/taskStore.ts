@@ -199,6 +199,12 @@ export class TaskStore {
       }
 
       endTime = task.end ? dayjs(task.end).toISOString() : currentTime;
+
+      // edge case when startTime is default to 8:00
+      // and current time is before 8:00
+      if (dayjs(endTime).isBefore(dayjs(startTime))) {
+        endTime = dayjs(startTime).add(1, "minutes").toISOString();
+      }
     }
 
     // Create new task with proper timing
