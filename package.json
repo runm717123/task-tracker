@@ -2,7 +2,7 @@
   "name": "ndev-task-tracker",
   "description": "A task tracker extension, designed for quick task tracking",
   "private": true,
-  "version": "0.5.15",
+  "version": "0.6.0",
   "type": "module",
   "scripts": {
     "dev": "cross-env WXT_ENV=dev wxt build",
