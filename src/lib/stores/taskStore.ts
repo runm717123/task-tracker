@@ -408,6 +408,42 @@ export class TaskStore {
   }
 
   /**
+   * Find the most recent date that has at least one task
+   * Searches backwards from a given date (defaults to today)
+   * @param startDate - The date to start searching from (defaults to today)
+   * @param maxDaysBack - Maximum number of days to search back (defaults to 30)
+   * @returns The most recent date with tasks, or null if no tasks found within maxDaysBack
+   */
+  async findMostRecentDateWithTasks(
+    startDate: Date = new Date(),
+    maxDaysBack: number = 30
+  ): Promise<Date | null> {
+    const allTasks = await this.getTasks();
+    
+    if (allTasks.length === 0) {
+      return null;
+    }
+
+    // Start from the given date and go backwards
+    let currentDate = dayjs(startDate).startOf('day');
+    
+    for (let i = 0; i < maxDaysBack; i++) {
+      const tasksForDay = allTasks.filter((task) => {
+        const taskDate = dayjs(task.start).startOf('day');
+        return taskDate.isSame(currentDate, 'day');
+      });
+      
+      if (tasksForDay.length > 0) {
+        return currentDate.toDate();
+      }
+      
+      currentDate = currentDate.subtract(1, 'day');
+    }
+    
+    return null;
+  }
+
+  /**
    * Watch for changes in tasks storage
    */
   watchTasks(callback: (tasks: ITrackedTask[]) => void): () => void {

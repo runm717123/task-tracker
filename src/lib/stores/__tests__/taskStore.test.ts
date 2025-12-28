@@ -11,7 +11,7 @@ vi.mock("../settingsStore", () => ({
     getSettings: vi.fn().mockResolvedValue({
       startTime: "2025-07-07T08:00:00.000Z",
       autoFocusDescription: false,
-      defaultToYesterday: false,
+      defaultToRecentDay: false,
       taskCreateDefaultValue: {
         title: "No title",
         description: "",
@@ -20,7 +20,7 @@ vi.mock("../settingsStore", () => ({
     getDefaultSettings: vi.fn().mockReturnValue({
       startTime: "2025-07-07T08:00:00.000Z",
       autoFocusDescription: false,
-      defaultToYesterday: false,
+      defaultToRecentDay: false,
       taskCreateDefaultValue: {
         title: "No title",
         description: "",
@@ -504,6 +504,73 @@ describe("TaskStore", () => {
 
       expect(callback).toHaveBeenCalledWith([testTask]);
       unwatch();
+    });
+  });
+
+  describe("findMostRecentDateWithTasks", () => {
+    it("should return null when no tasks exist in recent 30 days", async () => {
+      // Create a task more than 30 days ago
+      const oldTask: ITrackedTask = {
+        id: "old-task",
+        title: "Old Task",
+        description: "Task from 35 days ago",
+        status: "done",
+        createdAt: dayjs().subtract(35, "days").toISOString(),
+        start: dayjs().subtract(35, "days").set("hour", 9).toISOString(),
+        end: dayjs().subtract(35, "days").set("hour", 10).toISOString(),
+      };
+
+      await taskStore.saveTasks([oldTask]);
+
+      const result = await taskStore.findMostRecentDateWithTasks();
+      expect(result).toBeNull();
+    });
+
+    it("should return the most recent date with tasks within 30 days", async () => {
+      const today = dayjs();
+      
+      // Create tasks on different dates
+      const task1: ITrackedTask = {
+        id: "task-1",
+        title: "Task 1",
+        description: "Task from 10 days ago",
+        status: "done",
+        createdAt: today.subtract(10, "days").toISOString(),
+        start: today.subtract(10, "days").set("hour", 9).toISOString(),
+        end: today.subtract(10, "days").set("hour", 10).toISOString(),
+      };
+
+      const task2: ITrackedTask = {
+        id: "task-2",
+        title: "Task 2",
+        description: "Task from 5 days ago",
+        status: "done",
+        createdAt: today.subtract(5, "days").toISOString(),
+        start: today.subtract(5, "days").set("hour", 9).toISOString(),
+        end: today.subtract(5, "days").set("hour", 10).toISOString(),
+      };
+
+      const task3: ITrackedTask = {
+        id: "task-3",
+        title: "Task 3",
+        description: "Task from 3 days ago",
+        status: "done",
+        createdAt: today.subtract(3, "days").toISOString(),
+        start: today.subtract(3, "days").set("hour", 9).toISOString(),
+        end: today.subtract(3, "days").set("hour", 10).toISOString(),
+      };
+
+      await taskStore.saveTasks([task1, task2, task3]);
+
+      const result = await taskStore.findMostRecentDateWithTasks();
+      
+      expect(result).not.toBeNull();
+      
+      // The most recent date should be 3 days ago
+      const expectedDate = today.subtract(3, "days").startOf("day");
+      const resultDate = dayjs(result).startOf("day");
+      
+      expect(resultDate.isSame(expectedDate, "day")).toBe(true);
     });
   });
 });

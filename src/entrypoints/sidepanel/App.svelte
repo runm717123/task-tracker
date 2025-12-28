@@ -43,8 +43,15 @@
 
 			// Load settings and set default date if needed
 			const settings = await settingsStore.getSettings();
-			if (settings.defaultToYesterday && timeRangeFilter === 'daily') {
-				selectedDate = dayjs().subtract(1, 'day').toDate();
+			if (settings.defaultToRecentDay && timeRangeFilter === 'daily') {
+				// Find the most recent date with tasks
+				const mostRecentDate = await taskStore.findMostRecentDateWithTasks();
+				if (mostRecentDate) {
+					selectedDate = mostRecentDate;
+				} else {
+					// No tasks found, default to today
+					selectedDate = dayjs().toDate();
+				}
 			}
 
 			// Load initial tasks based on filter
@@ -113,10 +120,17 @@
 	};
 
 	const handleTimeRangeChange = async () => {
-		// Reset to current date when changing time range, or yesterday if setting is enabled for daily
+		// Reset to current date when changing time range, or most recent date with tasks if setting is enabled for daily
 		const settings = await settingsStore.getSettings();
-		if (settings.defaultToYesterday && timeRangeFilter === 'daily') {
-			selectedDate = dayjs().subtract(1, 'day').toDate();
+		if (settings.defaultToRecentDay && timeRangeFilter === 'daily') {
+			// Find the most recent date with tasks
+			const mostRecentDate = await taskStore.findMostRecentDateWithTasks();
+			if (mostRecentDate) {
+				selectedDate = mostRecentDate;
+			} else {
+				// No tasks found, default to yesterday
+				selectedDate = dayjs().subtract(1, 'day').toDate();
+			}
 		} else {
 			selectedDate = new Date();
 		}

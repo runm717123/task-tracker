@@ -20,7 +20,7 @@
 	// Form values
 	let startTime = $state('');
 	let autoFocusDescription = $state(false);
-	let defaultToYesterday = $state(false);
+	let defaultToRecentDay = $state(false);
 	let taskTitle = $state('');
 	let taskDescription = $state('');
 
@@ -32,7 +32,7 @@
 			// Initialize form values
 			startTime = settings.startTime ? dayjs(settings.startTime).format('HH:mm') : '';
 			autoFocusDescription = settings.autoFocusDescription ?? false;
-			defaultToYesterday = settings.defaultToYesterday ?? false;
+			defaultToRecentDay = settings.defaultToRecentDay ?? false;
 			taskTitle = settings.taskCreateDefaultValue?.title ?? '';
 			taskDescription = settings.taskCreateDefaultValue?.description ?? '';
 		} catch (error) {
@@ -55,7 +55,7 @@
 							.toISOString()
 					: settings.startTime,
 				autoFocusDescription,
-				defaultToYesterday,
+				defaultToRecentDay,
 				taskCreateDefaultValue: {
 					title: taskTitle,
 					description: taskDescription,
@@ -76,7 +76,7 @@
 			const defaultSettings = settingsStore.getDefaultSettings();
 			startTime = dayjs(defaultSettings.startTime).format('HH:mm');
 			autoFocusDescription = defaultSettings.autoFocusDescription ?? false;
-			defaultToYesterday = defaultSettings.defaultToYesterday ?? false;
+			defaultToRecentDay = defaultSettings.defaultToRecentDay ?? false;
 			taskTitle = defaultSettings.taskCreateDefaultValue?.title ?? '';
 			taskDescription = defaultSettings.taskCreateDefaultValue?.description ?? '';
 		}
@@ -136,12 +136,12 @@
 
 				<div class="bg-bg-light rounded-md p-3 border border-border">
 					<InputLabel size="sm" className="flex flex-col gap-1">
-						<span class="text-sm font-medium text-fg-dark">Default to Yesterday</span>
+						<span class="text-sm font-medium text-fg-dark">Default to recent date</span>
 						<label class="flex items-center gap-2 cursor-pointer">
-							<input type="checkbox" bind:checked={defaultToYesterday} class="w-4 h-4 text-accent-primary bg-bg-light border-border rounded focus:ring-accent-primary focus:ring-2" />
-							<span class="text-sm text-fg-dark">Default daily view to yesterday</span>
+							<input type="checkbox" bind:checked={defaultToRecentDay} class="w-4 h-4 text-accent-primary bg-bg-light border-border rounded focus:ring-accent-primary focus:ring-2" />
+							<span class="text-sm text-fg-dark">Default daily view to most recent day with tasks</span>
 						</label>
-						<p class="text-xs text-fg-muted">When enabled, the sidepanel will default to yesterday's date when in daily view mode. This is useful if you mainly open sidepanel to review tasks from yesterday.</p>
+						<p class="text-xs text-fg-muted">When enabled, the sidepanel will default to the most recent date that has tasks (in last 30 days) when in daily view mode. This is useful if you mainly open sidepanel to review your recent work, especially during holidays or weekends.</p>
 					</InputLabel>
 				</div>
 			{/if}

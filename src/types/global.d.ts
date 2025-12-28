@@ -25,8 +25,8 @@ interface ISettings {
   autoFocusDescription?: boolean;
   taskCreateDefaultValue?: Partial<ICreateTask>;
   // if true, in sidepanel when in "daily" timeRangeFilter
-  // the date will default to yesterday's date
-  defaultToYesterday?: boolean;
+  // the date will default to the most recent day that has tasks
+  defaultToRecentDay?: boolean;
 }
 
 interface ISummaryGroup {
