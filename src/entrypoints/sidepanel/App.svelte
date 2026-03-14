@@ -244,6 +244,13 @@
 		await taskStore.deleteTask(taskId);
 	};
 
+	const resumeTask = async (sourceTask: ITrackedTask) => {
+		await taskStore.addTask({
+			title: sourceTask.title,
+			description: sourceTask.description,
+		});
+	};
+
 	const openTaskForm = (task: ITrackedTask) => {
 		taskFormData = task;
 		isTaskFormOpen = true;
@@ -442,7 +449,7 @@
 				{#if viewMode === 'list'}
 					<div class="space-y-2 flex flex-col flex-1">
 						{#each trackedTasks as task (task.id)}
-								<TrackedTaskCard {task} onEdit={openTaskForm} onDelete={deleteTask} />
+								<TrackedTaskCard {task} onEdit={openTaskForm} onDelete={deleteTask} onResume={resumeTask} />
 						{/each}
 
 						<div class="mb-3 text-center">

@@ -1,13 +1,14 @@
 <script lang="ts">
-	import { ClockAlert, EditIcon, XIcon } from '@lucide/svelte';
+	import { ClockAlert, PlayIcon, EditIcon, XIcon } from '@lucide/svelte';
 	import dayjs from 'dayjs';
 	import relativeTime from 'dayjs/plugin/relativeTime';
 	dayjs.extend(relativeTime);
 
-	const { task, onEdit, onDelete } = $props<{
+	const { task, onEdit, onDelete, onResume } = $props<{
 		task: ITrackedTask;
 		onEdit: (task: ITrackedTask) => void;
 		onDelete: (taskId: string) => void;
+		onResume: (task: ITrackedTask) => void;
 	}>();
 
 	// Local time helpers
@@ -71,6 +72,9 @@
 				{/if}
 			</div>
 			<div class="flex items-center gap-1 flex-shrink-0">
+				<button class="p-1 text-fg-muted hover:text-green-600 hover:bg-green-50 rounded-md transition-colors" onclick={() => onResume(task)} title="Resume task (duplicate with current time)">
+					<PlayIcon size={15} />
+				</button>
 				<button class="p-1 text-fg-muted hover:text-fg-dark hover:bg-blue-50 rounded-md transition-colors" onclick={() => onEdit(task)} title="Edit task">
 					<EditIcon size={16} />
 				</button>
