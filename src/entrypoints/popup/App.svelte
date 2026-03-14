@@ -140,7 +140,7 @@
 					<!-- svelte-ignore a11y_click_events_have_key_events -->
 					<!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
 					<div role="listitem" class="border-b border-border py-3 px-1 flex items-center justify-between flex-row gap-2" onclick={() => editTask(task)}>
-						<div class=" hover:text-white hover:bg-bg-light cursor-pointer flex-1 flex items-center justify-between" title="Click to edit task">
+						<div class="hover:text-white hover:bg-bg-light cursor-pointer flex-1 min-w-0 flex items-center justify-between" title="Click to edit task">
 							<span class="text-sm truncate">{task.title}</span>
 							<span class="text-xs text-fg-muted">
 								{dayjs(task.start).format('HH:mm')} -
