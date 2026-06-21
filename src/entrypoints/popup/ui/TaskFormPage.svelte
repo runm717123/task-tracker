@@ -121,8 +121,10 @@
 			...task,
 			title,
 			description,
-			start: startTime ? dayjs(startTime).toISOString() : null,
-			end: endTime ? dayjs(endTime).toISOString() : null,
+			start: startTimeInput?.value ? dayjs(startTimeInput.value).toISOString(): null,
+			end: endTimeInput?.value ? dayjs(endTimeInput.value).toISOString(): null
+			// start: startTime ? dayjs(startTime).toISOString() : null,
+			// end: endTime ? dayjs(endTime).toISOString() : null,
 		};
 		onSave(updatedTask);
 	};
