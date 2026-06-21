@@ -16,8 +16,11 @@
 		if (!start || !end) return null;
 		const startDate = dayjs(start);
 		const endDate = dayjs(end);
-		if (endDate.isBefore(startDate)) return null;
-		return `${startDate.format('HH:mm')} - ${endDate.format('HH:mm')}`;
+		let invalidText = '';
+		if (endDate.isBefore(startDate)) {
+			invalidText = ' (invalid)';
+		};
+		return `${startDate.format('HH:mm')} - ${endDate.format('HH:mm')} ${invalidText}`;
 	};
 
 	const getRelativeTime = (date: string) => dayjs(date).fromNow();
@@ -62,14 +65,9 @@
 	<div class="flex flex-col items-start justify-between">
 		<div class="flex items-center justify-between w-full mb-1">
 			<div class="flex items-center">
-				{#if getTimeRange(task.start, task.end)}
-					<!-- svelte-ignore a11y_click_events_have_key_events -->
 					<div role="button" tabindex="0" class="text-accent-primary text-sm font-medium bg-accent-primary/10 px-2 py-0.5 rounded whitespace-nowrap" onclick={handleTimeRangeCopy} title="Click to copy time range">
 						{getDisplayText('start', getTimeRange(task.start, task.end) || '')}
 					</div>
-				{:else}
-					<ClockAlert class="text-fg-dark mr-4" size={16} />
-				{/if}
 			</div>
 			<div class="flex items-center gap-1 flex-shrink-0">
 				<button class="p-1 text-fg-muted hover:text-green-600 hover:bg-green-50 rounded-md transition-colors" onclick={() => onResume(task)} title="Resume task (duplicate with current time)">

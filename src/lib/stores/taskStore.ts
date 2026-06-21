@@ -153,6 +153,36 @@ export class TaskStore {
   }
 
   /**
+   * Normalize task times after the first invalid range is detected.
+   * Keeps the task start time, adjusts invalid end times to +1 minute,
+   * and makes sure the remaining tasks stay chronologically valid.
+   */
+  private normalizeTaskTime(tasks: ITrackedTask[]): ITrackedTask[] {
+    const normalizedTasks = tasks.map((task) => ({ ...task }));
+
+    let foundAbnormalTime = false;
+    let previousEndTime: string | null = null;
+
+    for (const task of normalizedTasks) {
+      if (foundAbnormalTime && previousEndTime && dayjs(task.start).isBefore(dayjs(previousEndTime))) {
+        task.start = previousEndTime;
+      }
+
+      const hasInvalidEndTime =
+        task.end !== null && !dayjs(task.end).isAfter(dayjs(task.start));
+
+      if (hasInvalidEndTime) {
+        task.end = dayjs(task.start).add(1, "minute").toISOString();
+        foundAbnormalTime = true;
+      }
+
+      previousEndTime = task.end;
+    }
+
+    return normalizedTasks;
+  }
+
+  /**
    * Add a new task with proper timing logic
    * @param task - Task data with optional startTime and endTime
    * If startTime is provided but endTime is not, endTime will be set to startTime + 30 minutes
@@ -272,7 +302,7 @@ export class TaskStore {
         const modifiedTask = sortedTasks.find((t) => t.id === task.id);
         return modifiedTask || task;
       });
-      await this.saveTasks(updatedTasks);
+      await this.saveTasks(this.normalizeTaskTime(updatedTasks));
     } else {
       // Update all tasks in storage
       const updatedTasks = tasks.map((task) => {
@@ -281,7 +311,7 @@ export class TaskStore {
         }
         return task;
       });
-      await this.saveTasks(updatedTasks);
+      await this.saveTasks(this.normalizeTaskTime(updatedTasks));
     }
   }
 

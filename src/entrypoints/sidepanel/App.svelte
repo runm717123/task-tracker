@@ -1,7 +1,6 @@
 <script lang="ts">
-	import '@bios-ui/core/css';
 	import { Button, Select } from '@bios-ui/svelte';
-	import { ClockAlert, Download, EditIcon, ListIcon, ListOrderedIcon, Plus, Trash2, Upload, XIcon } from '@lucide/svelte';
+	import { Download, ListIcon, ListOrderedIcon, Plus, Trash2, Upload } from '@lucide/svelte';
 	import dayjs from 'dayjs';
 	import isBetween from 'dayjs/plugin/isBetween';
 	import relativeTime from 'dayjs/plugin/relativeTime';

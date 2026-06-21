@@ -450,6 +450,94 @@ describe("TaskStore", () => {
       // Task 2's end time should be updated
       expect(updatedTask2Result?.end).toBe(updatedTask2.end);
     });
+
+    it("should normalize an updated task when end time becomes earlier than start time", async () => {
+      const today = dayjs().format("YYYY-MM-DD");
+
+      const originalTask: ITrackedTask = {
+        id: "task-1",
+        title: "Task 1",
+        description: "Single task",
+        status: "done",
+        createdAt: `${today}T09:00:00.000Z`,
+        start: `${today}T09:00:00.000Z`,
+        end: `${today}T10:00:00.000Z`,
+      };
+
+      await taskStore.saveTasks([originalTask]);
+
+      await taskStore.updateTask({
+        ...originalTask,
+        end: `${today}T08:30:00.000Z`,
+      });
+
+      const tasks = await taskStore.getTasks();
+      expect(tasks).toHaveLength(1);
+      expect(tasks[0].start).toBe(originalTask.start);
+      expect(tasks[0].end).toBe(`${today}T09:01:00.000Z`);
+    });
+
+    it("should normalize following tasks after an end-time update makes the next task invalid", async () => {
+      const today = dayjs().format("YYYY-MM-DD");
+
+      const task1: ITrackedTask = {
+        id: "task-1",
+        title: "Task 1",
+        description: "First task",
+        status: "done",
+        createdAt: `${today}T09:00:00.000Z`,
+        start: `${today}T09:00:00.000Z`,
+        end: `${today}T10:00:00.000Z`,
+      };
+
+      const task2: ITrackedTask = {
+        id: "task-2",
+        title: "Task 2",
+        description: "Second task",
+        status: "done",
+        createdAt: `${today}T10:00:00.000Z`,
+        start: `${today}T10:00:00.000Z`,
+        end: `${today}T11:00:00.000Z`,
+      };
+
+      const task3: ITrackedTask = {
+        id: "task-3",
+        title: "Task 3",
+        description: "Third task",
+        status: "done",
+        createdAt: `${today}T11:00:00.000Z`,
+        start: `${today}T11:00:00.000Z`,
+        end: `${today}T11:15:00.000Z`,
+      };
+
+      const task4: ITrackedTask = {
+        id: "task-4",
+        title: "Task 4",
+        description: "Fourth task",
+        status: "pending",
+        createdAt: `${today}T11:15:00.000Z`,
+        start: `${today}T11:15:00.000Z`,
+        end: `${today}T11:20:00.000Z`,
+      };
+
+      await taskStore.saveTasks([task1, task2, task3, task4]);
+
+      await taskStore.updateTask({
+        ...task2,
+        end: `${today}T11:30:00.000Z`,
+      });
+
+      const tasks = await taskStore.getTasks();
+      const updatedTask2 = tasks.find((task) => task.id === "task-2");
+      const updatedTask3 = tasks.find((task) => task.id === "task-3");
+      const updatedTask4 = tasks.find((task) => task.id === "task-4");
+
+      expect(updatedTask2?.end).toBe(`${today}T11:30:00.000Z`);
+      expect(updatedTask3?.start).toBe(`${today}T11:30:00.000Z`);
+      expect(updatedTask3?.end).toBe(`${today}T11:31:00.000Z`);
+      expect(updatedTask4?.start).toBe(`${today}T11:31:00.000Z`);
+      expect(updatedTask4?.end).toBe(`${today}T11:32:00.000Z`);
+    });
   });
 
   describe("deleteTask", () => {
