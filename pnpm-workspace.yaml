@@ -1,4 +1,3 @@
 onlyBuiltDependencies:
   - "@tailwindcss/oxide"
-  - "@tensorflow/tfjs-node"
-  - core-js
+  - esbuild

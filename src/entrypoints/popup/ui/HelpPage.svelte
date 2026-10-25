@@ -38,7 +38,7 @@
 				<div class="text-xs text-fg-muted space-y-1">
 					<div class="flex items-center gap-1">
 						<BarChart3Icon size={12} />
-						<span>Generate AI-powered task summaries</span>
+						<span>Group and de-duplicate your tasks</span>
 					</div>
 					<div class="flex items-center gap-1">
 						<DownloadIcon size={12} />
@@ -83,7 +83,7 @@
 					<h3 class="text-sm font-semibold text-fg-dark">Bonus Tips!</h3>
 				</div>
 				<div class="text-xs text-fg-muted space-y-2">
-					<p class="text-accent-muted italic">💡 Pro tip: Better task descriptions = better AI summaries</p>
+					<p class="text-accent-muted italic">💡 Pro tip: One task per line gives a cleaner summary</p>
 					<div class="space-y-1">
 						<p><strong>Consider:</strong> Adding project name in title for context</p>
 						<p><strong>Try:</strong> Breaking down details in description</p>
@@ -99,7 +99,8 @@
 					</div>
 					<div class="mt-3 p-2 bg-bg-darker rounded border border-border-muted">
 						<p class="text-xs text-fg-muted">
-							<strong>Note:</strong> These are just suggestions! Our custom AI adapts to any writing style you prefer. 
+							<strong>Note:</strong> These are just suggestions! The summary groups your tasks by title and removes
+							duplicates, whatever writing style you prefer.
 							If you encounter any issues with summaries, feel free to contact the developer.
 						</p>
 					</div>

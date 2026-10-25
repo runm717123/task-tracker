@@ -17,12 +17,6 @@ export default defineConfig({
     version: pkg.version.replace(/-.*$/, ""), // Remove pre-release suffix
     version_name: pkg.version,
     permissions: ["commands", "sidePanel", "storage"],
-    web_accessible_resources: [
-      {
-        resources: ["models/universal-sentence-encoder/*"],
-        matches: ["<all_urls>"],
-      },
-    ],
     commands: {
       "open-new-task-popup": {
         suggested_key: {

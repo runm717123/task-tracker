@@ -6,7 +6,7 @@
 	import relativeTime from 'dayjs/plugin/relativeTime';
 	import flatpickr from 'flatpickr';
 	import 'flatpickr/dist/flatpickr.css';
-	import { onDestroy, onMount, tick } from 'svelte';
+	import { onDestroy, onMount } from 'svelte';
 	import pkg from '../../../package.json';
 	import SummaryView from '../../lib/components/SummaryView.svelte';
 	import TrackedTaskCard from '../../lib/components/TrackedTaskCard.svelte';
@@ -27,8 +27,6 @@
 	let isTaskFormOpen = $state(false);
 	let viewMode: 'list' | 'summary' = $state('list');
 	let summaryData: Array<{ title: string; tasks: string[] }> = $state([]);
-	let isGeneratingSummary = $state(false);
-	let summaryProgressStatus: string = $state('idle');
 	let fileInput: HTMLInputElement;
 	let dateInput: HTMLInputElement | undefined = $state();
 	let flatpickrInstance: flatpickr.Instance;
@@ -84,23 +82,10 @@
 
 	const generateSummaryData = async () => {
 		try {
-			isGeneratingSummary = true;
-
-			await tick();
-
-			summaryData = await summarizeTasks(trackedTasks, 0.75, (status) => {
-				summaryProgressStatus = status;
-			});
+			summaryData = await summarizeTasks(trackedTasks);
 		} catch (error) {
 			console.error('Error generating summary:', error);
-			summaryProgressStatus = 'Error generating summary';
 			summaryData = [];
-		} finally {
-			// Add a small delay before clearing the status
-			setTimeout(() => {
-				isGeneratingSummary = false;
-				summaryProgressStatus = 'idle';
-			}, 500);
 		}
 	};
 
@@ -389,10 +374,8 @@
 					<h1 class="text-2xl font-bold text-fg-dark">Tracked Tasks Summary</h1>
 					<span class="text-fg-muted text-xs">{getHeaderText()}</span>
 				</div>
-				<Button size="sm" onclick={toggleViewMode} className="flex items-center gap-2 px-3 py-2" title={`Switch to ${viewMode === 'list' ? 'summary' : 'list'} view`} disabled={isGeneratingSummary}>
-					{#if isGeneratingSummary}
-						<div class="w-4 h-4 border border-current border-t-transparent rounded-full animate-spin"></div>
-					{:else if viewMode === 'list'}
+				<Button size="sm" onclick={toggleViewMode} className="flex items-center gap-2 px-3 py-2" title={`Switch to ${viewMode === 'list' ? 'summary' : 'list'} view`}>
+					{#if viewMode === 'list'}
 						<ListOrderedIcon size={16} />
 					{:else}
 						<ListIcon size={16} />
@@ -455,26 +438,6 @@
 							<p class="text-xs text-fg-muted opacity-80 bg-bg-darker border border-border rounded-lg px-3 py-2">
 								💡 <strong>Tip:</strong> Click on any task content to copy it to your clipboard
 							</p>
-						</div>
-					</div>
-				{:else if isGeneratingSummary}
-					<div class="flex flex-1 flex-col items-center justify-center py-16 space-y-4">
-						<!-- Robotic/Techy Loading Animation -->
-						<div class="relative">
-							<!-- Main scanning circle -->
-							<div class="w-16 h-16 border-2 border-blue-500 rounded-full border-t-transparent animate-spin"></div>
-							<!-- Inner pulse -->
-							<div class="absolute inset-2 w-12 h-12 bg-blue-500/20 rounded-full animate-pulse"></div>
-							<!-- Center dot -->
-							<div class="absolute inset-6 w-4 h-4 bg-blue-500 rounded-full animate-ping"></div>
-						</div>
-
-						<!-- Loading text with typewriter effect -->
-						<div class="text-center space-y-2">
-							<div class="text-lg font-mono text-blue-400">
-								{summaryProgressStatus || 'ANALYZING TASKS...'}
-							</div>
-							<div class="text-xs font-mono text-gray-600 opacity-75">🔄 ANALYZING TASK SEMANTICS 🔄</div>
 						</div>
 					</div>
 				{:else if summaryData.length > 0}

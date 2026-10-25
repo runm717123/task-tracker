@@ -1,73 +1,31 @@
-import { tick } from "svelte";
-import { CLASSIFIED_TITLE_KEYS_DICT, clusterTitles } from "./classify-title";
-
 /**
- * Groups tasks by their titles using ML-based classification
- * Returns a map of group names to the tasks that belong to each group
+ * Groups tasks by their title.
+ *
+ * Two tasks belong to the same group when their titles normalize to the same string. The group is
+ * headed by the title as it was first written, so the heading always looks like something the user
+ * typed.
+ *
+ * @param tasks the parsed tasks to group
+ * @returns a map of group title to the tasks that belong to the group
  */
-export async function groupTasksByTitle(tasks: IParsedTask[]): Promise<Map<string, IParsedTask[]>> {
+export function groupTasksByTitle(tasks: IParsedTask[]): Map<string, IParsedTask[]> {
   const groups = new Map<string, IParsedTask[]>();
-  const titles = tasks.map((task) => task.title);
+  const groupTitleByNormalizedTitle = new Map<string, string>();
 
-  await tick();
+  for (const task of tasks) {
+    const knownGroupTitle = groupTitleByNormalizedTitle.get(task.title);
 
-  const titleClusters = await clusterTitles(titles);
-  const categoryEntries = Object.entries(titleClusters).filter(([_, titles]) => titles.length > 0);
-
-  for (let categoryIndex = 0; categoryIndex < categoryEntries.length; categoryIndex++) {
-    const [categoryKey, categoryTitles] = categoryEntries[categoryIndex];
-
-    // For valid_title and project_tasks categories, group each title separately
-    // For other categories, group all titles under the category name
-    if (categoryKey === "valid_title") {
-      await groupValidTitles(categoryTitles, tasks, groups);
-    } else {
-      await groupCategoryTitles(categoryKey, categoryTitles, tasks, groups);
+    if (knownGroupTitle === undefined) {
+      groupTitleByNormalizedTitle.set(task.title, task.displayTitle);
+      groups.set(task.displayTitle, [task]);
+      continue;
     }
 
-    await tick();
+    const group = groups.get(knownGroupTitle);
+    if (group) {
+      group.push(task);
+    }
   }
 
   return groups;
-}
-
-/**
- * Groups tasks with valid titles individually
- */
-async function groupValidTitles(
-  categoryTitles: string[],
-  tasks: IParsedTask[],
-  groups: Map<string, IParsedTask[]>
-): Promise<void> {
-  for (const title of categoryTitles) {
-    const matchingTasks = tasks.filter((task) => task.title === title);
-
-    if (matchingTasks.length > 0) {
-      groups.set(title, matchingTasks);
-    }
-  }
-}
-
-/**
- * Groups tasks under a category name
- */
-async function groupCategoryTitles(
-  categoryKey: string,
-  categoryTitles: string[],
-  tasks: IParsedTask[],
-  groups: Map<string, IParsedTask[]>
-): Promise<void> {
-  const allMatchingTasks: IParsedTask[] = [];
-
-  for (const title of categoryTitles) {
-    const matchingTasks = tasks.filter((task) => task.title === title);
-    allMatchingTasks.push(...matchingTasks);
-  }
-
-  if (allMatchingTasks.length > 0) {
-    groups.set(
-      CLASSIFIED_TITLE_KEYS_DICT[categoryKey as keyof typeof CLASSIFIED_TITLE_KEYS_DICT],
-      allMatchingTasks
-    );
-  }
 }

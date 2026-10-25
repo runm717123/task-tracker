@@ -1,11 +1,32 @@
-import { isValidSentences } from "../is-valid-sentences";
+const STATUS_WORDS = "(done|in progress|completed|pending|todo|finished)";
+const STATUS_REGEX_START = new RegExp(`^${STATUS_WORDS}\\s*(-|->)\\s*`, "i");
+const STATUS_REGEX_END = new RegExp(`\\s*(-|->|\\()\\s*${STATUS_WORDS}\\s*\\)?$`, "i");
+
+/** A line that starts with a list marker is a bullet in a list. */
+const BULLET_MARKER = /^[-*•]\s*(.*)$/;
 
 /**
- * the description is a big chunk of text
- * it can contain multiple tasks, separated by commas or new lines
- * this function parses the description and return array of extracted tasks
+ * A fragment that starts with one of these continues the previous one instead of standing on its
+ * own, e.g. the "which was in the parser" of "Fixed the parser bug, which was in the parser".
  */
-export async function parseTaskDescription(description: string) {
+const CONTINUATION = /^(which|that|because|so|but|and then)\b/i;
+
+interface DescriptionLine {
+  text: string;
+  isBullet: boolean;
+}
+
+/**
+ * Splits a task description into its task fragments.
+ *
+ * A description is written as free text and may enumerate its fragments either as a bullet list
+ * or as a comma separated list, never both. A bullet list is therefore never split on commas,
+ * because a comma inside a bullet is part of that bullet.
+ *
+ * @param description the free text body of a task
+ * @returns the task fragments found in the description
+ */
+export function parseTaskDescription(description: string): string[] {
   if (!description) return [];
 
   const lines = description
@@ -13,80 +34,54 @@ export async function parseTaskDescription(description: string) {
     .map((line) => line.trim())
     .filter((line) => line.length > 0);
 
-  let tasks: string[] = [];
+  if (lines.length === 0) return [];
+
+  const content: DescriptionLine[] = [];
 
   for (const line of lines) {
-    const statusWords = "(done|in progress|completed|pending|todo|finished)";
-    const statusRegexStart = new RegExp(`^${statusWords}\\s*(-|->)\\s*`, "i");
-    const statusRegexEnd = new RegExp(`\\s*(-|->|\\()\\s*${statusWords}\\s*\\)?$`, "i");
+    const bullet = line.match(BULLET_MARKER);
+    let text = bullet ? bullet[1] : line;
 
-    const filteredLine = line
-      // Filter the line using regex, remove initial characters that are not alphabet or number
+    text = text
+      // Remove initial characters that are not alphabet or number
       .replace(/^[^a-zA-Z0-9]*/, "")
       // Remove status at the beginning: "Done -> task", "Done - task"
-      .replace(statusRegexEnd, "")
-      .replace(statusRegexStart, "")
+      .replace(STATUS_REGEX_END, "")
+      .replace(STATUS_REGEX_START, "")
       .trim();
 
-    // Check if the filtered line starts with http, if true, continue
-    if (filteredLine.startsWith("http")) {
-      continue;
-    }
+    // A line that is only a link is not a task
+    if (!text || text.startsWith("http")) continue;
 
-    // Push filtered line to task
-    if (filteredLine) {
-      const parsed = await parseSplittedTasks(
-        filteredLine.split(",").filter((t) => !!t.trim().length)
-      );
-      tasks.push(...parsed);
-    }
+    content.push({ text, isBullet: bullet !== null });
   }
 
   // If no structured tasks found, treat the whole description as one task
-  if (tasks.length === 0 && description.trim()) {
-    tasks.push(description.trim());
+  if (content.length === 0) {
+    return description.trim() ? [description.trim()] : [];
   }
 
-  tasks = await parseSplittedTasks(tasks);
+  // A description has exactly one list style: bullet or comma separated.
+  const isBulletList = content.some((line) => line.isBullet);
 
-  return tasks;
+  const fragments: string[] = [];
+
+  for (const line of content) {
+    if (isBulletList) {
+      fragments.push(line.text);
+      continue;
+    }
+
+    for (const part of line.text.split(",")) {
+      const trimmed = part.trim();
+      if (trimmed) fragments.push(trimmed);
+    }
+  }
+
+  const standalone = fragments.filter((fragment) => !CONTINUATION.test(fragment));
+
+  if (standalone.length > 0) return standalone;
+
+  // Every fragment continues the previous one, keep them rather than losing the text
+  return fragments;
 }
-
-export const parseSplittedTasks = async (splittedTasks: string[]): Promise<string[]> => {
-  if (!splittedTasks) return [];
-
-  // If only one task, return as is
-  if (splittedTasks.length <= 1) {
-    return splittedTasks;
-  }
-
-  // Validate the sentences
-  const validationResults = await isValidSentences(splittedTasks);
-
-  const allZeros = validationResults.every((result) => result === 0);
-  if (allZeros) {
-    return [splittedTasks.join(", ")];
-  }
-
-  // turn [0, 0, 1, 0] into [1, 1, 1, 0]
-  const firstValidIndex = validationResults.findIndex((result) => result === 1);
-  const transformedIndexes = validationResults.map((result, index) =>
-    index < firstValidIndex ? 1 : result
-  );
-
-  // turn [1, 1, 1, 0] into [1, 1, 1]
-  // combine last invalid text with the last valid text
-
-  // return all if all of them are valid
-  const lastValidIndex = transformedIndexes.lastIndexOf(1);
-  if (lastValidIndex === splittedTasks.length - 1) {
-    return splittedTasks;
-  }
-
-  let lastValidText = splittedTasks[lastValidIndex];
-  if (lastValidIndex < transformedIndexes.length - 1) {
-    lastValidText = splittedTasks.splice(lastValidIndex).join(", ");
-  }
-
-  return [...splittedTasks, lastValidText];
-};

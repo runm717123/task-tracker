@@ -35,12 +35,11 @@ interface ISummaryGroup {
 }
 
 interface IParsedTask {
+  /** Normalized title, used to decide that two titles name the same thing. */
   title: string;
+  /** The title as it was first written, used as the heading of the group. */
+  displayTitle: string;
   description: string;
-}
-
-interface ITaskWithParsedDescription extends IParsedTask {
-  descriptionItems: string[];
 }
 
 type TTasksMap = Map<string, string[]>;
