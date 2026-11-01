@@ -1,0 +1,33 @@
+/* Original navy and blue identity, with the reference's information hierarchy. */
+:root {
+  --background0: #000b25;
+  --background1: #000b1a;
+  --background2: #12243e;
+  --background3: #1b3554;
+  --surface-selected: #143254;
+
+  --foreground0: #dce8f7;
+  --foreground1: #a7b9cf;
+  --foreground2: #859bb8;
+
+  /* Brand blue fills controls; lighter blue identifies text actions and time. */
+  --accent: #1e82dd;
+  --accent-text: #7ebaff;
+  --accent-foreground: var(--background1);
+  --info: #84b9f5;
+  --link: #7bc7d6;
+  --focus: #91c8ff;
+
+  /* Reserve these colors for quantities, feedback and consequential actions. */
+  --success: #9acdab;
+  --warning: #e5bb79;
+  --danger: #ed9198;
+
+  --border-color: #2c4564;
+  --box-border-color: var(--border-color);
+  --separator-color: var(--border-color);
+
+  color-scheme: dark;
+  accent-color: var(--accent);
+  scrollbar-color: var(--border-color) var(--background1);
+}

@@ -1,7 +1,6 @@
 import { describe, it, expect, beforeEach, vi } from "vitest";
-import { fakeBrowser } from "wxt/testing";
+import { fakeBrowser } from "wxt/testing/fake-browser";
 import { SettingsStore } from "../settingsStore";
-import dayjs from "dayjs";
 
 // Mock dayjs
 vi.mock("dayjs", () => ({

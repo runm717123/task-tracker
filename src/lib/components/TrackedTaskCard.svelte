@@ -1,117 +1,193 @@
 <script lang="ts">
-	import { ClockAlert, PlayIcon, EditIcon, XIcon } from '@lucide/svelte';
-	import dayjs from 'dayjs';
-	import relativeTime from 'dayjs/plugin/relativeTime';
-	dayjs.extend(relativeTime);
+  import dayjs from "dayjs";
+  import { createClipboard } from "../utils/clipboard.svelte";
+  import { formatDuration, taskMinutes } from "../utils/task-display";
 
-	const { task, onEdit, onDelete, onResume } = $props<{
-		task: ITrackedTask;
-		onEdit: (task: ITrackedTask) => void;
-		onDelete: (taskId: string) => void;
-		onResume: (task: ITrackedTask) => void;
-	}>();
-
-	// Local time helpers
-	const getTimeRange = (start: string | null, end: string | null) => {
-		if (!start || !end) return null;
-		const startDate = dayjs(start);
-		const endDate = dayjs(end);
-		let invalidText = '';
-		if (endDate.isBefore(startDate)) {
-			invalidText = ' (invalid)';
-		};
-		return `${startDate.format('HH:mm')} - ${endDate.format('HH:mm')} ${invalidText}`;
-	};
-
-	const getRelativeTime = (date: string) => dayjs(date).fromNow();
-
-	// Local copied state
-	let copied = $state(new Set<string>());
-
-	const copyToClipboard = async (text: string, taskId: string, field: keyof ITrackedTask) => {
-		try {
-			await navigator.clipboard.writeText(text);
-			copied.add(`${taskId}-${field}`);
-			// Force reactivity by reassigning
-			copied = new Set(copied);
-			setTimeout(() => {
-				copied.delete(`${taskId}-${field}`);
-				// Force reactivity by reassigning
-				copied = new Set(copied);
-			}, 3000);
-		} catch (e) {
-			console.error('Copy failed', e);
-		}
-	};
-
-	const handleTimeRangeCopy = () => {
-		const tr = getTimeRange(task.start, task.end) || '';
-		if (tr) copyToClipboard(tr, task.id, 'start');
-	};
-
-	const handleFieldClick = (field: keyof ITrackedTask) => {
-		const val = task[field];
-		if (typeof val === 'string' && val) copyToClipboard(val, task.id, field);
-	};
-
-	const getDisplayText = (field: keyof ITrackedTask, text: string) => {
-		if (!text) return '';
-		const isCopied = copied.has(`${task.id}-${field}`);
-		return isCopied ? `${text} (copied)` : text;
-	};
+  let {
+    task,
+    selected = false,
+    onSelect,
+    onEdit,
+    onDelete,
+    onResume,
+  }: {
+    task: ITrackedTask;
+    selected?: boolean;
+    onSelect?: () => void;
+    onEdit: (task: ITrackedTask) => void;
+    onDelete: (id: string) => void;
+    onResume: (task: ITrackedTask) => void;
+  } = $props();
+  const clipboard = createClipboard();
+  const invalid = $derived(
+    !!task.start && !!task.end && !dayjs(task.end).isAfter(dayjs(task.start))
+  );
+  const links = $derived(task.description.match(/https?:\/\/[^\s<>]+/g) ?? []);
 </script>
 
-<div class="bg-bg-darker border border-border rounded-lg p-3 hover:bg-bg-light transition-colors">
-	<div class="flex flex-col items-start justify-between">
-		<div class="flex items-center justify-between w-full mb-1">
-			<div class="flex items-center">
-					<div role="button" tabindex="0" class="text-accent-primary text-sm font-medium bg-accent-primary/10 px-2 py-0.5 rounded whitespace-nowrap" onclick={handleTimeRangeCopy} title="Click to copy time range">
-						{getDisplayText('start', getTimeRange(task.start, task.end) || '')}
-					</div>
-			</div>
-			<div class="flex items-center gap-1 flex-shrink-0">
-				<button class="p-1 text-fg-muted hover:text-green-600 hover:bg-green-50 rounded-md transition-colors" onclick={() => onResume(task)} title="Resume task (duplicate with current time)">
-					<PlayIcon size={15} />
-				</button>
-				<button class="p-1 text-fg-muted hover:text-fg-dark hover:bg-blue-50 rounded-md transition-colors" onclick={() => onEdit(task)} title="Edit task">
-					<EditIcon size={16} />
-				</button>
-				<button class="p-1 text-fg-muted hover:text-red-600 hover:bg-red-50 rounded-md transition-colors" onclick={() => onDelete(task.id)} title="Delete task">
-					<XIcon size={16} />
-				</button>
-			</div>
-		</div>
-
-		<div role="button" tabindex="0" class="font-semibold text-base text-fg-dark truncate mr-4 text-left w-full" onclick={() => handleFieldClick('title')} onkeydown={(e) => e.key === 'Enter' && handleFieldClick('title')} title="Click to copy title">
-			{getDisplayText('title', task.title)}
-		</div>
-
-		<div
-			role="button"
-			tabindex="0"
-			class="text-fg-muted text-xs mb-1 leading-relaxed line-clamp-3 text-left w-full whitespace-pre-wrap"
-			onclick={() => handleFieldClick('description')}
-			onkeydown={(e) => e.key === 'Enter' && handleFieldClick('description')}
-			title="Click to copy description"
-		>
-			{getDisplayText('description', task.description)}
-		</div>
-
-		<div class="text-xs text-fg-muted">
-			<div
-				role="button"
-				tabindex="0"
-				class="text-xs text-fg-muted"
-				onclick={() => copyToClipboard(getRelativeTime(task.createdAt), task.id, 'createdAt')}
-				onkeydown={(e) => e.key === 'Enter' && copyToClipboard(getRelativeTime(task.createdAt), task.id, 'createdAt')}
-				title="Click to copy created time"
-			>
-				Created {getDisplayText('createdAt', getRelativeTime(task.createdAt))}
-			</div>
-		</div>
-	</div>
-</div>
+<article
+  class="timeline-task"
+  class:selected
+  aria-current={selected ? "true" : undefined}
+  tabindex="-1"
+  onpointerdown={(event) => {
+    if (event.button === 0) onSelect?.();
+  }}
+  onfocusin={() => onSelect?.()}
+>
+  <button
+    type="button"
+    class="copy-field time start"
+    title="Copy time range"
+    onclick={() =>
+      clipboard.copy(
+        `${task.start ? dayjs(task.start).format("HH:mm") : "--:--"} - ${task.end ? dayjs(task.end).format("HH:mm") : "--:--"}`,
+        "time"
+      )}>{task.start ? dayjs(task.start).format("HH:mm") : "--:--"}</button
+  >
+  <span class="dot" class:invalid>{selected ? "◆" : "●"}</span>
+  <button
+    type="button"
+    class="copy-field task-title"
+    title="Copy title"
+    onclick={() => clipboard.copy(task.title, "title")}>{task.title}</button
+  >
+  <div class="task-actions">
+    <span class="duration" class:error={invalid}
+      >{invalid ? "! time" : formatDuration(taskMinutes(task))}</span
+    ><button
+      type="button"
+      class="text-button resume"
+      onclick={() => onResume(task)}
+      title="Resume task"
+      aria-label={`Resume ${task.title}`}>r</button
+    ><button
+      type="button"
+      class="text-button"
+      onclick={() => onEdit(task)}
+      title="Edit task"
+      aria-label={`Edit ${task.title}`}>e</button
+    ><button
+      type="button"
+      class="text-button danger"
+      onclick={() => onDelete(task.id)}
+      title="Delete task"
+      aria-label={`Delete ${task.title}`}>d</button
+    >
+  </div>
+  <span class="end muted">{task.end ? dayjs(task.end).format("HH:mm") : "--:--"}</span>
+  <span class="stem">│</span>
+  <div class="task-description">
+    {#if task.description}<button
+        type="button"
+        class="copy-field description-text"
+        title="Copy description"
+        onclick={() => clipboard.copy(task.description, "description")}>{task.description}</button
+      >{/if}
+    {#each links as link}<a href={link} target="_blank" rel="noopener noreferrer" class="task-link"
+        >↗ {link}</a
+      >{/each}
+    <button
+      type="button"
+      class="copy-field created"
+      title="Copy created time"
+      onclick={() => clipboard.copy(dayjs(task.createdAt).format("YYYY-MM-DD HH:mm"), "created")}
+      >created {dayjs(task.createdAt).format("MMM D, HH:mm")}</button
+    >
+    {#if clipboard.copied}<span
+        class="copy-notice"
+        class:error={clipboard.copied === "failed"}
+        role="status"
+        >{clipboard.copied === "failed" ? "! could not copy" : `✓ ${clipboard.copied} copied`}</span
+      >{/if}
+  </div>
+</article>
 
 <style>
-	/* No extra styles; styling handled via Tailwind + design tokens */
+  .timeline-task {
+    display: grid;
+    grid-template-columns: 6ch 1ch minmax(0, 1fr) auto;
+    column-gap: 1ch;
+    padding: 0.3lh 0.5ch;
+  }
+  .timeline-task.selected {
+    background: var(--surface-selected);
+  }
+  .dot {
+    color: var(--accent-text);
+  }
+  .dot.invalid {
+    color: var(--danger);
+  }
+  .task-title {
+    font-weight: 700;
+  }
+  .task-actions {
+    display: flex;
+    gap: 0.4ch;
+    align-items: baseline;
+  }
+  .task-actions .text-button {
+    padding: 0 0.2ch;
+    color: var(--foreground2);
+  }
+  .task-actions .text-button:hover {
+    color: var(--accent-text);
+  }
+  .task-actions .resume {
+    color: var(--success);
+  }
+  .task-actions .danger,
+  .task-actions .danger:hover {
+    color: var(--danger);
+  }
+  .end,
+  .start {
+    font-size: 11px;
+    font-variant-numeric: tabular-nums;
+  }
+  .stem {
+    color: var(--border-color);
+    height: 100%;
+  }
+  .task-description {
+    grid-column: 3 / 5;
+    padding-bottom: 0.8lh;
+    min-width: 0;
+    color: var(--foreground1);
+    font-size: 12px;
+  }
+  .description-text {
+    white-space: pre-wrap;
+  }
+  .end {
+    white-space: nowrap;
+  }
+  .created {
+    color: var(--foreground2);
+    font-size: 10px;
+    margin-top: 0.2lh;
+  }
+  .task-link {
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 11px;
+  }
+  .copy-notice {
+    color: var(--success);
+    font-size: 11px;
+  }
+  .copy-notice.error {
+    color: var(--danger);
+  }
+  @media (max-width: 360px) {
+    .timeline-task {
+      column-gap: 0.6ch;
+    }
+    .task-actions {
+      gap: 0.2ch;
+    }
+  }
 </style>

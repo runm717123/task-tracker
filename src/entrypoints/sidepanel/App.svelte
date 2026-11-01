@@ -1,477 +1,620 @@
 <script lang="ts">
-	import { Button, Select } from '@bios-ui/svelte';
-	import { Download, ListIcon, ListOrderedIcon, Plus, Trash2, Upload } from '@lucide/svelte';
-	import dayjs from 'dayjs';
-	import isBetween from 'dayjs/plugin/isBetween';
-	import relativeTime from 'dayjs/plugin/relativeTime';
-	import flatpickr from 'flatpickr';
-	import 'flatpickr/dist/flatpickr.css';
-	import { onDestroy, onMount } from 'svelte';
-	import pkg from '../../../package.json';
-	import SummaryView from '../../lib/components/SummaryView.svelte';
-	import TrackedTaskCard from '../../lib/components/TrackedTaskCard.svelte';
-	import { settingsStore } from '../../lib/stores/settingsStore';
-	import { taskStore } from '../../lib/stores/taskStore';
-	import { summarizeTasks } from '../../lib/utils/summarize';
-	import TaskFormPage from '../popup/ui/TaskFormPage.svelte';
+  import dayjs from "dayjs";
+  import { shouldIgnoreListShortcut } from "../../lib/utils/keyboard";
+  import { onMount, tick } from "svelte";
+  import pkg from "../../../package.json";
+  import TerminalFrame from "../../lib/components/terminal/TerminalFrame.svelte";
+  import SummaryView from "../../lib/components/SummaryView.svelte";
+  import TrackedTaskCard from "../../lib/components/TrackedTaskCard.svelte";
+  import { settingsStore } from "../../lib/stores/settingsStore";
+  import { taskStore } from "../../lib/stores/taskStore";
+  import { summarizeTasks, normalizeTitle } from "../../lib/utils/summarize";
+  import { totalDuration, taskMinutes } from "../../lib/utils/task-display";
+  import TaskForm from "../../lib/components/tasks/TaskForm.svelte";
 
-	dayjs.extend(relativeTime);
-	dayjs.extend(isBetween);
+  type Period = "daily" | "weekly" | "monthly" | "custom" | "all";
+  let tasks: ITrackedTask[] = $state([]);
+  let period = $state<Period>("daily");
+  let selectedDate = $state(dayjs().format("YYYY-MM-DD"));
+  let rangeEnd = $state(dayjs().format("YYYY-MM-DD"));
+  let editing: ITrackedTask | null = $state(null);
+  let creating = $state(false);
+  let view: "list" | "summary" = $state("list");
+  let summary: ISummaryGroup[] = $state([]);
+  let selected = $state(-1);
+  let loading = $state(true);
+  let message = $state("");
+  let error = $state("");
+  let fileInput: HTMLInputElement;
+  let periodSelect = $state<HTMLSelectElement>();
+  let taskList = $state<HTMLDivElement>();
+  let loadVersion = 0;
+  let periodVersion = 0;
+  let keyboardActionPending = false;
+  const total = $derived(totalDuration(tasks));
+  const minutes = $derived(tasks.reduce((sum, task) => sum + taskMinutes(task), 0));
+  const rangeInvalid = $derived(
+    (period !== "all" && !selectedDate) ||
+      (period === "custom" && (!rangeEnd || rangeEnd < selectedDate))
+  );
+  const dataUnavailable = $derived(loading || rangeInvalid);
+  const periodLabel = $derived(
+    period === "all"
+      ? "all time"
+      : period === "custom"
+        ? `${dayjs(selectedDate).format("MMM D")} – ${dayjs(rangeEnd).format("MMM D, YYYY")}`
+        : period === "weekly"
+          ? `${dayjs(selectedDate).startOf("week").format("MMM D")} – ${dayjs(selectedDate).endOf("week").format("MMM D, YYYY")}`
+          : period === "monthly"
+            ? dayjs(selectedDate).format("MMMM YYYY")
+            : `${dayjs(selectedDate).isSame(dayjs(), "day") ? "today" : dayjs(selectedDate).format("dddd")} · ${dayjs(selectedDate).format("DD MMM YYYY")}`
+  );
+  const summaryMinutes = $derived(
+    new Map(
+      summary.map((group) => [
+        group.title,
+        tasks
+          .filter((task) => normalizeTitle(task.title) === normalizeTitle(group.title))
+          .reduce((sum, task) => sum + taskMinutes(task), 0),
+      ])
+    )
+  );
 
-	let trackedTasks: ITrackedTask[] = $state([]);
-	let timeRangeFilter: 'daily' | 'weekly' | 'monthly' | 'all' | 'custom' = $state('daily');
-	let selectedDate = $state(new Date());
-	let customStartDate = $state(new Date());
-	let customEndDate = $state(new Date());
-	let taskFormData: ITrackedTask | null = $state(null);
-	let isTaskFormOpen = $state(false);
-	let viewMode: 'list' | 'summary' = $state('list');
-	let summaryData: Array<{ title: string; tasks: string[] }> = $state([]);
-	let fileInput: HTMLInputElement;
-	let dateInput: HTMLInputElement | undefined = $state();
-	let flatpickrInstance: flatpickr.Instance;
+  $effect(() => {
+    if (taskList) {
+      taskList.focus({ preventScroll: true });
+    }
+  });
 
-	let unwatch: () => void;
+  async function load(resetSelection = false) {
+    const version = ++loadVersion;
+    if (rangeInvalid) {
+      tasks = [];
+      summary = [];
+      selected = -1;
+      loading = false;
+      return;
+    }
+    loading = true;
+    error = "";
+    try {
+      const data = await taskStore.getTasks(period, selectedDate, selectedDate, rangeEnd);
+      const groups = await summarizeTasks(data);
+      if (version !== loadVersion) return;
+      const selectedId = resetSelection ? undefined : tasks[selected]?.id;
+      tasks = data;
+      summary = groups;
+      const previousIndex = data.findIndex((task) => task.id === selectedId);
+      selected = previousIndex >= 0 ? previousIndex : data.length - 1;
+    } catch {
+      if (version === loadVersion) {
+        tasks = [];
+        summary = [];
+        selected = -1;
+        error = "Could not load tasks.";
+      }
+    } finally {
+      if (version === loadVersion) {
+        loading = false;
+        await scrollToSelectedTask();
+      }
+    }
+  }
+  onMount(() => {
+    let active = true;
+    const unwatch = taskStore.watchTasks(() => {
+      void load();
+    });
+    (async () => {
+      try {
+        const settings = await settingsStore.getSettings();
+        if (!active) return;
+        if (settings.defaultToRecentDay) {
+          const recent = await taskStore.findMostRecentDateWithTasks();
+          if (!active) return;
+          if (recent) selectedDate = dayjs(recent).format("YYYY-MM-DD");
+        }
+        await load();
+      } catch {
+        error = "Could not load settings.";
+        loading = false;
+      }
+    })();
+    return () => {
+      active = false;
+      loadVersion++;
+      periodVersion++;
+      unwatch();
+    };
+  });
 
-	onMount(() => {
-		const initializeStorage = async () => {
-			// Initialize storage with mock data if needed
-			// await taskStore.initializeStorage();
-
-			// Load settings and set default date if needed
-			const settings = await settingsStore.getSettings();
-			if (settings.defaultToRecentDay && timeRangeFilter === 'daily') {
-				// Find the most recent date with tasks
-				const mostRecentDate = await taskStore.findMostRecentDateWithTasks();
-				if (mostRecentDate) {
-					selectedDate = mostRecentDate;
-				} else {
-					// No tasks found, default to today
-					selectedDate = dayjs().toDate();
-				}
-			}
-
-			// Load initial tasks based on filter
-			await loadTasksForTimeRange();
-
-			// Watch for changes in storage
-			unwatch = taskStore.watchTasks(async () => {
-				await loadTasksForTimeRange();
-			});
-		};
-
-		initializeStorage();
-
-		// close window on ESC key
-		const handleKeydown = (event: KeyboardEvent) => {
-			if (event.key === 'Escape') {
-				window.close();
-			}
-		};
-		document.addEventListener('keydown', handleKeydown);
-	});
-
-	const loadTasksForTimeRange = async () => {
-		trackedTasks = await taskStore.getTasks(timeRangeFilter, selectedDate, customStartDate, customEndDate);
-
-		// Generate summary data when tasks are loaded
-		if (viewMode === 'summary') {
-			await generateSummaryData();
-		}
-	};
-
-	const generateSummaryData = async () => {
-		try {
-			summaryData = await summarizeTasks(trackedTasks);
-		} catch (error) {
-			console.error('Error generating summary:', error);
-			summaryData = [];
-		}
-	};
-
-	const toggleViewMode = async () => {
-		if (viewMode === 'list') {
-			// Check if there are no tasks to summarize
-			if (trackedTasks.length === 0) {
-				alert('No tasks available to summarize! Please create some tasks first or try adjusting the date range or time period to find existing tasks.');
-				return;
-			}
-			viewMode = 'summary';
-			await generateSummaryData();
-		} else {
-			viewMode = 'list';
-		}
-	};
-
-	const handleTimeRangeChange = async () => {
-		// Reset to current date when changing time range, or most recent date with tasks if setting is enabled for daily
-		const settings = await settingsStore.getSettings();
-		if (settings.defaultToRecentDay && timeRangeFilter === 'daily') {
-			// Find the most recent date with tasks
-			const mostRecentDate = await taskStore.findMostRecentDateWithTasks();
-			if (mostRecentDate) {
-				selectedDate = mostRecentDate;
-			} else {
-				// No tasks found, default to yesterday
-				selectedDate = dayjs().subtract(1, 'day').toDate();
-			}
-		} else {
-			selectedDate = new Date();
-		}
-		// Reset view mode to list when changing periods
-		viewMode = 'list';
-		await loadTasksForTimeRange();
-	};
-
-	const initializeFlatpickr = () => {
-		if (flatpickrInstance) {
-			flatpickrInstance.destroy();
-		}
-
-		if (!dateInput || timeRangeFilter === 'all') return;
-
-		let mode: 'single' | 'range' = 'single';
-		let dateFormat = 'Y-m-d';
-		let defaultDate = selectedDate;
-
-		const baseOptions: flatpickr.Options.Options = {
-			mode,
-			dateFormat,
-			defaultDate,
-			maxDate: new Date(),
-			onChange: (selectedDates) => {
-				if (selectedDates.length > 0) {
-					if (timeRangeFilter === 'custom' && selectedDates.length === 2) {
-						handleFlatpickrChange(selectedDates[0], selectedDates[1]);
-					} else if (timeRangeFilter !== 'custom') {
-						handleFlatpickrChange(selectedDates[0]);
-					}
-				}
-			},
-		};
-
-		switch (timeRangeFilter) {
-			case 'daily':
-				flatpickrInstance = flatpickr(dateInput, baseOptions);
-				break;
-			case 'weekly':
-				flatpickrInstance = flatpickr(dateInput, {
-					...baseOptions,
-					onDayCreate: (dObj, dStr, fp, dayElem) => {
-						const date = dayjs(dayElem.dateObj);
-						const weekStart = dayjs(selectedDate).startOf('week');
-						const weekEnd = dayjs(selectedDate).endOf('week');
-
-						if (date.isBetween(weekStart, weekEnd, 'day', '[]')) {
-							dayElem.classList.add('selected-week');
-						}
-					},
-				});
-				break;
-			case 'monthly':
-				flatpickrInstance = flatpickr(dateInput, {
-					...baseOptions,
-					dateFormat: 'Y-m',
-					altInput: true,
-					altFormat: 'F Y',
-				});
-				break;
-			case 'custom':
-				flatpickrInstance = flatpickr(dateInput, {
-					...baseOptions,
-					mode: 'range',
-					defaultDate: [customStartDate, customEndDate],
-				});
-				break;
-		}
-	};
-
-	const handleFlatpickrChange = async (startDate: Date, endDate?: Date) => {
-		let newDate: Date;
-
-		switch (timeRangeFilter) {
-			case 'daily':
-				newDate = startDate;
-				break;
-			case 'weekly':
-				newDate = dayjs(startDate).startOf('week').toDate();
-				break;
-			case 'monthly':
-				newDate = dayjs(startDate).startOf('month').toDate();
-				break;
-			case 'custom':
-				customStartDate = startDate;
-				customEndDate = endDate!;
-				newDate = startDate;
-				break;
-			default:
-				newDate = new Date();
-		}
-
-		selectedDate = newDate;
-		await loadTasksForTimeRange();
-	};
-
-	// Reactive effect to reinitialize flatpickr when dateInput is available
-	$effect(() => {
-		if (dateInput && timeRangeFilter !== 'all') {
-			initializeFlatpickr();
-		}
-	});
-
-	onDestroy(() => {
-		if (unwatch) unwatch();
-		if (flatpickrInstance) flatpickrInstance.destroy();
-	});
-
-	const deleteTask = async (taskId: string) => {
-		await taskStore.deleteTask(taskId);
-	};
-
-	const resumeTask = async (sourceTask: ITrackedTask) => {
-		await taskStore.addTask({
-			title: sourceTask.title,
-			description: sourceTask.description,
-		});
-	};
-
-	const openTaskForm = (task: ITrackedTask) => {
-		taskFormData = task;
-		isTaskFormOpen = true;
-	};
-
-	const handleTaskFormSave = async (savedTask: ITrackedTask) => {
-		// Check if this is a new task (empty title originally) or existing task
-		const isNewTask = !taskFormData?.title;
-
-		if (isNewTask) {
-			await taskStore.addTask(savedTask);
-		} else {
-			// Update existing task
-			await taskStore.updateTask(savedTask);
-		}
-
-		isTaskFormOpen = false;
-		taskFormData = null;
-	};
-
-	const handleTaskFormCancel = () => {
-		isTaskFormOpen = false;
-		taskFormData = null;
-	};
-
-	const openCreateNewTaskForm = async () => {
-		// Use selected date as default, fallback to today's date
-		const defaultDate = selectedDate || new Date();
-
-		// Get the appropriate start time for the selected date
-		const startTime = await taskStore.getLatestStartTime(defaultDate);
-
-		const newTask: ITrackedTask = {
-			id: crypto.randomUUID(),
-			title: '',
-			description: '',
-			status: 'pending',
-			createdAt: dayjs().toISOString(),
-			start: startTime,
-			end: null,
-		};
-
-		taskFormData = newTask;
-		isTaskFormOpen = true;
-	};
-
-
-	const downloadTasks = () => {
-		const dataStr = JSON.stringify(trackedTasks, null, 2);
-		const dataUri = 'data:application/json;charset=utf-8,' + encodeURIComponent(dataStr);
-
-		let exportFileDefaultName: string;
-		if (timeRangeFilter === 'custom') {
-			const startStr = dayjs(customStartDate).format('YYYY-MM-DD');
-			const endStr = dayjs(customEndDate).format('YYYY-MM-DD');
-			exportFileDefaultName = `custom-range-${startStr}-to-${endStr}-tasks-${dayjs().format('YYYY-MM-DD-HH-mm-ss')}.json`;
-		} else {
-			exportFileDefaultName = `${timeRangeFilter}-tasks-${dayjs(selectedDate).format('YYYY-MM-DD-HH-mm-ss')}.json`;
-		}
-
-		const linkElement = document.createElement('a');
-		linkElement.setAttribute('href', dataUri);
-		linkElement.setAttribute('download', exportFileDefaultName);
-		linkElement.click();
-	};
-
-	const clearTasks = async () => {
-		const filterText = timeRangeFilter === 'all' ? 'all' : timeRangeFilter === 'custom' ? 'custom range' : timeRangeFilter;
-		if (confirm(`Are you sure you want to clear all ${filterText} tasks? This action cannot be undone.`)) {
-			if (timeRangeFilter === 'custom') {
-				await taskStore.resetTasks(timeRangeFilter, customStartDate, customEndDate);
-			} else {
-				await taskStore.resetTasks(timeRangeFilter);
-			}
-			await loadTasksForTimeRange();
-		}
-	};
-	const importTasks = () => {
-		fileInput.click();
-	};
-
-	const handleFileImport = async (event: Event) => {
-		const target = event.target as HTMLInputElement;
-		const file = target.files?.[0];
-
-		if (!file) return;
-
-		try {
-			const text = await file.text();
-			const jsonData = JSON.parse(text);
-
-			const result = await taskStore.importTasks(jsonData);
-
-			if (result.success) {
-				alert(result.message);
-			} else {
-				alert(`Import failed: ${result.message}`);
-			}
-		} catch (error) {
-			alert("Error reading file: Please ensure it's a valid JSON file");
-			alert("Error reading file: Please ensure it's a valid JSON file");
-		} finally {
-			// Reset file input
-			target.value = '';
-		}
-	};
-
-
-	const getHeaderText = () => {
-		const referenceDate = dayjs(selectedDate);
-		switch (timeRangeFilter) {
-			case 'daily':
-				const isToday = referenceDate.isSame(dayjs(), 'day');
-				const dayLabel = isToday ? 'Today' : referenceDate.format('MMM DD, YYYY');
-				return `${dayLabel}'s Tasks: ${trackedTasks.length}`;
-			case 'weekly':
-				const isThisWeek = referenceDate.isSame(dayjs(), 'week');
-				const weekLabel = isThisWeek ? 'This Week' : `Week of ${referenceDate.startOf('week').format('MMM DD, YYYY')}`;
-				return `${weekLabel}'s Tasks: ${trackedTasks.length}`;
-			case 'monthly':
-				const isThisMonth = referenceDate.isSame(dayjs(), 'month');
-				const monthLabel = isThisMonth ? 'This Month' : referenceDate.format('MMMM YYYY');
-				return `${monthLabel}'s Tasks: ${trackedTasks.length}`;
-			case 'all':
-				return `All Tasks: ${trackedTasks.length}`;
-		}
-	};
+  async function setPeriod(value: Period) {
+    const version = ++periodVersion;
+    loadVersion++;
+    period = value;
+    loading = true;
+    let settingsFailed = false;
+    try {
+      if (value === "daily") {
+        const settings = await settingsStore.getSettings();
+        if (version !== periodVersion) return;
+        if (settings.defaultToRecentDay) {
+          const recent = await taskStore.findMostRecentDateWithTasks();
+          if (version !== periodVersion) return;
+          selectedDate = dayjs(recent ?? new Date()).format("YYYY-MM-DD");
+        }
+      }
+    } catch {
+      settingsFailed = true;
+    }
+    if (version !== periodVersion) return;
+    await load(true);
+    if (version === periodVersion && settingsFailed && !error)
+      error = "Could not load settings. Showing the selected date.";
+  }
+  async function moveDate(direction: number) {
+    if (period === "all" || period === "custom") return;
+    const unit = period === "weekly" ? "week" : period === "monthly" ? "month" : "day";
+    selectedDate = dayjs(selectedDate).add(direction, unit).format("YYYY-MM-DD");
+    await load(true);
+  }
+  function cancel() {
+    editing = null;
+    creating = false;
+  }
+  async function newTask() {
+    if (rangeInvalid) return;
+    try {
+      const start = await taskStore.getLatestStartTime(selectedDate || new Date());
+      creating = true;
+      editing = {
+        id: crypto.randomUUID(),
+        title: "",
+        description: "",
+        status: "pending",
+        createdAt: dayjs().toISOString(),
+        start,
+        end: null,
+      };
+    } catch {
+      error = "Could not create task.";
+    }
+  }
+  async function save(task: ITrackedTask) {
+    const isNewTask = creating;
+    if (creating) await taskStore.addTask(task);
+    else await taskStore.updateTask(task);
+    cancel();
+    await load(isNewTask);
+  }
+  async function remove(id: string) {
+    if (dataUnavailable) return;
+    try {
+      await taskStore.deleteTask(id);
+      if (editing?.id === id) cancel();
+      await load();
+    } catch {
+      error = "Could not delete task.";
+    }
+  }
+  async function resume(task: ITrackedTask) {
+    if (dataUnavailable) return;
+    try {
+      await taskStore.addTask({ title: task.title, description: task.description });
+      message = "Task resumed for today.";
+      await load(true);
+    } catch {
+      error = "Could not resume task.";
+    }
+  }
+  async function clear() {
+    if (
+      dataUnavailable ||
+      !tasks.length ||
+      !confirm(`Clear ${tasks.length} tasks shown for ${periodLabel}? This cannot be undone.`)
+    )
+      return;
+    try {
+      // Use the displayed tasks so clearing a past period never deletes today's tasks.
+      const ids = new Set(tasks.map((task) => task.id));
+      const all = await taskStore.getTasks();
+      await taskStore.saveTasks(all.filter((task) => !ids.has(task.id)));
+      await load();
+      message = "Tasks cleared.";
+    } catch {
+      error = "Could not clear tasks.";
+    }
+  }
+  function download() {
+    if (dataUnavailable) return;
+    const url = URL.createObjectURL(
+      new Blob([JSON.stringify(tasks, null, 2)], { type: "application/json" })
+    );
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = `${period}-tasks-${selectedDate}.json`;
+    link.click();
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+    message = `Exported ${tasks.length} tasks.`;
+  }
+  async function importFile(event: Event) {
+    const input = event.currentTarget as HTMLInputElement;
+    const file = input.files?.[0];
+    if (!file) return;
+    try {
+      const result = await taskStore.importTasks(JSON.parse(await file.text()));
+      if (result.success) {
+        message = result.message;
+        error = "";
+        await load();
+      } else error = result.message;
+    } catch {
+      error = "Import failed. Choose a valid task JSON file.";
+    } finally {
+      input.value = "";
+    }
+  }
+  async function copySummary() {
+    if (dataUnavailable) return;
+    try {
+      await navigator.clipboard.writeText(
+        summary
+          .map((group) => `${group.title}\n${group.tasks.map((task) => `- ${task}`).join("\n")}`)
+          .join("\n\n")
+      );
+      message = "Summary copied.";
+    } catch {
+      error = "Could not copy summary.";
+    }
+  }
+  async function handleKey(event: KeyboardEvent) {
+    if (editing || event.defaultPrevented) return;
+    if (event.ctrlKey && !event.metaKey && !event.altKey && !event.shiftKey && !event.isComposing) {
+      if (!["e", "n", "i", "p"].includes(event.key)) return;
+      event.preventDefault();
+      if (event.repeat) return;
+      switch (event.key) {
+        case "e":
+          download();
+          break;
+        case "n":
+          await newTask();
+          break;
+        case "i":
+          fileInput.click();
+          break;
+        case "p":
+          periodSelect?.focus();
+          break;
+      }
+      return;
+    }
+    if (event.key === "Escape") {
+      if (event.repeat || event.isComposing || event.ctrlKey || event.metaKey || event.altKey)
+        return;
+      event.preventDefault();
+      window.close();
+      return;
+    }
+    if (shouldIgnoreListShortcut(event)) return;
+    switch (event.key) {
+      case "j":
+      case "ArrowDown":
+        event.preventDefault();
+        selected = Math.min(tasks.length - 1, selected + 1);
+        break;
+      case "k":
+      case "ArrowUp":
+        event.preventDefault();
+        selected = Math.max(0, selected - 1);
+        break;
+      case "h":
+        await moveDate(-1);
+        break;
+      case "l":
+        view = "list";
+        break;
+      case "s":
+        view = "summary";
+        break;
+      case "w":
+        await setPeriod(period === "weekly" ? "daily" : "weekly");
+        break;
+      case "v":
+        view = view === "list" ? "summary" : "list";
+        break;
+      case "n":
+        await newTask();
+        break;
+      case "e":
+      case "Enter":
+        if (view === "list" && !dataUnavailable && tasks[selected]) {
+          creating = false;
+          editing = tasks[selected];
+        }
+        break;
+      case "r":
+      case "d": {
+        if (view !== "list" || dataUnavailable || event.repeat || keyboardActionPending) return;
+        const task = tasks[selected];
+        if (!task) return;
+        event.preventDefault();
+        keyboardActionPending = true;
+        try {
+          if (event.key === "r") {
+            if (confirm(`Resume "${task.title}"? A new task will be added for today.`))
+              await resume(task);
+          } else if (confirm(`Delete "${task.title}"? This cannot be undone.`)) {
+            await remove(task.id);
+          }
+        } finally {
+          keyboardActionPending = false;
+        }
+        break;
+      }
+      case "y":
+        await copySummary();
+        break;
+      case "x":
+        download();
+        break;
+    }
+    await scrollToSelectedTask();
+  }
+  async function scrollToSelectedTask() {
+    await tick();
+    if (view === "list" && !editing)
+      taskList
+        ?.querySelector('.timeline-task[aria-current="true"]')
+        ?.scrollIntoView({ block: "nearest" });
+  }
 </script>
 
-<main class="min-h-screen overflow-y-auto bg-bg-dark flex flex-col justify-between h-full">
-	{#if isTaskFormOpen && taskFormData}
-		<TaskFormPage task={taskFormData} onSave={handleTaskFormSave} onCancel={handleTaskFormCancel} isNewTask={!taskFormData.title} />
-	{:else}
-		<div class="p-4 flex flex-col flex-1">
-			<div class="flex justify-between items-start mb-4 mt-1">
-				<div class="font-family-heading">
-					<h1 class="text-2xl font-bold text-fg-dark">Tracked Tasks Summary</h1>
-					<span class="text-fg-muted text-xs">{getHeaderText()}</span>
-				</div>
-				<Button size="sm" onclick={toggleViewMode} className="flex items-center gap-2 px-3 py-2" title={`Switch to ${viewMode === 'list' ? 'summary' : 'list'} view`}>
-					{#if viewMode === 'list'}
-						<ListOrderedIcon size={16} />
-					{:else}
-						<ListIcon size={16} />
-					{/if}
-				</Button>
-			</div>
+<svelte:window onkeydown={handleKey} />
+{#if editing}
+  <TaskForm
+    task={editing}
+    onSave={save}
+    onCancel={cancel}
+    isNewTask={creating}
+    onDelete={creating ? undefined : () => remove(editing!.id)}
+  />
+{:else}
+  <TerminalFrame title="tracked-tasks" meta={`ndev v${pkg.version}`}>
+    <div class="panel-controls">
+      <div class="view-controls">
+        <div class="toolbar view-tabs" role="group" aria-label="Task view">
+          <button
+            type="button"
+            class="text-button"
+            class:active={view === "list"}
+            aria-pressed={view === "list"}
+            aria-keyshortcuts="l"
+            onclick={() => (view = "list")}>list</button
+          ><button
+            type="button"
+            class="text-button"
+            class:active={view === "summary"}
+            aria-pressed={view === "summary"}
+            aria-keyshortcuts="s"
+            onclick={() => (view = "summary")}>summary</button
+          >
+        </div>
+        <select
+          aria-label="Time range"
+          aria-keyshortcuts="Control+p"
+          bind:this={periodSelect}
+          value={period}
+          onchange={(event) => setPeriod(event.currentTarget.value as Period)}
+          ><option value="daily">daily</option><option value="weekly">weekly</option><option
+            value="monthly">monthly</option
+          ><option value="custom">custom range</option><option value="all">all time</option></select
+        >
+      </div>
+      <div class="date-nav">
+        <button
+          type="button"
+          class="text-button"
+          onclick={() => moveDate(-1)}
+          disabled={period === "all" || period === "custom"}
+          aria-label="Previous period"
+          title="Previous period [h]">‹</button
+        ><span>{periodLabel}</span><button
+          type="button"
+          class="text-button"
+          onclick={() => moveDate(1)}
+          disabled={period === "all" || period === "custom"}
+          aria-label="Next period"
+          title="Next period">›</button
+        ><strong class="duration">{total}</strong>
+      </div>
+      {#if period !== "all"}<div class="date-fields">
+          <label class="field"
+            ><span>{period === "custom" ? "from" : "jump to date"}</span><input
+              type="date"
+              bind:value={selectedDate}
+              onchange={() => load(true)}
+              required
+            /></label
+          >{#if period === "custom"}<label class="field"
+              ><span>to</span><input
+                type="date"
+                bind:value={rangeEnd}
+                min={selectedDate}
+                onchange={() => load(true)}
+                required
+              /></label
+            >{/if}
+        </div>{/if}
+      {#if rangeInvalid}<p class="error" role="alert">! range end must be on or after start</p>{/if}
+      <div class="toolbar actions">
+        <button
+          type="button"
+          class="text-button primary"
+          onclick={newTask}
+          disabled={rangeInvalid}
+          aria-keyshortcuts="n Control+n">[+] new</button
+        ><button
+          type="button"
+          class="text-button"
+          onclick={() => fileInput.click()}
+          aria-keyshortcuts="Control+i">[↑] import</button
+        ><button
+          type="button"
+          class="text-button"
+          onclick={download}
+          disabled={dataUnavailable}
+          aria-keyshortcuts="x Control+e">[↓] export</button
+        ><button
+          type="button"
+          class="text-button danger push"
+          onclick={clear}
+          disabled={dataUnavailable || !tasks.length}>[×] clear</button
+        >
+      </div>
+    </div>
+    {#if error}<p class="hint error" role="alert">! {error}</p>{/if}
+    {#if message}<p class="hint" role="status">{message}</p>{/if}
+    <div
+      class="panel-tasks scroll-area"
+      bind:this={taskList}
+      tabindex="-1"
+      role="region"
+      aria-label="Tracked tasks"
+      aria-busy={loading}
+    >
+      {#if loading}<div class="empty-state">loading tasks…</div>
+      {:else if rangeInvalid}<div class="empty-state">~ choose a valid date range</div>
+      {:else if !tasks.length}<div class="empty-state">
+          <span class="prompt">~</span>
+          <p>no tasks in this period</p>
+          <button
+            type="button"
+            class="text-button primary"
+            onclick={newTask}
+            disabled={rangeInvalid}>[n] create a task</button
+          >
+          <p>or choose another date</p>
+        </div>
+      {:else if view === "list"}
+        {#each tasks as task, index (task.id)}<TrackedTaskCard
+            {task}
+            selected={selected === index}
+            onSelect={() => (selected = index)}
+            onEdit={(task) => {
+              creating = false;
+              editing = task;
+            }}
+            onDelete={remove}
+            onResume={resume}
+          />{/each}
+        <p class="hint"># click task content to copy</p>
+      {:else}
+        <div class="summary-total">
+          <strong class="duration">{total}</strong><span class="subtle"
+            >{tasks.length} tasks · {summary.length} groups</span
+          >
+          <button type="button" class="text-button" onclick={copySummary}>[y] copy all</button>
+        </div>
+        {#each summary as group}<SummaryView
+            title={group.title}
+            items={group.tasks}
+            minutes={summaryMinutes.get(group.title) ?? 0}
+            totalMinutes={minutes}
+          />{/each}
+      {/if}
+    </div>
+    {#snippet footer()}<span class="mode" class:summary={view === "summary"}
+        >{view === "summary" ? "SUMMARY" : period.toUpperCase()}</span
+      ><span class="count"
+        >{view === "summary" ? `${summary.length} groups` : `${tasks.length} tasks`}</span
+      ><span class="push muted">l list · s summary · v view</span>{/snippet}
+  </TerminalFrame>
+{/if}
+<input
+  type="file"
+  bind:this={fileInput}
+  accept=".json,application/json"
+  onchange={importFile}
+  hidden
+  aria-label="Import task JSON"
+/>
 
-			<div class="mb-3 flex justify-between items-center flex-wrap gap-4 md:gap-2">
-				<div class="flex items-center gap-2">
-					<Select
-						className="max-w-40"
-						bind:value={timeRangeFilter}
-						onchange={handleTimeRangeChange}
-						options={[
-							{ value: 'daily', label: 'Daily' },
-							{ value: 'weekly', label: 'Weekly' },
-							{ value: 'monthly', label: 'Monthly' },
-							{ value: 'custom', label: 'Custom Range' },
-							{ value: 'all', label: 'All' },
-						]}
-					/>
-					{#if timeRangeFilter !== 'all'}
-						<div class="relative h-full">
-							<input
-								bind:this={dateInput as any}
-								class="w-full p-2 pr-6 py-[0.55rem] text-xs bg-bg-darker border-2 text-fg-dark focus:outline-none cursor-pointer"
-								placeholder={timeRangeFilter === 'custom' ? 'Select date range' : 'Select date'}
-								readonly
-							/>
-							<svg class="absolute right-2 top-1/2 transform -translate-y-1/2 w-3 h-3 text-fg-muted pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-								<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-							</svg>
-						</div>
-					{/if}
-				</div>
-				<div class="flex gap-2">
-					<Button size="sm" onclick={openCreateNewTaskForm} className="flex items-center gap-2 px-3 py-2" title="Add new task">
-						<Plus size={14} />
-					</Button>
-					<Button size="sm" onclick={importTasks} className="flex items-center gap-2 px-3 py-2" title="Import tasks from JSON file">
-						<Upload size={14} />
-					</Button>
-					<Button size="sm" onclick={downloadTasks} className="flex items-center gap-2 px-3 py-2" title={`Download ${timeRangeFilter === 'custom' ? 'custom range' : timeRangeFilter} tasks as JSON`}>
-						<Download size={14} />
-					</Button>
-					<Button size="sm" onclick={clearTasks} className="flex items-center gap-2 px-3 py-2" variant="destructive" title={`Clear ${timeRangeFilter === 'custom' ? 'custom range' : timeRangeFilter} tasks`}>
-						<Trash2 size={14} />
-					</Button>
-				</div>
-			</div>
-
-			{#if trackedTasks.length}
-				{#if viewMode === 'list'}
-					<div class="space-y-2 flex flex-col flex-1">
-						{#each trackedTasks as task (task.id)}
-								<TrackedTaskCard {task} onEdit={openTaskForm} onDelete={deleteTask} onResume={resumeTask} />
-						{/each}
-
-						<div class="mb-3 text-center">
-							<p class="text-xs text-fg-muted opacity-80 bg-bg-darker border border-border rounded-lg px-3 py-2">
-								💡 <strong>Tip:</strong> Click on any task content to copy it to your clipboard
-							</p>
-						</div>
-					</div>
-				{:else if summaryData.length > 0}
-					<div class="mt-8">
-						{#each summaryData as group}
-							<SummaryView items={group.tasks} title={group.title} emptyMessage="No tasks in this group" className="mb-6" />
-						{/each}
-					</div>
-				{:else}
-					<SummaryView items={[]} title="Task Summary" emptyMessage="No tasks to summarize" className="mt-4" />
-				{/if}
-			{:else}
-				<div class="flex flex-col justify-center items-center text-center flex-1">
-					<p class="text-fg-dark text-lg mb-2">
-						No tasks recorded for {timeRangeFilter === 'daily' ? 'today' : timeRangeFilter === 'all' ? 'any period' : timeRangeFilter === 'custom' ? 'selected date range' : `this ${timeRangeFilter.replace('ly', '')}`}
-					</p>
-					<p class="text-fg-muted text-sm mb-6">Start tracking your tasks to see them here!</p>
-					<div class="text-sm text-fg-muted space-y-2">
-						<p>✨ Click the <Plus size={12} class="inline" /> button above to create your first task</p>
-						<p>⌨️ Or use the keyboard shortcut: <kbd class="bg-bg-light px-2 py-1 rounded text-xs">Alt+Up</kbd></p>
-						<p>📋 Once you have tasks, click any content to copy it to your clipboard</p>
-					</div>
-				</div>
-			{/if}
-		</div>
-	{/if}
-
-	<!-- Version and Copyright footer -->
-	<div class="mt-8 pt-4 border-t border-border text-center text-xs text-fg-muted">
-		<p>NDEV: Task Tracker v{pkg.version}</p>
-		<p>&copy; {dayjs().year()} NDEV. All rights reserved.</p>
-	</div>
-
-	<!-- Hidden file input for importing tasks -->
-	<input bind:this={fileInput} type="file" accept=".json" onchange={handleFileImport} style="display: none;" />
-	<input bind:this={fileInput} type="file" accept=".json" onchange={handleFileImport} style="display: none;" />
-</main>
+<style>
+  .panel-controls {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5lh;
+    padding: 0.7lh 1ch 0.5lh;
+  }
+  .view-controls {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1ch;
+  }
+  .view-controls select {
+    width: auto;
+    font-size: 11px;
+    padding-block: 0.1lh;
+  }
+  .date-nav {
+    display: flex;
+    align-items: center;
+    gap: 0.3ch;
+  }
+  .date-nav > span {
+    flex: 1;
+    text-align: center;
+    font-size: 11px;
+  }
+  .date-nav > strong {
+    margin-left: auto;
+  }
+  .date-fields {
+    display: flex;
+    gap: 1ch;
+  }
+  .date-fields label {
+    flex: 1;
+    font-size: 10px;
+  }
+  .date-fields input {
+    font-size: 11px;
+    padding-block: 0.1lh;
+  }
+  .actions {
+    font-size: 11px;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 0.5lh;
+  }
+  .actions button {
+    padding-inline: 0.6ch;
+  }
+  .panel-tasks {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5lh;
+    padding: 0.5lh 1ch;
+  }
+  .panel-tasks :global(.summary-group) {
+    margin-bottom: 0.7lh;
+  }
+  .summary-total {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.3lh 1ch;
+    align-items: baseline;
+    margin-bottom: 0.5lh;
+  }
+  .summary-total strong {
+    font-size: 28px;
+  }
+  .summary-total button {
+    margin-left: auto;
+    font-size: 11px;
+  }
+  :global(.status-bar .push.muted) {
+    font-size: 10px;
+  }
+</style>

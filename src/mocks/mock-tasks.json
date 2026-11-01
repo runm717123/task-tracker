@@ -5,8 +5,8 @@
     "description": "works on user authentication module\n-https://github.com/company/project/issues/123",
     "status": "done",
     "createdAt": "2025-08-14T07:30:00Z",
-    "start": "2025-08-14T08:00:00Z",
-    "end": "2025-08-14T09:30:00Z"
+    "start": "2026-11-14T08:00:00Z",
+    "end": "2026-11-14T09:30:00Z"
   },
   {
     "id": "2",
@@ -14,8 +14,8 @@
     "description": "works on database optimization\n-https://github.com/company/project/pull/456",
     "status": "done",
     "createdAt": "2025-08-14T09:15:00Z",
-    "start": "2025-08-14T09:30:00Z",
-    "end": "2025-08-14T11:00:00Z"
+    "start": "2026-11-14T09:30:00Z",
+    "end": "2026-11-14T11:00:00Z"
   },
   {
     "id": "3",
@@ -23,8 +23,8 @@
     "description": "Coffee break and team sync",
     "status": "done",
     "createdAt": "2025-08-14T10:45:00Z",
-    "start": "2025-08-14T11:00:00Z",
-    "end": "2025-08-14T11:15:00Z"
+    "start": "2026-11-14T11:00:00Z",
+    "end": "2026-11-14T11:15:00Z"
   },
   {
     "id": "4",
@@ -32,8 +32,8 @@
     "description": "research and found issue with API rate limiting",
     "status": "done",
     "createdAt": "2025-08-14T11:00:00Z",
-    "start": "2025-08-14T11:15:00Z",
-    "end": "2025-08-14T13:00:00Z"
+    "start": "2026-11-14T11:15:00Z",
+    "end": "2026-11-14T13:00:00Z"
   },
   {
     "id": "5",
@@ -41,8 +41,8 @@
     "description": "review pr, self-explore, documentation update",
     "status": "done",
     "createdAt": "2025-08-14T12:45:00Z",
-    "start": "2025-08-14T13:00:00Z",
-    "end": "2025-08-14T15:00:00Z"
+    "start": "2026-11-14T13:00:00Z",
+    "end": "2026-11-14T15:00:00Z"
   },
   {
     "id": "6",
@@ -50,8 +50,8 @@
     "description": "Weekly all-hands meeting",
     "status": "done",
     "createdAt": "2025-08-14T14:45:00Z",
-    "start": "2025-08-14T15:00:00Z",
-    "end": "2025-08-14T16:00:00Z"
+    "start": "2026-11-14T15:00:00Z",
+    "end": "2026-11-14T16:00:00Z"
   },
   {
     "id": "7",
@@ -59,8 +59,8 @@
     "description": "- review pr\n- self-explore\n- code refactoring",
     "status": "done",
     "createdAt": "2025-08-14T15:45:00Z",
-    "start": "2025-08-14T16:00:00Z",
-    "end": "2025-08-14T19:00:00Z"
+    "start": "2026-11-14T16:00:00Z",
+    "end": "2026-11-14T19:00:00Z"
   },
 
   {
@@ -69,8 +69,8 @@
     "description": "Design service boundaries and communication patterns\n-https://github.com/company/architecture/issues/789",
     "status": "done",
     "createdAt": "2025-08-15T07:30:00Z",
-    "start": "2025-08-15T08:00:00Z",
-    "end": "2025-08-15T09:45:00Z"
+    "start": "2026-11-15T08:00:00Z",
+    "end": "2026-11-15T09:45:00Z"
   },
   {
     "id": "9",
@@ -78,8 +78,8 @@
     "description": "works on payment gateway integration\n-https://github.com/company/payments/pull/234",
     "status": "done",
     "createdAt": "2025-08-15T09:30:00Z",
-    "start": "2025-08-15T09:45:00Z",
-    "end": "2025-08-15T11:30:00Z"
+    "start": "2026-11-15T09:45:00Z",
+    "end": "2026-11-15T11:30:00Z"
   },
   {
     "id": "10",
@@ -87,8 +87,8 @@
     "description": "Business English conversation practice",
     "status": "done",
     "createdAt": "2025-08-15T11:15:00Z",
-    "start": "2025-08-15T11:30:00Z",
-    "end": "2025-08-15T12:30:00Z"
+    "start": "2026-11-15T11:30:00Z",
+    "end": "2026-11-15T12:30:00Z"
   },
   {
     "id": "11",
@@ -96,8 +96,8 @@
     "description": "Fix layout issues on tablet devices\n-https://github.com/company/frontend/issues/567",
     "status": "done",
     "createdAt": "2025-08-15T12:15:00Z",
-    "start": "2025-08-15T12:30:00Z",
-    "end": "2025-08-15T14:15:00Z"
+    "start": "2026-11-15T12:30:00Z",
+    "end": "2026-11-15T14:15:00Z"
   },
   {
     "id": "12",
@@ -105,8 +105,8 @@
     "description": "research and found issue with WebSocket connections",
     "status": "done",
     "createdAt": "2025-08-15T14:00:00Z",
-    "start": "2025-08-15T14:15:00Z",
-    "end": "2025-08-15T16:00:00Z"
+    "start": "2026-11-15T14:15:00Z",
+    "end": "2026-11-15T16:00:00Z"
   },
   {
     "id": "13",
@@ -114,8 +114,8 @@
     "description": "- code review\n- unit testing\n- deployment preparation",
     "status": "done",
     "createdAt": "2025-08-15T15:45:00Z",
-    "start": "2025-08-15T16:00:00Z",
-    "end": "2025-08-15T17:30:00Z"
+    "start": "2026-11-15T16:00:00Z",
+    "end": "2026-11-15T17:30:00Z"
   },
   {
     "id": "14",
@@ -123,8 +123,8 @@
     "description": "Team coffee break and planning discussion",
     "status": "done",
     "createdAt": "2025-08-15T17:15:00Z",
-    "start": "2025-08-15T17:30:00Z",
-    "end": "2025-08-15T19:00:00Z"
+    "start": "2026-11-15T17:30:00Z",
+    "end": "2026-11-15T19:00:00Z"
   },
 
   {
@@ -133,8 +133,8 @@
     "description": "works on search functionality optimization\n-https://github.com/company/search/pull/890",
     "status": "done",
     "createdAt": "2025-08-16T07:30:00Z",
-    "start": "2025-08-16T08:00:00Z",
-    "end": "2025-08-16T10:00:00Z"
+    "start": "2026-11-16T08:00:00Z",
+    "end": "2026-11-16T10:00:00Z"
   },
   {
     "id": "16",
@@ -142,8 +142,8 @@
     "description": "Optimize build times and add automated testing\n-https://github.com/company/devops/issues/345",
     "status": "done",
     "createdAt": "2025-08-16T09:45:00Z",
-    "start": "2025-08-16T10:00:00Z",
-    "end": "2025-08-16T11:45:00Z"
+    "start": "2026-11-16T10:00:00Z",
+    "end": "2026-11-16T11:45:00Z"
   },
   {
     "id": "17",
@@ -151,8 +151,8 @@
     "description": "research and found issue with memory leaks in background tasks",
     "status": "done",
     "createdAt": "2025-08-16T11:30:00Z",
-    "start": "2025-08-16T11:45:00Z",
-    "end": "2025-08-16T13:30:00Z"
+    "start": "2026-11-16T11:45:00Z",
+    "end": "2026-11-16T13:30:00Z"
   },
   {
     "id": "18",
@@ -160,8 +160,8 @@
     "description": "Quarterly team building lunch",
     "status": "done",
     "createdAt": "2025-08-16T13:15:00Z",
-    "start": "2025-08-16T13:30:00Z",
-    "end": "2025-08-16T14:30:00Z"
+    "start": "2026-11-16T13:30:00Z",
+    "end": "2026-11-16T14:30:00Z"
   },
   {
     "id": "19",
@@ -169,8 +169,8 @@
     "description": "Address OWASP security recommendations\n-https://github.com/company/security/issues/678",
     "status": "done",
     "createdAt": "2025-08-16T14:15:00Z",
-    "start": "2025-08-16T14:30:00Z",
-    "end": "2025-08-16T16:15:00Z"
+    "start": "2026-11-16T14:30:00Z",
+    "end": "2026-11-16T16:15:00Z"
   },
   {
     "id": "20",
@@ -178,8 +178,8 @@
     "description": "- performance testing\n- load balancer configuration\n- monitoring setup",
     "status": "done",
     "createdAt": "2025-08-16T16:00:00Z",
-    "start": "2025-08-16T16:15:00Z",
-    "end": "2025-08-16T18:00:00Z"
+    "start": "2026-11-16T16:15:00Z",
+    "end": "2026-11-16T18:00:00Z"
   },
   {
     "id": "21",
@@ -187,8 +187,8 @@
     "description": "Tech talk on new JavaScript features",
     "status": "done",
     "createdAt": "2025-08-16T17:45:00Z",
-    "start": "2025-08-16T18:00:00Z",
-    "end": "2025-08-16T19:00:00Z"
+    "start": "2026-11-16T18:00:00Z",
+    "end": "2026-11-16T19:00:00Z"
   },
 
   {
@@ -197,8 +197,8 @@
     "description": "Migrate legacy data to new schema\n-https://github.com/company/database/pull/456",
     "status": "done",
     "createdAt": "2025-08-17T07:30:00Z",
-    "start": "2025-08-17T08:00:00Z",
-    "end": "2025-08-17T09:30:00Z"
+    "start": "2026-11-17T08:00:00Z",
+    "end": "2026-11-17T09:30:00Z"
   },
   {
     "id": "23",
@@ -206,8 +206,8 @@
     "description": "works on notification system enhancement\n-https://github.com/company/notifications/issues/123",
     "status": "done",
     "createdAt": "2025-08-17T09:15:00Z",
-    "start": "2025-08-17T09:30:00Z",
-    "end": "2025-08-17T11:15:00Z"
+    "start": "2026-11-17T09:30:00Z",
+    "end": "2026-11-17T11:15:00Z"
   },
   {
     "id": "24",
@@ -215,8 +215,8 @@
     "description": "research and found issue with third-party API rate limits",
     "status": "done",
     "createdAt": "2025-08-17T11:00:00Z",
-    "start": "2025-08-17T11:15:00Z",
-    "end": "2025-08-17T13:00:00Z"
+    "start": "2026-11-17T11:15:00Z",
+    "end": "2026-11-17T13:00:00Z"
   },
   {
     "id": "25",
@@ -224,8 +224,8 @@
     "description": "Team lunch and casual discussion",
     "status": "done",
     "createdAt": "2025-08-17T12:45:00Z",
-    "start": "2025-08-17T13:00:00Z",
-    "end": "2025-08-17T14:00:00Z"
+    "start": "2026-11-17T13:00:00Z",
+    "end": "2026-11-17T14:00:00Z"
   },
   {
     "id": "26",
@@ -233,8 +233,8 @@
     "description": "Enhance accessibility and user experience\n-https://github.com/company/ui/pull/789",
     "status": "done",
     "createdAt": "2025-08-17T13:45:00Z",
-    "start": "2025-08-17T14:00:00Z",
-    "end": "2025-08-17T15:45:00Z"
+    "start": "2026-11-17T14:00:00Z",
+    "end": "2026-11-17T15:45:00Z"
   },
   {
     "id": "27",
@@ -242,8 +242,8 @@
     "description": "- bug fixes\n- documentation updates\n- code optimization",
     "status": "done",
     "createdAt": "2025-08-17T15:30:00Z",
-    "start": "2025-08-17T15:45:00Z",
-    "end": "2025-08-17T17:30:00Z"
+    "start": "2026-11-17T15:45:00Z",
+    "end": "2026-11-17T17:30:00Z"
   },
   {
     "id": "28",
@@ -251,8 +251,8 @@
     "description": "Weekly status update with stakeholders",
     "status": "done",
     "createdAt": "2025-08-17T17:15:00Z",
-    "start": "2025-08-17T17:30:00Z",
-    "end": "2025-08-17T19:00:00Z"
+    "start": "2026-11-17T17:30:00Z",
+    "end": "2026-11-17T19:00:00Z"
   },
 
   {
@@ -261,8 +261,8 @@
     "description": "works on API documentation generation\n-https://github.com/company/docs/issues/234",
     "status": "done",
     "createdAt": "2025-08-18T07:30:00Z",
-    "start": "2025-08-18T08:00:00Z",
-    "end": "2025-08-18T09:45:00Z"
+    "start": "2026-11-18T08:00:00Z",
+    "end": "2026-11-18T09:45:00Z"
   },
   {
     "id": "30",
@@ -270,8 +270,8 @@
     "description": "Configure Kubernetes deployment manifests\n-https://github.com/company/k8s/pull/567",
     "status": "done",
     "createdAt": "2025-08-18T09:30:00Z",
-    "start": "2025-08-18T09:45:00Z",
-    "end": "2025-08-18T11:30:00Z"
+    "start": "2026-11-18T09:45:00Z",
+    "end": "2026-11-18T11:30:00Z"
   },
   {
     "id": "31",
@@ -279,8 +279,8 @@
     "description": "research and found issue with cross-browser compatibility",
     "status": "done",
     "createdAt": "2025-08-18T11:15:00Z",
-    "start": "2025-08-18T11:30:00Z",
-    "end": "2025-08-18T13:15:00Z"
+    "start": "2026-11-18T11:30:00Z",
+    "end": "2026-11-18T13:15:00Z"
   },
   {
     "id": "32",
@@ -288,8 +288,8 @@
     "description": "Advanced TypeScript patterns workshop",
     "status": "done",
     "createdAt": "2025-08-18T13:00:00Z",
-    "start": "2025-08-18T13:15:00Z",
-    "end": "2025-08-18T14:15:00Z"
+    "start": "2026-11-18T13:15:00Z",
+    "end": "2026-11-18T14:15:00Z"
   },
   {
     "id": "33",
@@ -297,8 +297,8 @@
     "description": "Integrate Sentry for better error monitoring\n-https://github.com/company/monitoring/issues/890",
     "status": "done",
     "createdAt": "2025-08-18T14:00:00Z",
-    "start": "2025-08-18T14:15:00Z",
-    "end": "2025-08-18T16:00:00Z"
+    "start": "2026-11-18T14:15:00Z",
+    "end": "2026-11-18T16:00:00Z"
   },
   {
     "id": "34",
@@ -306,8 +306,8 @@
     "description": "- integration testing\n- performance profiling\n- deployment verification",
     "status": "done",
     "createdAt": "2025-08-18T15:45:00Z",
-    "start": "2025-08-18T16:00:00Z",
-    "end": "2025-08-18T17:45:00Z"
+    "start": "2026-11-18T16:00:00Z",
+    "end": "2026-11-18T17:45:00Z"
   },
   {
     "id": "35",
@@ -315,8 +315,8 @@
     "description": "Team code review and knowledge sharing",
     "status": "done",
     "createdAt": "2025-08-18T17:30:00Z",
-    "start": "2025-08-18T17:45:00Z",
-    "end": "2025-08-18T19:00:00Z"
+    "start": "2026-11-18T17:45:00Z",
+    "end": "2026-11-18T19:00:00Z"
   },
 
   {
@@ -325,8 +325,8 @@
     "description": "Implement scheduled database backups\n-https://github.com/company/backup/pull/345",
     "status": "in-progress",
     "createdAt": "2025-08-21T07:30:00Z",
-    "start": "2025-08-21T08:00:00Z",
-    "end": "2025-08-21T09:30:00Z"
+    "start": "2026-11-21T08:00:00Z",
+    "end": "2026-11-21T09:30:00Z"
   },
   {
     "id": "37",
@@ -334,8 +334,8 @@
     "description": "works on real-time chat feature\n-https://github.com/company/chat/issues/456",
     "status": "in-progress",
     "createdAt": "2025-08-21T09:15:00Z",
-    "start": "2025-08-21T09:30:00Z",
-    "end": "2025-08-21T11:15:00Z"
+    "start": "2026-11-21T09:30:00Z",
+    "end": "2026-11-21T11:15:00Z"
   },
   {
     "id": "38",
@@ -343,8 +343,8 @@
     "description": "Daily team synchronization meeting",
     "status": "in-progress",
     "createdAt": "2025-08-21T11:00:00Z",
-    "start": "2025-08-21T11:15:00Z",
-    "end": "2025-08-21T11:30:00Z"
+    "start": "2026-11-21T11:15:00Z",
+    "end": "2026-11-21T11:30:00Z"
   },
   {
     "id": "39",
@@ -352,8 +352,8 @@
     "description": "research and found issue with memory optimization in React components",
     "status": "in-progress",
     "createdAt": "2025-08-21T11:15:00Z",
-    "start": "2025-08-21T11:30:00Z",
-    "end": "2025-08-21T13:15:00Z"
+    "start": "2026-11-21T11:30:00Z",
+    "end": "2026-11-21T13:15:00Z"
   },
   {
     "id": "40",
@@ -361,8 +361,8 @@
     "description": "Build interactive charts and metrics visualization\n-https://github.com/company/analytics/pull/678",
     "status": "in-progress",
     "createdAt": "2025-08-21T13:00:00Z",
-    "start": "2025-08-21T13:15:00Z",
-    "end": "2025-08-21T15:00:00Z"
+    "start": "2026-11-21T13:15:00Z",
+    "end": "2026-11-21T15:00:00Z"
   },
   {
     "id": "41",
@@ -370,8 +370,8 @@
     "description": "Quarterly system architecture review meeting",
     "status": "pending",
     "createdAt": "2025-08-21T14:45:00Z",
-    "start": "2025-08-21T15:00:00Z",
-    "end": "2025-08-21T16:00:00Z"
+    "start": "2026-11-21T15:00:00Z",
+    "end": "2026-11-21T16:00:00Z"
   },
   {
     "id": "42",
@@ -379,8 +379,8 @@
     "description": "- feature flag implementation\n- A/B testing setup\n- metrics collection",
     "status": "pending",
     "createdAt": "2025-08-21T15:45:00Z",
-    "start": "2025-08-21T16:00:00Z",
-    "end": "2025-08-21T19:00:00Z"
+    "start": "2026-11-21T16:00:00Z",
+    "end": "2026-11-21T19:00:00Z"
   },
 
   {
@@ -389,8 +389,8 @@
     "description": "works on GraphQL schema optimization\n-https://github.com/company/graphql/issues/789",
     "status": "pending",
     "createdAt": "2025-08-22T07:30:00Z",
-    "start": "2025-08-22T08:00:00Z",
-    "end": "2025-08-22T09:45:00Z"
+    "start": "2026-11-22T08:00:00Z",
+    "end": "2026-11-22T09:45:00Z"
   },
   {
     "id": "44",
@@ -398,8 +398,8 @@
     "description": "Implement offline support and push notifications\n-https://github.com/company/pwa/pull/123",
     "status": "pending",
     "createdAt": "2025-08-22T09:30:00Z",
-    "start": "2025-08-22T09:45:00Z",
-    "end": "2025-08-22T11:30:00Z"
+    "start": "2026-11-22T09:45:00Z",
+    "end": "2026-11-22T11:30:00Z"
   },
   {
     "id": "45",
@@ -407,8 +407,8 @@
     "description": "UI/UX design review with design team",
     "status": "pending",
     "createdAt": "2025-08-22T11:15:00Z",
-    "start": "2025-08-22T11:30:00Z",
-    "end": "2025-08-22T12:30:00Z"
+    "start": "2026-11-22T11:30:00Z",
+    "end": "2026-11-22T12:30:00Z"
   },
   {
     "id": "46",
@@ -416,8 +416,8 @@
     "description": "research and found issue with serverless function cold starts",
     "status": "pending",
     "createdAt": "2025-08-22T12:15:00Z",
-    "start": "2025-08-22T12:30:00Z",
-    "end": "2025-08-22T14:15:00Z"
+    "start": "2026-11-22T12:30:00Z",
+    "end": "2026-11-22T14:15:00Z"
   },
   {
     "id": "47",
@@ -425,8 +425,8 @@
     "description": "Integrate recommendation engine into main application\n-https://github.com/company/ml/issues/456",
     "status": "pending",
     "createdAt": "2025-08-22T14:00:00Z",
-    "start": "2025-08-22T14:15:00Z",
-    "end": "2025-08-22T16:00:00Z"
+    "start": "2026-11-22T14:15:00Z",
+    "end": "2026-11-22T16:00:00Z"
   },
   {
     "id": "48",
@@ -434,8 +434,8 @@
     "description": "- infrastructure as code\n- terraform configuration\n- cloud resource optimization",
     "status": "pending",
     "createdAt": "2025-08-22T15:45:00Z",
-    "start": "2025-08-22T16:00:00Z",
-    "end": "2025-08-22T17:45:00Z"
+    "start": "2026-11-22T16:00:00Z",
+    "end": "2026-11-22T17:45:00Z"
   },
   {
     "id": "49",
@@ -443,8 +443,8 @@
     "description": "Sprint retrospective and planning for next iteration",
     "status": "pending",
     "createdAt": "2025-08-22T17:30:00Z",
-    "start": "2025-08-22T17:45:00Z",
-    "end": "2025-08-22T19:00:00Z"
+    "start": "2026-11-22T17:45:00Z",
+    "end": "2026-11-22T19:00:00Z"
   },
 
   {
@@ -453,8 +453,8 @@
     "description": "Explore Web3 authentication and smart contracts\n-https://github.com/company/web3/issues/234",
     "status": "pending",
     "createdAt": "2025-08-23T07:30:00Z",
-    "start": "2025-08-23T08:00:00Z",
-    "end": "2025-08-23T09:30:00Z"
+    "start": "2026-11-23T08:00:00Z",
+    "end": "2026-11-23T09:30:00Z"
   },
   {
     "id": "51",
@@ -462,8 +462,8 @@
     "description": "works on advanced caching strategies\n-https://github.com/company/cache/pull/567",
     "status": "pending",
     "createdAt": "2025-08-23T09:15:00Z",
-    "start": "2025-08-23T09:30:00Z",
-    "end": "2025-08-23T11:15:00Z"
+    "start": "2026-11-23T09:30:00Z",
+    "end": "2026-11-23T11:15:00Z"
   },
   {
     "id": "52",
@@ -471,8 +471,8 @@
     "description": "Weekly English speaking practice session",
     "status": "pending",
     "createdAt": "2025-08-23T11:00:00Z",
-    "start": "2025-08-23T11:15:00Z",
-    "end": "2025-08-23T12:15:00Z"
+    "start": "2026-11-23T11:15:00Z",
+    "end": "2026-11-23T12:15:00Z"
   },
   {
     "id": "53",
@@ -480,8 +480,8 @@
     "description": "research and found issue with edge case handling in payment flow",
     "status": "pending",
     "createdAt": "2025-08-23T12:00:00Z",
-    "start": "2025-08-23T12:15:00Z",
-    "end": "2025-08-23T14:00:00Z"
+    "start": "2026-11-23T12:15:00Z",
+    "end": "2026-11-23T14:00:00Z"
   },
   {
     "id": "54",
@@ -489,8 +489,8 @@
     "description": "Design tenant isolation and data segregation\n-https://github.com/company/tenant/issues/890",
     "status": "pending",
     "createdAt": "2025-08-23T13:45:00Z",
-    "start": "2025-08-23T14:00:00Z",
-    "end": "2025-08-23T15:45:00Z"
+    "start": "2026-11-23T14:00:00Z",
+    "end": "2026-11-23T15:45:00Z"
   },
   {
     "id": "55",
@@ -498,8 +498,8 @@
     "description": "- end-to-end testing automation\n- visual regression testing\n- cross-platform compatibility",
     "status": "pending",
     "createdAt": "2025-08-23T15:30:00Z",
-    "start": "2025-08-23T15:45:00Z",
-    "end": "2025-08-23T17:30:00Z"
+    "start": "2026-11-23T15:45:00Z",
+    "end": "2026-11-23T17:30:00Z"
   },
   {
     "id": "56",
@@ -507,7 +507,7 @@
     "description": "Brainstorming session for next quarter initiatives",
     "status": "pending",
     "createdAt": "2025-08-23T17:15:00Z",
-    "start": "2025-08-23T17:30:00Z",
-    "end": "2025-08-23T19:00:00Z"
+    "start": "2026-11-23T17:30:00Z",
+    "end": "2026-11-23T19:00:00Z"
   }
 ]

@@ -6,8 +6,8 @@ export const mockTasks: ITrackedTask[] = [
     description: "Install Node.js, VS Code extensions, and configure Git settings",
     status: "done",
     createdAt: "2025-08-01T08:00:00Z",
-    start: "2025-08-01T08:30:00Z",
-    end: "2025-08-01T10:15:00Z",
+    start: "2026-11-01T08:30:00Z",
+    end: "2026-11-01T10:15:00Z",
   },
   {
     id: "2",
@@ -16,8 +16,8 @@ export const mockTasks: ITrackedTask[] = [
       "Read through the PRD and technical specifications\nIdentify potential challenges and dependencies\nCreate initial task breakdown",
     status: "done",
     createdAt: "2025-08-01T10:30:00Z",
-    start: "2025-08-01T10:45:00Z",
-    end: "2025-08-01T12:00:00Z",
+    start: "2026-11-01T10:45:00Z",
+    end: "2026-11-01T12:00:00Z",
   },
   {
     id: "3",
@@ -25,8 +25,8 @@ export const mockTasks: ITrackedTask[] = [
     description: "Design tables for users, tasks, and settings",
     status: "done",
     createdAt: "2025-08-01T13:00:00Z",
-    start: "2025-08-01T13:15:00Z",
-    end: "2025-08-01T14:30:00Z",
+    start: "2026-11-01T13:15:00Z",
+    end: "2026-11-01T14:30:00Z",
   },
   {
     id: "4",
@@ -35,8 +35,8 @@ export const mockTasks: ITrackedTask[] = [
       "Define REST API structure and authentication flow\nDocument request/response formats",
     status: "done",
     createdAt: "2025-08-01T15:00:00Z",
-    start: "2025-08-01T15:15:00Z",
-    end: "2025-08-01T16:45:00Z",
+    start: "2026-11-01T15:15:00Z",
+    end: "2026-11-01T16:45:00Z",
   },
   {
     id: "5",
@@ -44,8 +44,8 @@ export const mockTasks: ITrackedTask[] = [
     description: "Daily sync with development team",
     status: "done",
     createdAt: "2025-08-01T16:45:00Z",
-    start: "2025-08-01T17:00:00Z",
-    end: "2025-08-01T17:30:00Z",
+    start: "2026-11-01T17:00:00Z",
+    end: "2026-11-01T17:30:00Z",
   },
 
   // July 2, 2025
@@ -56,8 +56,8 @@ export const mockTasks: ITrackedTask[] = [
       "Add JWT-based login and registration functionality\nInclude password hashing and validation\nSet up middleware for protected routes",
     status: "done",
     createdAt: "2025-08-02T08:00:00Z",
-    start: "2025-08-02T08:30:00Z",
-    end: "2025-08-02T11:00:00Z",
+    start: "2026-11-02T08:30:00Z",
+    end: "2026-11-02T11:00:00Z",
   },
   {
     id: "7",
@@ -65,8 +65,8 @@ export const mockTasks: ITrackedTask[] = [
     description: "Design mockups for the main dashboard interface",
     status: "done",
     createdAt: "2025-08-02T11:15:00Z",
-    start: "2025-08-02T11:30:00Z",
-    end: "2025-08-02T12:45:00Z",
+    start: "2026-11-02T11:30:00Z",
+    end: "2026-11-02T12:45:00Z",
   },
   {
     id: "8",
@@ -75,8 +75,8 @@ export const mockTasks: ITrackedTask[] = [
       "Resolve issue with mobile menu not closing properly\nTest across different screen sizes",
     status: "done",
     createdAt: "2025-08-02T13:30:00Z",
-    start: "2025-08-02T13:45:00Z",
-    end: "2025-08-02T15:00:00Z",
+    start: "2026-11-02T13:45:00Z",
+    end: "2026-11-02T15:00:00Z",
   },
   {
     id: "9",
@@ -84,8 +84,8 @@ export const mockTasks: ITrackedTask[] = [
     description: "Create comprehensive test coverage for authentication functions",
     status: "done",
     createdAt: "2025-08-02T15:15:00Z",
-    start: "2025-08-02T15:30:00Z",
-    end: "2025-08-02T16:45:00Z",
+    start: "2026-11-02T15:30:00Z",
+    end: "2026-11-02T16:45:00Z",
   },
   {
     id: "10",
@@ -94,8 +94,8 @@ export const mockTasks: ITrackedTask[] = [
       "Review pull requests from team members\nProvide feedback and approve merge requests",
     status: "done",
     createdAt: "2025-08-02T17:00:00Z",
-    start: "2025-08-02T17:15:00Z",
-    end: "2025-08-02T18:00:00Z",
+    start: "2026-11-02T17:15:00Z",
+    end: "2026-11-02T18:00:00Z",
   },
 
   // July 3, 2025
@@ -106,8 +106,8 @@ export const mockTasks: ITrackedTask[] = [
       "Improve performance of user dashboard queries\nAdd proper indexing and reduce N+1 problems\nBenchmark before and after performance",
     status: "done",
     createdAt: "2025-08-03T08:00:00Z",
-    start: "2025-08-03T08:30:00Z",
-    end: "2025-08-03T10:30:00Z",
+    start: "2026-11-03T08:30:00Z",
+    end: "2026-11-03T10:30:00Z",
   },
   {
     id: "12",
@@ -115,8 +115,8 @@ export const mockTasks: ITrackedTask[] = [
     description: "Add Swagger documentation for new endpoints",
     status: "done",
     createdAt: "2025-08-03T10:45:00Z",
-    start: "2025-08-03T11:00:00Z",
-    end: "2025-08-03T12:15:00Z",
+    start: "2026-11-03T11:00:00Z",
+    end: "2026-11-03T12:15:00Z",
   },
   {
     id: "13",
@@ -125,8 +125,8 @@ export const mockTasks: ITrackedTask[] = [
       "Configure GitHub Actions for automated testing and deployment\nSet up staging and production environments",
     status: "done",
     createdAt: "2025-08-03T13:00:00Z",
-    start: "2025-08-03T13:15:00Z",
-    end: "2025-08-03T15:30:00Z",
+    start: "2026-11-03T13:15:00Z",
+    end: "2026-11-03T15:30:00Z",
   },
   {
     id: "14",
@@ -134,8 +134,8 @@ export const mockTasks: ITrackedTask[] = [
     description: "Add theme toggle functionality and CSS variables",
     status: "done",
     createdAt: "2025-08-03T15:45:00Z",
-    start: "2025-08-03T16:00:00Z",
-    end: "2025-08-03T17:15:00Z",
+    start: "2026-11-03T16:00:00Z",
+    end: "2026-11-03T17:15:00Z",
   },
   {
     id: "15",
@@ -143,8 +143,8 @@ export const mockTasks: ITrackedTask[] = [
     description: "Weekly retrospective to discuss what went well and areas for improvement",
     status: "done",
     createdAt: "2025-08-03T17:30:00Z",
-    start: "2025-08-03T17:45:00Z",
-    end: "2025-08-03T18:30:00Z",
+    start: "2026-11-03T17:45:00Z",
+    end: "2026-11-03T18:30:00Z",
   },
 
   // July 4, 2025 (Independence Day - Holiday)
@@ -154,8 +154,8 @@ export const mockTasks: ITrackedTask[] = [
     description: "Explore React Server Components and their potential benefits",
     status: "done",
     createdAt: "2025-08-04T10:00:00Z",
-    start: "2025-08-04T10:30:00Z",
-    end: "2025-08-04T12:00:00Z",
+    start: "2026-11-04T10:30:00Z",
+    end: "2026-11-04T12:00:00Z",
   },
   {
     id: "17",
@@ -163,8 +163,8 @@ export const mockTasks: ITrackedTask[] = [
     description: "Plan architecture for side project\nCreate repository and initial setup",
     status: "done",
     createdAt: "2025-08-04T14:00:00Z",
-    start: "2025-08-04T14:30:00Z",
-    end: "2025-08-04T16:00:00Z",
+    start: "2026-11-04T14:30:00Z",
+    end: "2026-11-04T16:00:00Z",
   },
   {
     id: "18",
@@ -172,8 +172,8 @@ export const mockTasks: ITrackedTask[] = [
     description: "Catch up on industry blogs and newsletters",
     status: "done",
     createdAt: "2025-08-04T16:15:00Z",
-    start: "2025-08-04T16:30:00Z",
-    end: "2025-08-04T17:30:00Z",
+    start: "2026-11-04T16:30:00Z",
+    end: "2026-11-04T17:30:00Z",
   },
   {
     id: "19",
@@ -181,8 +181,8 @@ export const mockTasks: ITrackedTask[] = [
     description: "Add recent projects and update resume",
     status: "done",
     createdAt: "2025-08-04T18:00:00Z",
-    start: "2025-08-04T18:15:00Z",
-    end: "2025-08-04T19:30:00Z",
+    start: "2026-11-04T18:15:00Z",
+    end: "2026-11-04T19:30:00Z",
   },
   {
     id: "20",
@@ -191,8 +191,8 @@ export const mockTasks: ITrackedTask[] = [
       "Study dependency injection and factory patterns\nImplement examples in TypeScript",
     status: "done",
     createdAt: "2025-08-04T20:00:00Z",
-    start: "2025-08-04T20:15:00Z",
-    end: "2025-08-04T21:30:00Z",
+    start: "2026-11-04T20:15:00Z",
+    end: "2026-11-04T21:30:00Z",
   },
 
   // July 5, 2025
@@ -203,8 +203,8 @@ export const mockTasks: ITrackedTask[] = [
       "Add drag-and-drop file upload with progress indicators\nSupport multiple file types and size validation",
     status: "done",
     createdAt: "2025-08-05T08:00:00Z",
-    start: "2025-08-05T08:30:00Z",
-    end: "2025-08-05T11:00:00Z",
+    start: "2026-11-05T08:30:00Z",
+    end: "2026-11-05T11:00:00Z",
   },
   {
     id: "22",
@@ -212,8 +212,8 @@ export const mockTasks: ITrackedTask[] = [
     description: "Build mobile-first navigation component",
     status: "done",
     createdAt: "2025-08-05T11:15:00Z",
-    start: "2025-08-05T11:30:00Z",
-    end: "2025-08-05T13:00:00Z",
+    start: "2026-11-05T11:30:00Z",
+    end: "2026-11-05T13:00:00Z",
   },
   {
     id: "23",
@@ -222,8 +222,8 @@ export const mockTasks: ITrackedTask[] = [
       "Test and fix issues in Safari and Firefox\nEnsure consistent styling across browsers",
     status: "done",
     createdAt: "2025-08-05T14:00:00Z",
-    start: "2025-08-05T14:15:00Z",
-    end: "2025-08-05T15:45:00Z",
+    start: "2026-11-05T14:15:00Z",
+    end: "2026-11-05T15:45:00Z",
   },
   {
     id: "24",
@@ -231,8 +231,8 @@ export const mockTasks: ITrackedTask[] = [
     description: "Implement lazy loading and code splitting",
     status: "done",
     createdAt: "2025-08-05T16:00:00Z",
-    start: "2025-08-05T16:15:00Z",
-    end: "2025-08-05T17:30:00Z",
+    start: "2026-11-05T16:15:00Z",
+    end: "2026-11-05T17:30:00Z",
   },
   {
     id: "25",
@@ -241,8 +241,8 @@ export const mockTasks: ITrackedTask[] = [
       "Review code for potential security vulnerabilities\nUpdate dependencies with known issues",
     status: "done",
     createdAt: "2025-08-05T17:45:00Z",
-    start: "2025-08-05T18:00:00Z",
-    end: "2025-08-05T19:15:00Z",
+    start: "2026-11-05T18:00:00Z",
+    end: "2026-11-05T19:15:00Z",
   },
 
   // July 6, 2025
@@ -253,8 +253,8 @@ export const mockTasks: ITrackedTask[] = [
       "Conduct usability testing with 5 participants\nDocument feedback and identify pain points",
     status: "done",
     createdAt: "2025-08-06T09:00:00Z",
-    start: "2025-08-06T09:30:00Z",
-    end: "2025-08-06T12:00:00Z",
+    start: "2026-11-06T09:30:00Z",
+    end: "2026-11-06T12:00:00Z",
   },
   {
     id: "27",
@@ -262,8 +262,8 @@ export const mockTasks: ITrackedTask[] = [
     description: "Integrate Google Analytics and track user interactions",
     status: "done",
     createdAt: "2025-08-06T13:00:00Z",
-    start: "2025-08-06T13:15:00Z",
-    end: "2025-08-06T14:30:00Z",
+    start: "2026-11-06T13:15:00Z",
+    end: "2026-11-06T14:30:00Z",
   },
   {
     id: "28",
@@ -271,8 +271,8 @@ export const mockTasks: ITrackedTask[] = [
     description: "Add comprehensive error boundaries and user-friendly error messages",
     status: "done",
     createdAt: "2025-08-06T14:45:00Z",
-    start: "2025-08-06T15:00:00Z",
-    end: "2025-08-06T16:15:00Z",
+    start: "2026-11-06T15:00:00Z",
+    end: "2026-11-06T16:15:00Z",
   },
   {
     id: "29",
@@ -281,8 +281,8 @@ export const mockTasks: ITrackedTask[] = [
       "Ensure WCAG compliance and screen reader compatibility\nAdd proper ARIA labels and keyboard navigation",
     status: "done",
     createdAt: "2025-08-06T16:30:00Z",
-    start: "2025-08-06T16:45:00Z",
-    end: "2025-08-06T18:00:00Z",
+    start: "2026-11-06T16:45:00Z",
+    end: "2026-11-06T18:00:00Z",
   },
   {
     id: "30",
@@ -290,8 +290,8 @@ export const mockTasks: ITrackedTask[] = [
     description: "Update README and developer documentation",
     status: "done",
     createdAt: "2025-08-06T18:15:00Z",
-    start: "2025-08-06T18:30:00Z",
-    end: "2025-08-06T19:30:00Z",
+    start: "2026-11-06T18:30:00Z",
+    end: "2026-11-06T19:30:00Z",
   },
 
   // July 7, 2025
@@ -302,8 +302,8 @@ export const mockTasks: ITrackedTask[] = [
       "Create wireframes and high-fidelity mockups\nFocus on conversion optimization and clear value proposition",
     status: "done",
     createdAt: "2025-08-07T08:00:00Z",
-    start: "2025-08-07T08:30:00Z",
-    end: "2025-08-07T11:00:00Z",
+    start: "2026-11-07T08:30:00Z",
+    end: "2026-11-07T11:00:00Z",
   },
   {
     id: "32",
@@ -311,8 +311,8 @@ export const mockTasks: ITrackedTask[] = [
     description: "Implement automated email notifications for important events",
     status: "done",
     createdAt: "2025-08-07T11:15:00Z",
-    start: "2025-08-07T11:30:00Z",
-    end: "2025-08-07T13:00:00Z",
+    start: "2026-11-07T11:30:00Z",
+    end: "2026-11-07T13:00:00Z",
   },
   {
     id: "33",
@@ -320,8 +320,8 @@ export const mockTasks: ITrackedTask[] = [
     description: "Create React Native prototype for mobile companion app",
     status: "done",
     createdAt: "2025-08-07T14:00:00Z",
-    start: "2025-08-07T14:15:00Z",
-    end: "2025-08-07T16:30:00Z",
+    start: "2026-11-07T14:15:00Z",
+    end: "2026-11-07T16:30:00Z",
   },
   {
     id: "34",
@@ -329,8 +329,8 @@ export const mockTasks: ITrackedTask[] = [
     description: "Implement automated backup system with rotation policies",
     status: "done",
     createdAt: "2025-08-07T16:45:00Z",
-    start: "2025-08-07T17:00:00Z",
-    end: "2025-08-07T18:15:00Z",
+    start: "2026-11-07T17:00:00Z",
+    end: "2026-11-07T18:15:00Z",
   },
   {
     id: "35",
@@ -338,8 +338,8 @@ export const mockTasks: ITrackedTask[] = [
     description: "Prepare demo and presentation materials",
     status: "done",
     createdAt: "2025-08-07T18:30:00Z",
-    start: "2025-08-07T18:45:00Z",
-    end: "2025-08-07T19:30:00Z",
+    start: "2026-11-07T18:45:00Z",
+    end: "2026-11-07T19:30:00Z",
   },
 
   // July 8, 2025
@@ -349,8 +349,8 @@ export const mockTasks: ITrackedTask[] = [
     description: "Implement rate limiting to prevent abuse\nAdd proper headers and error responses",
     status: "done",
     createdAt: "2025-08-08T08:00:00Z",
-    start: "2025-08-08T08:30:00Z",
-    end: "2025-08-08T10:15:00Z",
+    start: "2026-11-08T08:30:00Z",
+    end: "2026-11-08T10:15:00Z",
   },
   {
     id: "37",
@@ -358,8 +358,8 @@ export const mockTasks: ITrackedTask[] = [
     description: "Add full-text search with filters and sorting options",
     status: "done",
     createdAt: "2025-08-08T10:30:00Z",
-    start: "2025-08-08T10:45:00Z",
-    end: "2025-08-08T12:30:00Z",
+    start: "2026-11-08T10:45:00Z",
+    end: "2026-11-08T12:30:00Z",
   },
   {
     id: "38",
@@ -368,8 +368,8 @@ export const mockTasks: ITrackedTask[] = [
       "Create reusable charts and graphs using Chart.js\nImplement responsive design for mobile devices",
     status: "done",
     createdAt: "2025-08-08T13:30:00Z",
-    start: "2025-08-08T13:45:00Z",
-    end: "2025-08-08T15:30:00Z",
+    start: "2026-11-08T13:45:00Z",
+    end: "2026-11-08T15:30:00Z",
   },
   {
     id: "39",
@@ -377,8 +377,8 @@ export const mockTasks: ITrackedTask[] = [
     description: "Implement Redis caching for frequently accessed data",
     status: "done",
     createdAt: "2025-08-08T15:45:00Z",
-    start: "2025-08-08T16:00:00Z",
-    end: "2025-08-08T17:15:00Z",
+    start: "2026-11-08T16:00:00Z",
+    end: "2026-11-08T17:15:00Z",
   },
   {
     id: "40",
@@ -386,8 +386,8 @@ export const mockTasks: ITrackedTask[] = [
     description: "Configure application monitoring with alerts and dashboards",
     status: "done",
     createdAt: "2025-08-08T17:30:00Z",
-    start: "2025-08-08T17:45:00Z",
-    end: "2025-08-08T19:00:00Z",
+    start: "2026-11-08T17:45:00Z",
+    end: "2026-11-08T19:00:00Z",
   },
 
   // July 9, 2025
@@ -397,8 +397,8 @@ export const mockTasks: ITrackedTask[] = [
     description: "Add real-time features using WebSocket connections",
     status: "done",
     createdAt: "2025-08-09T08:00:00Z",
-    start: "2025-08-09T08:30:00Z",
-    end: "2025-08-09T10:45:00Z",
+    start: "2026-11-09T08:30:00Z",
+    end: "2026-11-09T10:45:00Z",
   },
   {
     id: "42",
@@ -407,8 +407,8 @@ export const mockTasks: ITrackedTask[] = [
       "Implement i18n support for multiple languages\nExtract all text strings to translation files",
     status: "done",
     createdAt: "2025-08-09T11:00:00Z",
-    start: "2025-08-09T11:15:00Z",
-    end: "2025-08-09T13:00:00Z",
+    start: "2026-11-09T11:15:00Z",
+    end: "2026-11-09T13:00:00Z",
   },
   {
     id: "43",
@@ -416,8 +416,8 @@ export const mockTasks: ITrackedTask[] = [
     description: "Perform stress testing to identify bottlenecks",
     status: "done",
     createdAt: "2025-08-09T14:00:00Z",
-    start: "2025-08-09T14:15:00Z",
-    end: "2025-08-09T15:30:00Z",
+    start: "2026-11-09T14:15:00Z",
+    end: "2026-11-09T15:30:00Z",
   },
   {
     id: "44",
@@ -425,8 +425,8 @@ export const mockTasks: ITrackedTask[] = [
     description: "Integrate Stripe payment processing\nHandle webhooks and subscription management",
     status: "done",
     createdAt: "2025-08-09T15:45:00Z",
-    start: "2025-08-09T16:00:00Z",
-    end: "2025-08-09T18:00:00Z",
+    start: "2026-11-09T16:00:00Z",
+    end: "2026-11-09T18:00:00Z",
   },
   {
     id: "45",
@@ -434,8 +434,8 @@ export const mockTasks: ITrackedTask[] = [
     description: "Design and implement guided tour for new users",
     status: "done",
     createdAt: "2025-08-09T18:15:00Z",
-    start: "2025-08-09T18:30:00Z",
-    end: "2025-08-09T19:45:00Z",
+    start: "2026-11-09T18:30:00Z",
+    end: "2026-11-09T19:45:00Z",
   },
 
   // July 10, 2025
@@ -445,7 +445,7 @@ export const mockTasks: ITrackedTask[] = [
     description: "Upgrade to latest versions of packages and resolve breaking changes",
     status: "in-progress",
     createdAt: "2025-08-10T08:00:00Z",
-    start: "2025-08-10T08:30:00Z",
+    start: "2026-11-10T08:30:00Z",
     end: null,
   },
   {
@@ -455,8 +455,8 @@ export const mockTasks: ITrackedTask[] = [
       "Build CMS interface for non-technical users\nInclude WYSIWYG editor and media management",
     status: "pending",
     createdAt: "2025-08-10T09:00:00Z",
-    start: "2025-08-10T09:15:00Z",
-    end: "2025-08-10T11:00:00Z",
+    start: "2026-11-10T09:15:00Z",
+    end: "2026-11-10T11:00:00Z",
   },
   {
     id: "48",
@@ -464,8 +464,8 @@ export const mockTasks: ITrackedTask[] = [
     description: "Add sharing buttons and social login options",
     status: "pending",
     createdAt: "2025-08-10T10:00:00Z",
-    start: "2025-08-10T10:30:00Z",
-    end: "2025-08-10T12:15:00Z",
+    start: "2026-11-10T10:30:00Z",
+    end: "2026-11-10T12:15:00Z",
   },
   {
     id: "49",
@@ -474,8 +474,8 @@ export const mockTasks: ITrackedTask[] = [
       "Implement complex filtering with multiple criteria\nAdd save filter presets functionality",
     status: "pending",
     createdAt: "2025-08-10T11:00:00Z",
-    start: "2025-08-10T11:45:00Z",
-    end: "2025-08-10T13:30:00Z",
+    start: "2026-11-10T11:45:00Z",
+    end: "2026-11-10T13:30:00Z",
   },
   {
     id: "50",
@@ -483,8 +483,8 @@ export const mockTasks: ITrackedTask[] = [
     description: "Plan and implement API versioning for backward compatibility",
     status: "pending",
     createdAt: "2025-08-10T12:00:00Z",
-    start: "2025-08-10T12:00:00Z",
-    end: "2025-08-10T13:15:00Z",
+    start: "2026-11-10T12:00:00Z",
+    end: "2026-11-10T13:15:00Z",
   },
 
   // July 11, 2025
@@ -494,8 +494,8 @@ export const mockTasks: ITrackedTask[] = [
     description: "Explore ML-powered recommendations and predictive features",
     status: "pending",
     createdAt: "2025-08-11T08:00:00Z",
-    start: "2025-08-11T08:30:00Z",
-    end: "2025-08-11T10:45:00Z",
+    start: "2026-11-11T08:30:00Z",
+    end: "2026-11-11T10:45:00Z",
   },
   {
     id: "52",
@@ -503,8 +503,8 @@ export const mockTasks: ITrackedTask[] = [
     description: "Implement GraphQL endpoint as alternative to REST\nCreate schema and resolvers",
     status: "pending",
     createdAt: "2025-08-11T09:00:00Z",
-    start: "2025-08-11T09:15:00Z",
-    end: "2025-08-11T11:00:00Z",
+    start: "2026-11-11T09:15:00Z",
+    end: "2026-11-11T11:00:00Z",
   },
   {
     id: "53",
@@ -512,8 +512,8 @@ export const mockTasks: ITrackedTask[] = [
     description: "Expand test coverage with integration and E2E tests",
     status: "pending",
     createdAt: "2025-08-11T10:00:00Z",
-    start: "2025-08-11T10:30:00Z",
-    end: "2025-08-11T12:15:00Z",
+    start: "2026-11-11T10:30:00Z",
+    end: "2026-11-11T12:15:00Z",
   },
   {
     id: "54",
@@ -522,8 +522,8 @@ export const mockTasks: ITrackedTask[] = [
       "Design service boundaries and communication patterns\nPlan migration strategy from monolith",
     status: "pending",
     createdAt: "2025-08-11T11:00:00Z",
-    start: "2025-08-11T11:45:00Z",
-    end: "2025-08-11T13:30:00Z",
+    start: "2026-11-11T11:45:00Z",
+    end: "2026-11-11T13:30:00Z",
   },
   {
     id: "55",
@@ -531,8 +531,8 @@ export const mockTasks: ITrackedTask[] = [
     description: "Create real-time performance metrics dashboard",
     status: "pending",
     createdAt: "2025-08-11T12:00:00Z",
-    start: "2025-08-11T12:15:00Z",
-    end: "2025-08-11T14:00:00Z",
+    start: "2026-11-11T12:15:00Z",
+    end: "2026-11-11T14:00:00Z",
   },
 
   // July 12, 2025
@@ -543,8 +543,8 @@ export const mockTasks: ITrackedTask[] = [
       "Refactor legacy code and improve maintainability\nAdd ESLint rules and Prettier configuration",
     status: "pending",
     createdAt: "2025-08-12T08:00:00Z",
-    start: "2025-08-12T08:30:00Z",
-    end: "2025-08-12T10:00:00Z",
+    start: "2026-11-12T08:30:00Z",
+    end: "2026-11-12T10:00:00Z",
   },
   {
     id: "57",
@@ -552,8 +552,8 @@ export const mockTasks: ITrackedTask[] = [
     description: "Implement role-based access control with granular permissions",
     status: "pending",
     createdAt: "2025-08-12T09:00:00Z",
-    start: "2025-08-12T09:45:00Z",
-    end: "2025-08-12T11:30:00Z",
+    start: "2026-11-12T09:45:00Z",
+    end: "2026-11-12T11:30:00Z",
   },
   {
     id: "58",
@@ -561,8 +561,8 @@ export const mockTasks: ITrackedTask[] = [
     description: "Add CSV, JSON, and PDF export options",
     status: "pending",
     createdAt: "2025-08-12T10:00:00Z",
-    start: "2025-08-12T10:15:00Z",
-    end: "2025-08-12T12:00:00Z",
+    start: "2026-11-12T10:15:00Z",
+    end: "2026-11-12T12:00:00Z",
   },
   {
     id: "59",
@@ -571,8 +571,8 @@ export const mockTasks: ITrackedTask[] = [
       "Connect with popular tools like Slack, Zapier, and Google Workspace\nCreate webhook system for external connections",
     status: "pending",
     createdAt: "2025-08-12T11:00:00Z",
-    start: "2025-08-12T11:30:00Z",
-    end: "2025-08-12T13:15:00Z",
+    start: "2026-11-12T11:30:00Z",
+    end: "2026-11-12T13:15:00Z",
   },
   {
     id: "60",
@@ -580,8 +580,8 @@ export const mockTasks: ITrackedTask[] = [
     description: "Comprehensive review of mobile user experience",
     status: "pending",
     createdAt: "2025-08-12T12:00:00Z",
-    start: "2025-08-12T12:30:00Z",
-    end: "2025-08-12T14:15:00Z",
+    start: "2026-11-12T12:30:00Z",
+    end: "2026-11-12T14:15:00Z",
   },
 
   // July 13, 2025
@@ -591,8 +591,8 @@ export const mockTasks: ITrackedTask[] = [
     description: "Test disaster recovery procedures and data restoration",
     status: "pending",
     createdAt: "2025-08-13T08:00:00Z",
-    start: "2025-08-13T08:45:00Z",
-    end: "2025-08-13T10:30:00Z",
+    start: "2026-11-13T08:45:00Z",
+    end: "2026-11-13T10:30:00Z",
   },
   {
     id: "62",
@@ -601,8 +601,8 @@ export const mockTasks: ITrackedTask[] = [
       "Improve search engine visibility with meta tags and structured data\nImplement server-side rendering for better crawling",
     status: "pending",
     createdAt: "2025-08-13T09:00:00Z",
-    start: "2025-08-13T09:30:00Z",
-    end: "2025-08-13T11:45:00Z",
+    start: "2026-11-13T09:30:00Z",
+    end: "2026-11-13T11:45:00Z",
   },
   {
     id: "63",
@@ -610,8 +610,8 @@ export const mockTasks: ITrackedTask[] = [
     description: "Implement feature toggles for controlled rollouts",
     status: "pending",
     createdAt: "2025-08-13T10:00:00Z",
-    start: "2025-08-13T10:15:00Z",
-    end: "2025-08-13T12:00:00Z",
+    start: "2026-11-13T10:15:00Z",
+    end: "2026-11-13T12:00:00Z",
   },
   {
     id: "64",
@@ -619,8 +619,8 @@ export const mockTasks: ITrackedTask[] = [
     description: "Create interactive API documentation with examples",
     status: "pending",
     createdAt: "2025-08-13T11:00:00Z",
-    start: "2025-08-13T11:15:00Z",
-    end: "2025-08-13T13:00:00Z",
+    start: "2026-11-13T11:15:00Z",
+    end: "2026-11-13T13:00:00Z",
   },
   {
     id: "65",
@@ -628,8 +628,8 @@ export const mockTasks: ITrackedTask[] = [
     description: "Add in-app feedback collection and rating system",
     status: "pending",
     createdAt: "2025-08-13T12:00:00Z",
-    start: "2025-08-13T12:45:00Z",
-    end: "2025-08-13T14:30:00Z",
+    start: "2026-11-13T12:45:00Z",
+    end: "2026-11-13T14:30:00Z",
   },
 
   // July 14, 2025
@@ -640,8 +640,8 @@ export const mockTasks: ITrackedTask[] = [
       "Prepare for GDPR and SOC 2 compliance audits\nDocument security procedures and data handling",
     status: "pending",
     createdAt: "2025-08-14T08:00:00Z",
-    start: "2025-08-14T08:15:00Z",
-    end: "2025-08-14T10:00:00Z",
+    start: "2026-11-14T08:15:00Z",
+    end: "2026-11-14T10:00:00Z",
   },
   {
     id: "67",
@@ -649,8 +649,8 @@ export const mockTasks: ITrackedTask[] = [
     description: "Add PWA capabilities with offline support and push notifications",
     status: "pending",
     createdAt: "2025-08-14T09:00:00Z",
-    start: "2025-08-14T09:30:00Z",
-    end: "2025-08-14T11:15:00Z",
+    start: "2026-11-14T09:30:00Z",
+    end: "2026-11-14T11:15:00Z",
   },
   {
     id: "68",
@@ -658,8 +658,8 @@ export const mockTasks: ITrackedTask[] = [
     description: "Set up custom event tracking and user journey analysis",
     status: "pending",
     createdAt: "2025-08-14T10:00:00Z",
-    start: "2025-08-14T10:45:00Z",
-    end: "2025-08-14T12:30:00Z",
+    start: "2026-11-14T10:45:00Z",
+    end: "2026-11-14T12:30:00Z",
   },
   {
     id: "69",
@@ -667,8 +667,8 @@ export const mockTasks: ITrackedTask[] = [
     description: "Enhance CI/CD with blue-green deployments and rollback capabilities",
     status: "pending",
     createdAt: "2025-08-14T11:00:00Z",
-    start: "2025-08-14T11:30:00Z",
-    end: "2025-08-14T13:15:00Z",
+    start: "2026-11-14T11:30:00Z",
+    end: "2026-11-14T13:15:00Z",
   },
   {
     id: "70",
@@ -676,8 +676,8 @@ export const mockTasks: ITrackedTask[] = [
     description: "Identify and prioritize technical debt items for future sprints",
     status: "pending",
     createdAt: "2025-08-14T12:00:00Z",
-    start: "2025-08-14T12:15:00Z",
-    end: "2025-08-14T14:00:00Z",
+    start: "2026-11-14T12:15:00Z",
+    end: "2026-11-14T14:00:00Z",
   },
 
   // July 15, 2025
@@ -687,8 +687,8 @@ export const mockTasks: ITrackedTask[] = [
     description: "Develop AI-powered chatbot for common customer inquiries",
     status: "pending",
     createdAt: "2025-08-15T08:00:00Z",
-    start: "2025-08-15T08:30:00Z",
-    end: "2025-08-15T10:15:00Z",
+    start: "2026-11-15T08:30:00Z",
+    end: "2026-11-15T10:15:00Z",
   },
   {
     id: "72",
@@ -697,8 +697,8 @@ export const mockTasks: ITrackedTask[] = [
       "Implement faceted search with autocomplete and saved searches\nAdd search analytics and popular terms tracking",
     status: "pending",
     createdAt: "2025-08-15T09:00:00Z",
-    start: "2025-08-15T09:45:00Z",
-    end: "2025-08-15T11:30:00Z",
+    start: "2026-11-15T09:45:00Z",
+    end: "2026-11-15T11:30:00Z",
   },
   {
     id: "73",
@@ -706,8 +706,8 @@ export const mockTasks: ITrackedTask[] = [
     description: "Design and implement tenant isolation and resource management",
     status: "pending",
     createdAt: "2025-08-15T10:00:00Z",
-    start: "2025-08-15T10:15:00Z",
-    end: "2025-08-15T12:00:00Z",
+    start: "2026-11-15T10:15:00Z",
+    end: "2026-11-15T12:00:00Z",
   },
   {
     id: "74",
@@ -715,8 +715,8 @@ export const mockTasks: ITrackedTask[] = [
     description: "Add real-time editing and commenting capabilities",
     status: "pending",
     createdAt: "2025-08-15T11:00:00Z",
-    start: "2025-08-15T11:30:00Z",
-    end: "2025-08-15T13:15:00Z",
+    start: "2026-11-15T11:30:00Z",
+    end: "2026-11-15T13:15:00Z",
   },
   {
     id: "75",
@@ -724,8 +724,8 @@ export const mockTasks: ITrackedTask[] = [
     description: "Establish performance baselines and monitoring thresholds",
     status: "pending",
     createdAt: "2025-08-15T12:00:00Z",
-    start: "2025-08-15T12:45:00Z",
-    end: "2025-08-15T14:30:00Z",
+    start: "2026-11-15T12:45:00Z",
+    end: "2026-11-15T14:30:00Z",
   },
 
   // July 16, 2025
@@ -736,8 +736,8 @@ export const mockTasks: ITrackedTask[] = [
       "Conduct penetration testing and security code review\nImplement security headers and OWASP recommendations",
     status: "pending",
     createdAt: "2025-08-16T08:00:00Z",
-    start: "2025-08-16T08:15:00Z",
-    end: "2025-08-16T10:00:00Z",
+    start: "2026-11-16T08:15:00Z",
+    end: "2026-11-16T10:00:00Z",
   },
   {
     id: "77",
@@ -745,8 +745,8 @@ export const mockTasks: ITrackedTask[] = [
     description: "Implement CDN and optimize asset delivery",
     status: "pending",
     createdAt: "2025-08-16T09:00:00Z",
-    start: "2025-08-16T09:30:00Z",
-    end: "2025-08-16T11:15:00Z",
+    start: "2026-11-16T09:30:00Z",
+    end: "2026-11-16T11:15:00Z",
   },
   {
     id: "78",
@@ -754,8 +754,8 @@ export const mockTasks: ITrackedTask[] = [
     description: "Create customizable reports with scheduling and email delivery",
     status: "pending",
     createdAt: "2025-08-16T10:00:00Z",
-    start: "2025-08-16T10:45:00Z",
-    end: "2025-08-16T12:30:00Z",
+    start: "2026-11-16T10:45:00Z",
+    end: "2026-11-16T12:30:00Z",
   },
   {
     id: "79",
@@ -763,8 +763,8 @@ export const mockTasks: ITrackedTask[] = [
     description: "Set up API gateway for rate limiting, authentication, and routing",
     status: "pending",
     createdAt: "2025-08-16T11:00:00Z",
-    start: "2025-08-16T11:15:00Z",
-    end: "2025-08-16T13:00:00Z",
+    start: "2026-11-16T11:15:00Z",
+    end: "2026-11-16T13:00:00Z",
   },
   {
     id: "80",
@@ -772,8 +772,8 @@ export const mockTasks: ITrackedTask[] = [
     description: "Implement comprehensive audit trail for user actions",
     status: "pending",
     createdAt: "2025-08-16T12:00:00Z",
-    start: "2025-08-16T12:30:00Z",
-    end: "2025-08-16T14:15:00Z",
+    start: "2026-11-16T12:30:00Z",
+    end: "2026-11-16T14:15:00Z",
   },
 
   // July 17, 2025
@@ -783,8 +783,8 @@ export const mockTasks: ITrackedTask[] = [
     description: "Implement multi-level caching with cache invalidation strategies",
     status: "pending",
     createdAt: "2025-08-17T08:00:00Z",
-    start: "2025-08-17T08:30:00Z",
-    end: "2025-08-17T10:15:00Z",
+    start: "2026-11-17T08:30:00Z",
+    end: "2026-11-17T10:15:00Z",
   },
   {
     id: "82",
@@ -793,8 +793,8 @@ export const mockTasks: ITrackedTask[] = [
       "Plan native mobile app development roadmap\nEvaluate React Native vs native development approaches",
     status: "pending",
     createdAt: "2025-08-17T09:00:00Z",
-    start: "2025-08-17T09:45:00Z",
-    end: "2025-08-17T11:30:00Z",
+    start: "2026-11-17T09:45:00Z",
+    end: "2026-11-17T11:30:00Z",
   },
   {
     id: "83",
@@ -802,8 +802,8 @@ export const mockTasks: ITrackedTask[] = [
     description: "Optimize ETL processes and data transformation workflows",
     status: "pending",
     createdAt: "2025-08-17T10:00:00Z",
-    start: "2025-08-17T10:15:00Z",
-    end: "2025-08-17T12:00:00Z",
+    start: "2026-11-17T10:15:00Z",
+    end: "2026-11-17T12:00:00Z",
   },
   {
     id: "84",
@@ -811,8 +811,8 @@ export const mockTasks: ITrackedTask[] = [
     description: "Migrate from traditional hosting to Kubernetes orchestration",
     status: "pending",
     createdAt: "2025-08-17T11:00:00Z",
-    start: "2025-08-17T11:30:00Z",
-    end: "2025-08-17T13:15:00Z",
+    start: "2026-11-17T11:30:00Z",
+    end: "2026-11-17T13:15:00Z",
   },
   {
     id: "85",
@@ -820,8 +820,8 @@ export const mockTasks: ITrackedTask[] = [
     description: "Implement framework for running controlled experiments",
     status: "pending",
     createdAt: "2025-08-17T12:00:00Z",
-    start: "2025-08-17T12:45:00Z",
-    end: "2025-08-17T14:30:00Z",
+    start: "2026-11-17T12:45:00Z",
+    end: "2026-11-17T14:30:00Z",
   },
 
   // July 18, 2025
@@ -832,8 +832,8 @@ export const mockTasks: ITrackedTask[] = [
       "Implement behavioral user segmentation for personalized experiences\nCreate dynamic content delivery based on user segments",
     status: "pending",
     createdAt: "2025-08-18T08:00:00Z",
-    start: "2025-08-18T08:15:00Z",
-    end: "2025-08-18T10:00:00Z",
+    start: "2026-11-18T08:15:00Z",
+    end: "2026-11-18T10:00:00Z",
   },
   {
     id: "87",
@@ -841,8 +841,8 @@ export const mockTasks: ITrackedTask[] = [
     description: "Implement Terraform for infrastructure management",
     status: "pending",
     createdAt: "2025-08-18T09:00:00Z",
-    start: "2025-08-18T09:30:00Z",
-    end: "2025-08-18T11:15:00Z",
+    start: "2026-11-18T09:30:00Z",
+    end: "2026-11-18T11:15:00Z",
   },
   {
     id: "88",
@@ -850,8 +850,8 @@ export const mockTasks: ITrackedTask[] = [
     description: "Set up automated documentation generation from code comments",
     status: "pending",
     createdAt: "2025-08-18T10:00:00Z",
-    start: "2025-08-18T10:45:00Z",
-    end: "2025-08-18T12:30:00Z",
+    start: "2026-11-18T10:45:00Z",
+    end: "2026-11-18T12:30:00Z",
   },
   {
     id: "89",
@@ -859,8 +859,8 @@ export const mockTasks: ITrackedTask[] = [
     description: "Implement automated testing across different browsers and devices",
     status: "pending",
     createdAt: "2025-08-18T11:00:00Z",
-    start: "2025-08-18T11:15:00Z",
-    end: "2025-08-18T13:00:00Z",
+    start: "2026-11-18T11:15:00Z",
+    end: "2026-11-18T13:00:00Z",
   },
   {
     id: "90",
@@ -868,8 +868,8 @@ export const mockTasks: ITrackedTask[] = [
     description: "Organize technical presentation on recent learnings and best practices",
     status: "pending",
     createdAt: "2025-08-18T12:00:00Z",
-    start: "2025-08-18T12:30:00Z",
-    end: "2025-08-18T14:15:00Z",
+    start: "2026-11-18T12:30:00Z",
+    end: "2026-11-18T14:15:00Z",
   },
 
   // July 19, 2025
@@ -879,8 +879,8 @@ export const mockTasks: ITrackedTask[] = [
     description: "Plan for handling 10x user growth and traffic spikes",
     status: "pending",
     createdAt: "2025-08-19T08:00:00Z",
-    start: "2025-08-19T08:30:00Z",
-    end: "2025-08-19T10:15:00Z",
+    start: "2026-11-19T08:30:00Z",
+    end: "2026-11-19T10:15:00Z",
   },
   {
     id: "92",
@@ -889,8 +889,8 @@ export const mockTasks: ITrackedTask[] = [
       "Implement distributed tracing and application performance monitoring\nSet up alerting for critical business metrics",
     status: "pending",
     createdAt: "2025-08-19T09:00:00Z",
-    start: "2025-08-19T09:45:00Z",
-    end: "2025-08-19T11:30:00Z",
+    start: "2026-11-19T09:45:00Z",
+    end: "2026-11-19T11:30:00Z",
   },
   {
     id: "93",
@@ -898,8 +898,8 @@ export const mockTasks: ITrackedTask[] = [
     description: "Set up automated code quality checks and review assignments",
     status: "pending",
     createdAt: "2025-08-19T10:00:00Z",
-    start: "2025-08-19T10:15:00Z",
-    end: "2025-08-19T12:00:00Z",
+    start: "2026-11-19T10:15:00Z",
+    end: "2026-11-19T12:00:00Z",
   },
   {
     id: "94",
@@ -907,8 +907,8 @@ export const mockTasks: ITrackedTask[] = [
     description: "Analyze and optimize user conversion funnels",
     status: "pending",
     createdAt: "2025-08-19T11:00:00Z",
-    start: "2025-08-19T11:30:00Z",
-    end: "2025-08-19T13:15:00Z",
+    start: "2026-11-19T11:30:00Z",
+    end: "2026-11-19T13:15:00Z",
   },
   {
     id: "95",
@@ -916,8 +916,8 @@ export const mockTasks: ITrackedTask[] = [
     description: "Review current architecture and plan future improvements",
     status: "pending",
     createdAt: "2025-08-19T12:00:00Z",
-    start: "2025-08-19T12:45:00Z",
-    end: "2025-08-19T14:30:00Z",
+    start: "2026-11-19T12:45:00Z",
+    end: "2026-11-19T14:30:00Z",
   },
 
   // July 20, 2025
@@ -927,8 +927,8 @@ export const mockTasks: ITrackedTask[] = [
     description: "Research emerging technologies for personal learning",
     status: "pending",
     createdAt: "2025-08-20T10:00:00Z",
-    start: "2025-08-20T10:30:00Z",
-    end: "2025-08-20T12:15:00Z",
+    start: "2026-11-20T10:30:00Z",
+    end: "2026-11-20T12:15:00Z",
   },
   {
     id: "97",
@@ -937,8 +937,8 @@ export const mockTasks: ITrackedTask[] = [
       "Contribute to community projects and libraries we use\nFix bugs or add features to open source dependencies",
     status: "pending",
     createdAt: "2025-08-20T11:00:00Z",
-    start: "2025-08-20T11:45:00Z",
-    end: "2025-08-20T13:30:00Z",
+    start: "2026-11-20T11:45:00Z",
+    end: "2026-11-20T13:30:00Z",
   },
   {
     id: "98",
@@ -946,8 +946,8 @@ export const mockTasks: ITrackedTask[] = [
     description: "Complete online course on advanced React patterns",
     status: "pending",
     createdAt: "2025-08-20T14:00:00Z",
-    start: "2025-08-20T14:15:00Z",
-    end: "2025-08-20T16:00:00Z",
+    start: "2026-11-20T14:15:00Z",
+    end: "2026-11-20T16:00:00Z",
   },
   {
     id: "99",
@@ -955,8 +955,8 @@ export const mockTasks: ITrackedTask[] = [
     description: "Write technical blog post about recent project challenges",
     status: "pending",
     createdAt: "2025-08-20T16:00:00Z",
-    start: "2025-08-20T16:30:00Z",
-    end: "2025-08-20T18:15:00Z",
+    start: "2026-11-20T16:30:00Z",
+    end: "2026-11-20T18:15:00Z",
   },
   {
     id: "100",
@@ -964,8 +964,8 @@ export const mockTasks: ITrackedTask[] = [
     description: "Plan architecture for new side project idea",
     status: "pending",
     createdAt: "2025-08-20T18:00:00Z",
-    start: "2025-08-20T18:45:00Z",
-    end: "2025-08-20T20:30:00Z",
+    start: "2026-11-20T18:45:00Z",
+    end: "2026-11-20T20:30:00Z",
   },
 
   // July 21-31 continue with similar pattern...
@@ -976,8 +976,8 @@ export const mockTasks: ITrackedTask[] = [
     description: "Plan upcoming sprint goals and task allocation",
     status: "pending",
     createdAt: "2025-08-21T08:00:00Z",
-    start: "2025-08-21T08:30:00Z",
-    end: "2025-08-21T10:15:00Z",
+    start: "2026-11-21T08:30:00Z",
+    end: "2026-11-21T10:15:00Z",
   },
   {
     id: "102",
@@ -986,8 +986,8 @@ export const mockTasks: ITrackedTask[] = [
       "Plan migration to newer database version with zero downtime\nTest migration scripts in staging environment",
     status: "pending",
     createdAt: "2025-08-21T09:00:00Z",
-    start: "2025-08-21T09:45:00Z",
-    end: "2025-08-21T11:30:00Z",
+    start: "2026-11-21T09:45:00Z",
+    end: "2026-11-21T11:30:00Z",
   },
   {
     id: "103",
@@ -995,8 +995,8 @@ export const mockTasks: ITrackedTask[] = [
     description: "Implement new design system components",
     status: "pending",
     createdAt: "2025-08-21T10:00:00Z",
-    start: "2025-08-21T10:15:00Z",
-    end: "2025-08-21T12:00:00Z",
+    start: "2026-11-21T10:15:00Z",
+    end: "2026-11-21T12:00:00Z",
   },
   {
     id: "104",
@@ -1004,8 +1004,8 @@ export const mockTasks: ITrackedTask[] = [
     description: "Set up automated performance regression detection",
     status: "pending",
     createdAt: "2025-08-21T11:00:00Z",
-    start: "2025-08-21T11:30:00Z",
-    end: "2025-08-21T13:15:00Z",
+    start: "2026-11-21T11:30:00Z",
+    end: "2026-11-21T13:15:00Z",
   },
   {
     id: "105",
@@ -1013,8 +1013,8 @@ export const mockTasks: ITrackedTask[] = [
     description: "Monday team sync and blocker discussion",
     status: "pending",
     createdAt: "2025-08-21T12:00:00Z",
-    start: "2025-08-21T12:45:00Z",
-    end: "2025-08-21T14:30:00Z",
+    start: "2026-11-21T12:45:00Z",
+    end: "2026-11-21T14:30:00Z",
   },
 
   // Continue pattern for remaining days (22-31)...
@@ -1025,8 +1025,8 @@ export const mockTasks: ITrackedTask[] = [
     description: "Review sprint progress and adjust priorities if needed",
     status: "pending",
     createdAt: "2025-08-25T09:00:00Z",
-    start: "2025-08-25T09:15:00Z",
-    end: "2025-08-25T11:00:00Z",
+    start: "2026-11-25T09:15:00Z",
+    end: "2026-11-25T11:00:00Z",
   },
   {
     id: "107",
@@ -1035,8 +1035,8 @@ export const mockTasks: ITrackedTask[] = [
       "Comprehensive monthly review of team processes and improvements\nPlan initiatives for next month",
     status: "pending",
     createdAt: "2025-08-31T14:00:00Z",
-    start: "2025-08-31T14:30:00Z",
-    end: "2025-08-31T16:15:00Z",
+    start: "2026-11-30T14:30:00Z",
+    end: "2026-11-30T16:15:00Z",
   },
   {
     id: "108",
@@ -1044,7 +1044,7 @@ export const mockTasks: ITrackedTask[] = [
     description: "Compile monthly metrics and prepare stakeholder reports",
     status: "pending",
     createdAt: "2025-08-31T16:00:00Z",
-    start: "2025-08-31T16:45:00Z",
-    end: "2025-08-31T18:30:00Z",
+    start: "2026-11-30T16:45:00Z",
+    end: "2026-11-30T18:30:00Z",
   },
 ];

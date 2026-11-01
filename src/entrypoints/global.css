@@ -1,82 +1,331 @@
-@import "tailwindcss";
-@import "@bios-ui/core/tw";
-@config "../../tailwind.config.js";
+@layer base, utils, components;
+@import "@fontsource/jetbrains-mono/400.css";
+@import "@fontsource/jetbrains-mono/700.css";
+@import "@webtui/css/base.css";
+@import "@webtui/css/utils/box.css";
+@import "@webtui/css/components/button.css";
+@import "@webtui/css/components/input.css";
+@import "@webtui/css/components/textarea.css";
+@import "@webtui/css/components/checkbox.css";
+@import "@webtui/css/components/progress.css";
+@import "../lib/styles/theme.css";
 
 :root {
+  --font-family: "JetBrains Mono", monospace;
+  --font-size: 14px;
+  --line-height: 1.4;
 }
-
 html,
 body,
-#app,
-main {
+#app {
   width: 100%;
+  min-height: 100%;
   margin: 0;
+}
+html,
+body {
+  font-family: var(--font-family);
+  font-size: var(--font-size);
+  line-height: var(--line-height);
+}
+body {
+  background: var(--background0);
+}
+*,
+body {
+  word-break: normal;
+  overflow-wrap: anywhere;
+}
+::selection {
+  background: var(--accent);
+  color: var(--accent-foreground);
+}
+:focus-visible {
+  outline: 1px solid var(--focus);
+  outline-offset: 2px;
+}
+button {
+  cursor: pointer;
+}
+button:disabled {
+  cursor: default;
+  opacity: 0.45;
+}
+a {
+  color: var(--link);
+}
+a:hover {
+  color: var(--accent-text);
+}
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+input,
+textarea,
+select {
+  min-width: 0;
+  width: 100%;
+  border: 0;
+  border-radius: 0;
+  background: var(--background2);
+  color: var(--foreground0);
+  padding: 0.3lh 1ch;
+  caret-color: var(--accent);
+}
+input:focus,
+textarea:focus,
+select:focus {
+  outline: none;
+  box-shadow: inset 2px 0 var(--focus);
+}
+input::placeholder,
+textarea::placeholder {
+  color: var(--foreground2);
+}
+input[is-="checkbox"] {
+  --checked-color: var(--success);
+  --placeholder-background: var(--background2);
+}
+input[type="checkbox"] {
+  width: auto;
+  flex-shrink: 0;
+}
+input[type="time"],
+input[type="date"],
+input[type="datetime-local"] {
+  color: var(--info);
+}
+textarea {
+  resize: vertical;
+  min-height: 4lh;
+}
+label.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2lh;
+  color: var(--foreground1);
+}
+label.field > span {
+  color: var(--foreground2);
+}
+.terminal-frame {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-height: 100%;
+  background: var(--background0);
+}
+.terminal-frame.double {
+  --box-border-color: var(--accent);
+}
+.frame-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1ch;
+  min-height: 1lh;
+  flex-shrink: 0;
+}
+.frame-header h1 {
+  font-size: inherit;
+  font-weight: 700;
+  color: var(--accent-text);
+  display: flex;
+  align-items: center;
+  gap: 1ch;
+}
+.frame-header h1,
+.frame-meta {
+  background: var(--background0);
+  padding: 0 1ch;
+}
+.frame-meta {
+  color: var(--foreground2);
+  white-space: nowrap;
+  font-size: 11px;
+}
+.frame-body {
+  display: flex;
+  flex-direction: column;
+  gap: 1lh;
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 1lh 1ch 0.7lh;
+}
+.status-bar {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  background: var(--background1);
+  min-height: 1lh;
+  flex-shrink: 0;
+  margin-top: auto;
+}
+.status-bar > span {
+  padding: 0 1ch;
+  white-space: nowrap;
+}
+.status-bar .mode {
+  background: var(--accent);
+  color: var(--accent-foreground);
+  font-weight: 700;
+}
+.status-bar .count {
+  background: var(--background2);
+}
+.status-bar .mode.summary {
+  background: var(--success);
+}
+.status-bar .push {
+  margin-left: auto;
+}
+button.text-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5ch;
+  height: auto;
+  min-height: 1lh;
+  padding: 0 1ch;
+  border: 0;
+  background: transparent;
+  background-image: none;
+  color: var(--foreground1);
+  font-weight: 400;
+  text-decoration: none;
+}
+button.text-button:hover {
+  background: var(--background3);
+  color: var(--foreground0);
+}
+button.text-button:focus-visible {
+  outline: 1px solid var(--focus);
+}
+button.text-button.primary {
+  color: var(--accent-text);
+}
+button.text-button.danger {
+  color: var(--danger);
+}
+button.text-button.active,
+button.save-button {
+  background: var(--accent);
+  color: var(--accent-foreground);
+  font-weight: 700;
+}
+button.save-button {
+  height: auto;
+  min-height: 1lh;
+  padding: 0.2lh 1ch;
+  background-image: none;
+}
+button.back-button {
   padding: 0;
 }
-
-main {
-  height: fit-content;
+.muted {
+  color: var(--foreground2);
 }
-
-.flatpickr-calendar {
-  border: 1px solid var(--color-fg-dark);
-  background-color: var(--color-bg-darker);
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+.subtle {
+  color: var(--foreground1);
 }
-
-.flatpickr-calendar::before,
-.flatpickr-calendar::after {
-  border-bottom-color: var(--color-fg-dark) !important;
+.duration {
+  color: var(--success);
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
 }
-
-.flatpickr-time input,
-.flatpickr-time-separator,
-.flatpickr-day,
-.prevMonthDay,
-.flatpickr-weekday,
-.flatpickr-months .flatpickr-month,
-.flatpickr-prev-month,
-.flatpickr-next-month .nextMonthDay {
-  color: var(--color-fg-dark) !important;
+.time {
+  color: var(--info);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
 }
-
-.flatpickr-prev-month,
-.flatpickr-next-month {
-  fill: var(--color-fg-dark) !important;
+.error {
+  color: var(--danger);
 }
-
-.flatpickr-day {
-  border-radius: 0.25rem;
+.hint {
+  color: var(--foreground2);
+  padding: 0.3lh 1ch;
+  font-size: 11px;
 }
-
-.flatpickr-day:hover {
-  color: white;
+.hint kbd {
+  color: var(--foreground1);
 }
-
-.flatpickr-day.selected {
-  background-color: var(--color-primary) !important;
-  color: white;
+.hint.error {
+  color: var(--danger);
 }
-
-.flatpickr-weekday {
-  font-weight: 600;
+kbd {
+  font: inherit;
 }
-
-.flatpickr-disabled {
-  opacity: 0.5;
+.empty-state {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 0.6lh;
+  padding: 2lh 2ch;
+  text-align: center;
+  color: var(--foreground2);
 }
-
-.flatpickr-current-month .flatpickr-monthDropdown-months {
-  background: var(--color-bg-darker) !important;
-  color: var(--color-fg-dark) !important;
-  border: 1px solid var(--color-fg-dark) !important;
+.empty-state .prompt {
+  color: var(--accent-text);
+  font-size: 24px;
 }
-
-.flatpickr-calendar.hasTime .flatpickr-time {
-  border-color: var(--color-fg-dark) !important;
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1ch;
 }
-
-span.flatpickr-day.selected-week {
-  background-color: #1e82dd45 !important;
-  border: none !important;
+.form-grid .field {
+  min-width: 0;
+}
+.form-grid input {
+  font-size: 11px;
+  padding-inline: 0.5ch;
+}
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.3lh 0;
+}
+.toolbar .push {
+  margin-left: auto;
+}
+.scroll-area {
+  overflow-y: auto;
+  min-height: 0;
+  flex: 1;
+}
+button.copy-field {
+  display: block;
+  text-align: left;
+  background: transparent;
+  background-image: none;
+  color: inherit;
+  padding: 0;
+  height: auto;
+  min-width: 0;
+  font-weight: inherit;
+  line-height: inherit;
+  text-decoration: none;
+}
+button.copy-field.time {
+  color: var(--info);
+}
+button.copy-field:hover {
+  color: var(--accent-text);
+}
+@media (max-width: 360px) {
+  :root {
+    --font-size: 12px;
+  }
+  .frame-meta {
+    font-size: 10px;
+  }
+}
+[hidden] {
+  display: none !important;
 }

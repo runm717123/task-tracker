@@ -42,8 +42,6 @@ interface IParsedTask {
   description: string;
 }
 
-type TTasksMap = Map<string, string[]>;
-
 // Environment variable typing for import.meta.env
 interface ImportMetaEnv {
   readonly WXT_ENV: "dev" | "test" | "prod";

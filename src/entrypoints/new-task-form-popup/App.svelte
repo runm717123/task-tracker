@@ -1,127 +1,146 @@
 <script lang="ts">
-	import '@bios-ui/core/css';
-	import { Button, Input, InputLabel, TextArea } from '@bios-ui/svelte';
-	import { NotebookPenIcon } from '@lucide/svelte';
-	import { onMount } from 'svelte';
-	import { taskStore } from '../../lib/stores/taskStore';
-	import { settingsStore } from '../../lib/stores/settingsStore';
+  import dayjs from "dayjs";
+  import { onMount } from "svelte";
+  import TerminalForm from "../../lib/components/terminal/TerminalForm.svelte";
+  import { taskStore } from "../../lib/stores/taskStore";
+  import { settingsStore } from "../../lib/stores/settingsStore";
 
-	let taskTitle = $state('');
-	let taskDescription = $state('');
-	let isLoading = $state(false);
-	let autoFocusDescription = $state(false);
+  let title = $state("");
+  let description = $state("");
+  let saving = $state(false);
+  let loading = $state(true);
+  let error = $state("");
+  let start = $state("");
+  let titleInput: HTMLInputElement;
+  let descriptionInput: HTMLTextAreaElement;
 
-	onMount(async () => {
-		try {
-			const settings = await settingsStore.getSettings();
-			autoFocusDescription = settings.autoFocusDescription ?? false;
-			
-			// Load default values if they exist
-			if (settings.taskCreateDefaultValue) {
-				taskTitle = settings.autoFocusDescription ? settings.taskCreateDefaultValue.title ?? '' : '';
-				taskDescription = !settings.autoFocusDescription ? settings.taskCreateDefaultValue.description ?? '' : '';
-			}
-
-			// Focus the appropriate input after settings are loaded
-			setTimeout(() => {
-				if (autoFocusDescription) {
-					const descriptionInput = document.getElementById('task-description-input');
-					descriptionInput?.focus();
-				} else {
-					const titleInput = document.getElementById('task-title-input');
-					titleInput?.focus();
-				}
-			}, 0);
-		} catch (error) {
-			console.error('Failed to load settings:', error);
-		}
-	});
-
-	const handleSave = async () => {
-		if (!taskTitle.trim()) return;
-
-		isLoading = true;
-		try {
-			const newTask: ICreateTask = {
-				title: taskTitle.trim(),
-				description: taskDescription.trim(),
-				status: 'pending',
-			};
-
-			await taskStore.addTask(newTask);
-
-			// Clear inputs and close
-			taskTitle = '';
-			taskDescription = '';
-			window.close();
-		} catch (error) {
-			console.error('Failed to save task:', error);
-		} finally {
-			isLoading = false;
-		}
-	};
-
-	const handleCancel = () => {
-		window.close();
-	};
-
-	const handleKeydown = (event: KeyboardEvent) => {
-		if (event.key === 'Enter' && !event.shiftKey) {
-			event.preventDefault();
-			handleSave();
-		} else if (event.key === 'Escape') {
-			handleCancel();
-		}
-	};
+  onMount(() => {
+    let active = true;
+    Promise.all([settingsStore.getSettings(), taskStore.getLatestStartTime(new Date())])
+      .then(([settings, latestStart]) => {
+        if (!active) return;
+        start = dayjs(latestStart).format("HH:mm");
+        if (settings.autoFocusDescription) {
+          title = settings.taskCreateDefaultValue?.title ?? "";
+          descriptionInput?.focus();
+        } else {
+          description = settings.taskCreateDefaultValue?.description ?? "";
+          titleInput?.focus();
+        }
+      })
+      .catch(() => {
+        if (!active) return;
+        error = "Could not load defaults.";
+        titleInput?.focus();
+      })
+      .finally(() => {
+        if (active) loading = false;
+      });
+    return () => {
+      active = false;
+    };
+  });
+  async function save() {
+    if (!title.trim() || saving || loading) return;
+    saving = true;
+    error = "";
+    try {
+      await taskStore.addTask({
+        title: title.trim(),
+        description: description.trim(),
+        status: "pending",
+      });
+      window.close();
+    } catch {
+      error = "Could not save task. Please try again.";
+    } finally {
+      saving = false;
+    }
+  }
 </script>
 
-<main class="!px-3 !py-2 bg-bg-dark h-screen">
-	<div class="flex flex-col h-full">
-		<div class="flex items-center gap-3 mb-4">
-			<div class="w-8 h-8 bg-accent-primary rounded-full flex items-center justify-center">
-				<NotebookPenIcon class="" />
-			</div>
-			<div>
-				<h1 class="text-lg font-semibold text-fg-dark">Add New Task</h1>
-				<p class="text-fg-muted text-xs">What you have done?</p>
-			</div>
-		</div>
+<TerminalForm
+  title="new task"
+  meta="alt+↑"
+  double
+  showBack={false}
+  onCancel={() => window.close()}
+  onSave={save}
+  busy={saving}
+>
+  <label class="prompt-field"
+    ><span>title</span><span class="chevron">❯</span><input
+      id="task-title-input"
+      bind:this={titleInput}
+      bind:value={title}
+      required
+      placeholder="What did you work on?"
+    /></label
+  >
+  <label class="prompt-field description"
+    ><span>desc</span><span class="chevron muted">❯</span><textarea
+      id="task-description-input"
+      bind:this={descriptionInput}
+      bind:value={description}
+      rows={3}
+      placeholder="optional · links are fine"></textarea></label
+  >
+  <p class="time-preview">
+    <span class="muted">time</span><span class="time">{start || "--:--"} → now</span><span
+      class="muted"># last task → now</span
+    >
+  </p>
+  {#if error}<p class="error" role="alert">! {error}</p>{/if}
+  {#snippet footer(formId)}
+    <span class="muted">⏎ save · ⇥ next field</span>
+    <button type="button" class="text-button push" onclick={() => window.close()}
+      >[esc] close</button
+    >
+    <button
+      type="submit"
+      form={formId}
+      class="save-button"
+      disabled={!title.trim() || saving || loading}>{saving ? "saving…" : "save ⏎"}</button
+    >
+  {/snippet}
+</TerminalForm>
 
-		<div class="flex-1 flex flex-col gap-4">
-			<div>
-				<InputLabel size="sm" className="flex flex-col gap-1">
-					Title*
-					<Input id="task-title-input" required bind:value={taskTitle} onkeydown={handleKeydown} placeholder="Enter task title..." className="w-full" />
-				</InputLabel>
-			</div>
-
-			<div class="flex-1">
-				<InputLabel size="sm" className="flex flex-col gap-1">
-					Description
-					<TextArea id="task-description-input" bind:value={taskDescription} onkeydown={handleKeydown} rows="2" placeholder="Enter your task description..." className="w-full resize-none" />
-				</InputLabel>
-			</div>
-
-			<div class="flex gap-3">
-				<Button onclick={handleSave} disabled={!taskTitle.trim() || isLoading} className="flex-1">
-					{#if isLoading}
-						<div class="flex items-center justify-center gap-2">
-							<div class="w-4 h-4 border-2 border-fg-on-accent border-t-transparent rounded-full animate-spin"></div>
-							Saving...
-						</div>
-					{:else}
-						Save Task
-					{/if}
-				</Button>
-
-				<Button onclick={handleCancel} variant="secondary" className="flex-1">Cancel</Button>
-			</div>
-
-			<div class="text-center">
-				<p class="text-xs text-fg-muted">
-					Press <kbd class="px-1 py-0.5 text-xs bg-bg-muted rounded">Enter</kbd> to save or <kbd class="px-1 py-0.5 text-xs bg-bg-muted rounded">Esc</kbd> to cancel
-				</p>
-			</div>
-		</div>
-	</div>
-</main>
+<style>
+  .prompt-field {
+    display: grid;
+    grid-template-columns: 6ch 1ch minmax(0, 1fr);
+    gap: 1ch;
+    align-items: baseline;
+  }
+  .prompt-field > span:first-child {
+    color: var(--foreground2);
+  }
+  .chevron {
+    color: var(--accent-text);
+  }
+  .prompt-field input,
+  .prompt-field textarea {
+    background: transparent;
+    padding: 0.2lh 0.5ch;
+  }
+  .prompt-field textarea {
+    color: var(--foreground1);
+  }
+  .prompt-field input {
+    font-weight: 700;
+  }
+  .prompt-field textarea {
+    min-height: 3lh;
+    resize: none;
+    height: 100%;
+  }
+  .description {
+    flex: 1;
+    align-items: start;
+  }
+  .time-preview {
+    display: flex;
+    gap: 2ch;
+    flex-wrap: wrap;
+  }
+</style>

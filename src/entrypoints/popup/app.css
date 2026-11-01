@@ -1,8 +1,10 @@
 @import "../global.css";
-
 body {
-  margin: 0;
-  display: flex;
-  place-items: center;
-  min-width: 450px;
+  width: 420px;
+}
+#app {
+  height: 470px;
+}
+#app > .terminal-frame {
+  height: 470px;
 }

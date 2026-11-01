@@ -9,5 +9,6 @@
   "arrowParens": "always",
   "bracketSpacing": true,
   "proseWrap": "preserve",
-  "htmlWhitespaceSensitivity": "css"
+  "htmlWhitespaceSensitivity": "css",
+  "plugins": ["prettier-plugin-svelte"]
 }

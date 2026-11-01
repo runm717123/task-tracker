@@ -1,117 +1,130 @@
 <script lang="ts">
-	import '@bios-ui/core/css';
-	import { Button } from '@bios-ui/svelte';
-	import { KeyboardIcon, SidebarIcon, SettingsIcon, PlusIcon, BarChart3Icon, DownloadIcon } from '@lucide/svelte';
-	import FormHeader from '../../../lib/components/popup/FormHeader.svelte';
-
-	interface Props {
-		onCancel: () => void;
-	}
-
-	let { onCancel }: Props = $props();
+  import TerminalFrame from "../../../lib/components/terminal/TerminalFrame.svelte";
+  let { onCancel }: { onCancel: () => void } = $props();
 </script>
 
-<main class="w-80 !p-3 bg-bg-dark max-h-[480px] flex flex-col">
-	<FormHeader title="HELP" onBack={onCancel} />
+<TerminalFrame title="help" meta=":help task-tracker" onBack={onCancel}>
+  <div class="frame-body">
+    <section>
+      <h2>## getting started</h2>
+      <p>
+        Record the work you’ve done. Use <kbd>Alt+↑</kbd> to add a task from anywhere, or press
+        <kbd>n</kbd> in a task list.
+      </p>
+      <p class="muted">
+        # customize the global shortcut at <a
+          href="chrome://extensions/shortcuts"
+          target="_blank"
+          rel="noreferrer">extension shortcuts</a
+        >
+      </p>
+    </section>
+    <section>
+      <h2>## navigation</h2>
+      <dl>
+        <dt>j / k</dt>
+        <dd>select next / previous task</dd>
+        <dt>e / Enter</dt>
+        <dd>edit selected task</dd>
+        <dt>d</dt>
+        <dd>delete selected task (asks first in sidepanel)</dd>
+        <dt>r</dt>
+        <dd>resume selected task (sidepanel, asks first)</dd>
+        <dt>n</dt>
+        <dd>new task</dd>
+        <dt>h</dt>
+        <dd>previous period (sidepanel)</dd>
+        <dt>l / s</dt>
+        <dd>select list / summary (sidepanel)</dd>
+        <dt>w</dt>
+        <dd>weekly / daily (sidepanel)</dd>
+        <dt>v</dt>
+        <dd>list / summary (sidepanel)</dd>
+        <dt>y / x</dt>
+        <dd>copy summary / export (sidepanel)</dd>
+        <dt>Ctrl+e</dt>
+        <dd>export tasks (sidepanel)</dd>
+        <dt>Ctrl+n</dt>
+        <dd>new task (sidepanel)</dd>
+        <dt>Ctrl+i</dt>
+        <dd>import tasks (sidepanel)</dd>
+        <dt>Ctrl+p</dt>
+        <dd>focus time-range selector (sidepanel)</dd>
+        <dt>s / ?</dt>
+        <dd>settings / help (popup)</dd>
+        <dt>Esc</dt>
+        <dd>back / cancel / close popup or sidepanel</dd>
+      </dl>
+    </section>
+    <section>
+      <h2>## writing tasks</h2>
+      <p>
+        Use a project name as the title. List task fragments in the description using a bullet list
+        or a comma-separated list.
+      </p>
+      <pre>MyProject v1
+- Implement authentication
+- Add responsive styles
+- Review database migration</pre>
+      <p class="muted"># Enter saves task forms; Shift+Enter adds a line</p>
+      <p>
+        In the task editor, when no field is focused: <kbd>t</kbd> focuses title,
+        <kbd>d</kbd> description, <kbd>s</kbd> start, and <kbd>e</kbd> end.
+      </p>
+    </section>
+    <section>
+      <h2>## sidepanel</h2>
+      <p>
+        Browse by day, week, month, custom range, or all time. Click task content to copy it. Resume
+        a task with <kbd>r</kbd> beside it. Import and export your tasks as JSON.
+      </p>
+    </section>
+    <section>
+      <h2>## summaries</h2>
+      <p>
+        Summary groups share a normalized title. Near-duplicate fragments are removed within each
+        group. Every line uses your own wording, and summaries work offline.
+      </p>
+    </section>
+  </div>
+  {#snippet footer()}<span class="mode">HELP</span><button
+      type="button"
+      class="text-button push"
+      onclick={onCancel}>[esc] back</button
+    >{/snippet}
+</TerminalFrame>
 
-	<div class="flex-1 overflow-y-auto min-h-0">
-		<div class="flex flex-col gap-4 pb-4">
-			<!-- Create New Task -->
-			<div class="bg-bg-light rounded-md p-3 border border-border">
-				<div class="flex items-center gap-2 mb-2">
-					<PlusIcon size={16} class="text-accent-primary" />
-					<h3 class="text-sm font-semibold text-fg-dark">Create New Task</h3>
-				</div>
-				<div class="text-xs text-fg-muted space-y-1">
-					<p>• Use keyboard shortcut: <kbd class="bg-bg-dark px-1.5 py-0.5 rounded text-xs font-mono">Alt+Up</kbd></p>
-					<p>• Click the "+" button in sidepanel</p>
-					<p class="text-accent-muted italic">💡 Shortcut can be customized in Chrome Extensions settings</p>
-				</div>
-			</div>
-
-			<!-- Sidepanel Features -->
-			<div class="bg-bg-light rounded-md p-3 border border-border">
-				<div class="flex items-center gap-2 mb-2">
-					<SidebarIcon size={16} class="text-accent-primary" />
-					<h3 class="text-sm font-semibold text-fg-dark">Sidepanel Features</h3>
-				</div>
-				<div class="text-xs text-fg-muted space-y-1">
-					<div class="flex items-center gap-1">
-						<BarChart3Icon size={12} />
-						<span>Group and de-duplicate your tasks</span>
-					</div>
-					<div class="flex items-center gap-1">
-						<DownloadIcon size={12} />
-						<span>Import/export task data</span>
-					</div>
-					<p>• View tasks by day, week, or month</p>
-					<p>• Access detailed task management</p>
-				</div>
-			</div>
-
-			<!-- Settings -->
-			<div class="bg-bg-light rounded-md p-3 border border-border">
-				<div class="flex items-center gap-2 mb-2">
-					<SettingsIcon size={16} class="text-accent-primary" />
-					<h3 class="text-sm font-semibold text-fg-dark">Settings Panel</h3>
-				</div>
-				<div class="text-xs text-fg-muted space-y-1">
-					<p>• Set your work start time</p>
-					<p>• Configure auto-focus behavior</p>
-					<p>• Set default task values</p>
-					<p class="text-accent-muted italic">💡 Customize the app to boost your workflow</p>
-				</div>
-			</div>
-
-			<!-- Keyboard Shortcuts -->
-			<div class="bg-bg-light rounded-md p-3 border border-border">
-				<div class="flex items-center gap-2 mb-2">
-					<KeyboardIcon size={16} class="text-accent-primary" />
-					<h3 class="text-sm font-semibold text-fg-dark">Keyboard Shortcuts</h3>
-				</div>
-				<div class="text-xs text-fg-muted space-y-1">
-					<p><kbd class="bg-bg-dark px-1.5 py-0.5 rounded font-mono">Esc</kbd> - Close popup/cancel actions</p>
-					<p><kbd class="bg-bg-dark px-1.5 py-0.5 rounded font-mono">Enter</kbd> - Save forms (when valid)</p>
-					<p><kbd class="bg-bg-dark px-1.5 py-0.5 rounded font-mono">Alt+Up</kbd> - Create new task</p>
-				</div>
-			</div>
-
-			<!-- Bonus Tips -->
-			<div class="bg-bg-light rounded-md p-3 border border-border">
-				<div class="flex items-center gap-2 mb-2">
-					<PlusIcon size={16} class="text-accent-primary" />
-					<h3 class="text-sm font-semibold text-fg-dark">Bonus Tips!</h3>
-				</div>
-				<div class="text-xs text-fg-muted space-y-2">
-					<p class="text-accent-muted italic">💡 Pro tip: One task per line gives a cleaner summary</p>
-					<div class="space-y-1">
-						<p><strong>Consider:</strong> Adding project name in title for context</p>
-						<p><strong>Try:</strong> Breaking down details in description</p>
-					</div>
-					<div class="bg-bg-dark rounded p-2 border border-border">
-						<p class="text-xs font-semibold text-fg-dark mb-1">Example:</p>
-						<p class="text-accent-primary font-medium">MyProject v1</p>
-						<div class="text-xs mt-1 space-y-0.5">
-							<p>• Implement user authentication system</p>
-							<p>• Add responsive design for mobile devices</p>
-							<p>• Set up database migration scripts</p>
-						</div>
-					</div>
-					<div class="mt-3 p-2 bg-bg-darker rounded border border-border-muted">
-						<p class="text-xs text-fg-muted">
-							<strong>Note:</strong> These are just suggestions! The summary groups your tasks by title and removes
-							duplicates, whatever writing style you prefer.
-							If you encounter any issues with summaries, feel free to contact the developer.
-						</p>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-
-	<div class="flex gap-2 pt-4 border-t border-border flex-shrink-0">
-		<Button onclick={onCancel} size="md" className="flex-1">
-			Got it!
-		</Button>
-	</div>
-</main>
+<style>
+  section {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4lh;
+  }
+  h2 {
+    font: inherit;
+    color: var(--accent-text);
+    font-weight: 700;
+  }
+  p,
+  dl {
+    font-size: 12px;
+    color: var(--foreground1);
+  }
+  dl {
+    display: grid;
+    grid-template-columns: 10ch 1fr;
+    gap: 0.2lh 1ch;
+  }
+  dt,
+  kbd {
+    color: var(--accent-text);
+  }
+  pre {
+    font: inherit;
+    font-size: 11px;
+    color: var(--foreground1);
+    background: var(--background1);
+    padding: 0.5lh 1ch;
+    white-space: pre-wrap;
+  }
+</style>

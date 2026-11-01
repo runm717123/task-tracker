@@ -1,14 +1,10 @@
 import { defineConfig } from "wxt";
-import tailwindcss from "@tailwindcss/vite";
 import pkg from "./package.json";
 
 // See https://wxt.dev/api/config.html
 export default defineConfig({
   srcDir: "src",
   modules: ["@wxt-dev/module-svelte"],
-  vite: () => ({
-    plugins: [tailwindcss()],
-  }),
   // seems there is a bug where the mode is "home"
   publicDir: import.meta.env.WXT_ENV === "prod" ? "public" : "public-dev",
   manifest: {

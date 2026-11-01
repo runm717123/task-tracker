@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach, vi } from "vitest";
-import { fakeBrowser } from "wxt/testing";
+import { fakeBrowser } from "wxt/testing/fake-browser";
 import { TaskStore } from "../taskStore";
 import { mockTasks } from "../../../mocks/tasks";
 import { settingsStore } from "../settingsStore";
