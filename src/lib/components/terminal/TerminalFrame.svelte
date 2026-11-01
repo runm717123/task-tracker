@@ -2,6 +2,7 @@
   import type { Snippet } from "svelte";
   let {
     title,
+    titleIcon,
     meta,
     onBack,
     backDisabled = false,
@@ -11,6 +12,7 @@
     footer,
   }: {
     title: string;
+    titleIcon?: Snippet;
     meta?: string;
     onBack?: () => void;
     backDisabled?: boolean;
@@ -36,6 +38,7 @@
           disabled={backDisabled}
           aria-label="Back">←</button
         >{/if}
+      {#if titleIcon}{@render titleIcon()}{/if}
       {title}
     </h1>
     {#if meta}<span class="frame-meta">{meta}</span>{/if}

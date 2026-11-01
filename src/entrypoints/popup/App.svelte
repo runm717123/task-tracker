@@ -126,7 +126,26 @@
 {:else if view === "help"}
   <HelpPage onCancel={back} />
 {:else}
-  <TerminalFrame title="</N> task-tracker" meta={dayjs().format("ddd DD MMM")}>
+  <TerminalFrame title="Task tracker" meta={dayjs().format("ddd DD MMM")}>
+    {#snippet titleIcon()}
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="18"
+        height="18"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        aria-hidden="true"
+      >
+        <path d="M16 5H3" />
+        <path d="M16 12H3" />
+        <path d="M11 19H3" />
+        <path d="m15 18 2 2 4-4" />
+      </svg>
+    {/snippet}
     <div class="popup-list scroll-area" role="list" aria-label="Today's tasks">
       {#each tasks as task, index (task.id)}
         <div role="listitem" class="task-row" class:selected={selected === index}>
