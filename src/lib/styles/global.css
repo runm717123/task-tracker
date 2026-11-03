@@ -1,6 +1,5 @@
 @layer base, utils, components;
-@import "@fontsource/jetbrains-mono/400.css";
-@import "@fontsource/jetbrains-mono/700.css";
+@import "./fonts.css";
 @import "@webtui/css/base.css";
 @import "@webtui/css/utils/box.css";
 @import "@webtui/css/components/button.css";
