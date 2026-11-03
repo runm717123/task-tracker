@@ -4,8 +4,10 @@
   import Document from "@tiptap/extension-document";
   import Paragraph from "@tiptap/extension-paragraph";
   import Text from "@tiptap/extension-text";
-  import { BulletList, ListItem, ListKeymap } from "@tiptap/extension-list";
-  import { UndoRedo } from "@tiptap/extensions";
+  import { BulletList } from "@tiptap/extension-list/bullet-list";
+  import { ListItem } from "@tiptap/extension-list/item";
+  import { ListKeymap } from "@tiptap/extension-list/keymap";
+  import { UndoRedo } from "@tiptap/extensions/undo-redo";
   import { Markdown } from "@tiptap/markdown";
 
   let {
