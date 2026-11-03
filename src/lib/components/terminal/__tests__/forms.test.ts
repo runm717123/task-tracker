@@ -108,32 +108,28 @@ describe("shared terminal form behavior", () => {
     }
   );
 
-  it("submits from description Enter and from the footer's native submit button", async () => {
+  it("submits from description Ctrl+Enter and from the footer's native submit button", async () => {
     const onSave = vi.fn();
     render(TaskForm, { task, onSave, onCancel: vi.fn() });
-    expect(pressEnter(screen.getByRole("textbox", { name: "description" })).defaultPrevented).toBe(
-      true
-    );
+    expect(
+      pressEnter(screen.getByRole("textbox", { name: "description" }), { ctrlKey: true })
+        .defaultPrevented
+    ).toBe(true);
     await waitFor(() => expect(onSave).toHaveBeenCalledOnce());
     expect(onSave).toHaveBeenCalledWith(expect.objectContaining({ title: "Project" }));
     await fireEvent.click(screen.getByRole("button", { name: "[⏎] save" }));
     await waitFor(() => expect(onSave).toHaveBeenCalledTimes(2));
   });
 
-  it.each([
-    { shiftKey: true },
-    { ctrlKey: true },
-    { metaKey: true },
-    { altKey: true },
-    { isComposing: true },
-  ])("preserves newline, composition and browser shortcuts: %j", (options) => {
-    const onSave = vi.fn();
-    render(TaskForm, { task, onSave, onCancel: vi.fn() });
-    expect(
-      pressEnter(screen.getByRole("textbox", { name: "description" }), options).defaultPrevented
-    ).toBe(false);
-    expect(onSave).not.toHaveBeenCalled();
-  });
+  it.each([{ shiftKey: true }, {}, { altKey: true }, { isComposing: true }])(
+    "preserves newline, composition and browser shortcuts: %j",
+    (options) => {
+      const onSave = vi.fn();
+      render(TaskForm, { task, onSave, onCancel: vi.fn() });
+      pressEnter(screen.getByRole("textbox", { name: "description" }), options);
+      expect(onSave).not.toHaveBeenCalled();
+    }
+  );
 
   it("honors native required-field validation on Enter", async () => {
     const onSave = vi.fn();
@@ -215,3 +211,113 @@ describe("shared terminal form behavior", () => {
     await screen.findByRole("button", { name: "Settings" });
   });
 });
+
+describe("Markdown descriptions", () => {
+  it("toggles bullets and saves Markdown through the editor shortcut", async () => {
+    const onSave = vi.fn();
+    render(TaskForm, { task, onSave, onCancel: vi.fn() });
+    const button = screen.getByRole("button", { name: "Bullet list" });
+    await fireEvent.click(button);
+    expect(button.getAttribute("aria-pressed")).toBe("true");
+    expect(
+      screen.getByRole("textbox", { name: "description" }).querySelector("ul li")?.textContent
+    ).toBe(task.description);
+    pressEnter(screen.getByRole("textbox", { name: "description" }), { metaKey: true });
+    await waitFor(() =>
+      expect(onSave).toHaveBeenCalledWith(
+        expect.objectContaining({ description: "- Fix keyboard navigation" })
+      )
+    );
+  });
+
+  it("reopens nested Markdown lists and preserves them on save", async () => {
+    const description = "- Parent\n  - Child\n- Another";
+    const onSave = vi.fn();
+    render(TaskForm, { task: { ...task, description }, onSave, onCancel: vi.fn() });
+    const input = screen.getByRole("textbox", { name: "description" });
+    expect(input.querySelector("ul li ul li")?.textContent).toBe("Child");
+    await fireEvent.click(screen.getByRole("button", { name: "[⏎] save" }));
+    expect(onSave).toHaveBeenCalledWith(expect.objectContaining({ description }));
+  });
+
+  it("saves the latest contenteditable change as Markdown", async () => {
+    const onSave = vi.fn();
+    render(TaskForm, { task, onSave, onCancel: vi.fn() });
+    const input = screen.getByRole("textbox", { name: "description" });
+    input.querySelector("p")!.textContent = "Updated work";
+    await fireEvent.input(input);
+    await fireEvent.click(screen.getByRole("button", { name: "Bullet list" }));
+    pressEnter(input, { ctrlKey: true });
+    await waitFor(() =>
+      expect(onSave).toHaveBeenCalledWith(
+        expect.objectContaining({ description: "- Updated work" })
+      )
+    );
+  });
+
+  it("loads the default Markdown description for a new task", async () => {
+    await settingsStore.saveSettings({
+      ...settingsStore.getDefaultSettings(),
+      autoFocusDescription: false,
+      taskCreateDefaultValue: { description: "- Default fragment" },
+    });
+    render(TaskForm, {
+      task: { ...task, description: "" },
+      isNewTask: true,
+      onSave: vi.fn(),
+      onCancel: vi.fn(),
+    });
+    await waitFor(() =>
+      expect(
+        screen.getByRole("textbox", { name: "description" }).querySelector("li")?.textContent
+      ).toBe("Default fragment")
+    );
+  });
+
+  it("focuses the description editor when configured for new tasks", async () => {
+    await settingsStore.saveSettings({
+      ...settingsStore.getDefaultSettings(),
+      autoFocusDescription: true,
+      taskCreateDefaultValue: { title: "Default title" },
+    });
+    render(TaskForm, { task, isNewTask: true, onSave: vi.fn(), onCancel: vi.fn() });
+    await waitFor(() =>
+      expect(document.activeElement).toBe(screen.getByRole("textbox", { name: "description" }))
+    );
+    expect(screen.getByRole("textbox", { name: "title *" })).toHaveProperty(
+      "value",
+      "Default title"
+    );
+  });
+});
+
+it("saves Markdown bullets from the quick-add window", async () => {
+  vi.spyOn(window, "close").mockImplementation(() => {});
+  const add = vi.spyOn(taskStore, "addTask");
+  render(QuickAdd);
+  const title = screen.getByRole("textbox", { name: /title/ });
+  await waitFor(() => expect(document.activeElement).toBe(title));
+  await fireEvent.input(title, { target: { value: "Quick task" } });
+  const input = screen.getByRole("textbox", { name: "description" });
+  input.querySelector("p")!.textContent = "Quick fragment";
+  await fireEvent.input(input);
+  await fireEvent.click(screen.getByRole("button", { name: "Bullet list" }));
+  pressEnter(input, { ctrlKey: true });
+  await waitFor(() =>
+    expect(add).toHaveBeenCalledWith(
+      expect.objectContaining({ title: "Quick task", description: "- Quick fragment" })
+    )
+  );
+});
+
+it.each(["", "First fragment\nSecond fragment"])(
+  "preserves an existing plain description: %j",
+  async (description) => {
+    const onSave = vi.fn();
+    render(TaskForm, { task: { ...task, description }, onSave, onCancel: vi.fn() });
+    const input = screen.getByRole("textbox", { name: "description" });
+    expect(input.textContent).toBe(description);
+    await fireEvent.click(screen.getByRole("button", { name: "[⏎] save" }));
+    expect(onSave).toHaveBeenCalledWith(expect.objectContaining({ description }));
+  }
+);

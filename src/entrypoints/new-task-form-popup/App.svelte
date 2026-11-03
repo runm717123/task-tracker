@@ -1,6 +1,7 @@
 <script lang="ts">
   import dayjs from "dayjs";
   import { onMount } from "svelte";
+  import DescriptionEditor from "../../lib/components/tasks/DescriptionEditor.svelte";
   import TerminalForm from "../../lib/components/terminal/TerminalForm.svelte";
   import { taskStore } from "../../lib/stores/taskStore";
   import { settingsStore } from "../../lib/stores/settingsStore";
@@ -12,7 +13,7 @@
   let error = $state("");
   let start = $state("");
   let titleInput: HTMLInputElement;
-  let descriptionInput: HTMLTextAreaElement;
+  let descriptionInput: DescriptionEditor;
 
   onMount(() => {
     let active = true;
@@ -77,14 +78,12 @@
       placeholder="What did you work on?"
     /></label
   >
-  <label class="prompt-field description"
-    ><span>desc</span><span class="chevron muted">❯</span><textarea
-      id="task-description-input"
-      bind:this={descriptionInput}
-      bind:value={description}
-      rows={3}
-      placeholder="optional · links are fine"></textarea></label
-  >
+  <DescriptionEditor
+    bind:this={descriptionInput}
+    bind:value={description}
+    disabled={loading || saving}
+    onSave={() => void save()}
+  />
   <p class="time-preview">
     <span class="muted">time</span><span class="time">{start || "--:--"} → now</span><span
       class="muted"># last task → now</span
@@ -92,7 +91,7 @@
   </p>
   {#if error}<p class="error" role="alert">! {error}</p>{/if}
   {#snippet footer(formId)}
-    <span class="muted">⏎ save · ⇥ next field</span>
+    <span class="muted">ctrl/cmd+⏎ save</span>
     <button type="button" class="text-button push" onclick={() => window.close()}
       >[esc] close</button
     >
@@ -118,25 +117,12 @@
   .chevron {
     color: var(--accent-text);
   }
-  .prompt-field input,
-  .prompt-field textarea {
+  .prompt-field input {
     background: transparent;
     padding: 0.2lh 0.5ch;
   }
-  .prompt-field textarea {
-    color: var(--foreground1);
-  }
   .prompt-field input {
     font-weight: 700;
-  }
-  .prompt-field textarea {
-    min-height: 3lh;
-    resize: none;
-    height: 100%;
-  }
-  .description {
-    flex: 1;
-    align-items: start;
   }
   .time-preview {
     display: flex;

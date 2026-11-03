@@ -1,6 +1,7 @@
 <script lang="ts">
   import dayjs from "dayjs";
   import { onMount } from "svelte";
+  import DescriptionEditor from "./DescriptionEditor.svelte";
   import TerminalForm from "../terminal/TerminalForm.svelte";
   import { settingsStore } from "../../stores/settingsStore";
   import { formatDuration, taskMinutes } from "../../utils/task-display";
@@ -28,7 +29,7 @@
   let loading = $state(isNewTask);
   let error = $state("");
   let titleInput: HTMLInputElement;
-  let descriptionInput: HTMLTextAreaElement;
+  let descriptionInput: DescriptionEditor;
   let startInput: HTMLInputElement;
   let endInput: HTMLInputElement;
   const invalidTime = $derived(!!start && !!end && !dayjs(end).isAfter(dayjs(start)));
@@ -70,7 +71,7 @@
       isEditableTarget(document.activeElement)
     )
       return;
-    const fields: Record<string, HTMLInputElement | HTMLTextAreaElement> = {
+    const fields: Record<string, { focus: () => void }> = {
       t: titleInput,
       d: descriptionInput,
       s: startInput,
@@ -120,15 +121,12 @@
       placeholder="What did you work on?"
     /></label
   >
-  <label class="field description-field"
-    ><span>description</span><textarea
-      id="description"
-      aria-keyshortcuts="d"
-      bind:this={descriptionInput}
-      bind:value={description}
-      rows={5}
-      placeholder="~ add your task fragments, one per line"></textarea></label
-  >
+  <DescriptionEditor
+    bind:this={descriptionInput}
+    bind:value={description}
+    disabled={loading || saving}
+    onSave={() => void save()}
+  />
   <div class="form-grid">
     <label class="field"
       ><span>start</span><input
@@ -173,13 +171,3 @@
     >
   {/snippet}
 </TerminalForm>
-
-<style>
-  .description-field {
-    flex: 1;
-  }
-  .description-field textarea {
-    flex: 1;
-    resize: none;
-  }
-</style>

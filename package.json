@@ -49,6 +49,14 @@
   },
   "dependencies": {
     "@fontsource/jetbrains-mono": "5.3.0",
+    "@tiptap/core": "3.32.2",
+    "@tiptap/extension-document": "3.32.2",
+    "@tiptap/extension-list": "3.32.2",
+    "@tiptap/extension-paragraph": "3.32.2",
+    "@tiptap/extension-text": "3.32.2",
+    "@tiptap/extensions": "3.32.2",
+    "@tiptap/markdown": "3.32.2",
+    "@tiptap/pm": "3.32.2",
     "@webtui/css": "0.1.10",
     "dayjs": "1.11.13"
   }
