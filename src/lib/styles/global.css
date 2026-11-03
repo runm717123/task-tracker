@@ -8,7 +8,7 @@
 @import "@webtui/css/components/textarea.css";
 @import "@webtui/css/components/checkbox.css";
 @import "@webtui/css/components/progress.css";
-@import "../lib/styles/theme.css";
+@import "./theme.css";
 
 :root {
   --font-family: "JetBrains Mono", monospace;

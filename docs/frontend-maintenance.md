@@ -18,7 +18,7 @@ Avoid introducing a wrapper for every individual native control. Extract shared 
 
 ## Styles and theme
 
-Each entrypoint's `app.css` imports `entrypoints/global.css`. Global CSS declares WebTUI's layer order, imports only the required WebTUI components, and supplies common frame/control/utility styles. Entrypoint CSS sets viewport dimensions. Screen-specific layouts belong in their Svelte component styles.
+Each entrypoint's `main.ts` imports `lib/styles/global.css` directly so Vite emits a shared stylesheet. Keep shared CSS outside `entrypoints/` to avoid WXT building it as an extra standalone entrypoint. Global CSS declares WebTUI's layer order, imports only the required WebTUI components, and supplies common frame/control/utility styles. Entrypoint CSS sets viewport dimensions. Screen-specific layouts belong in their Svelte component styles.
 
 The palette lives in `lib/styles/theme.css`:
 
