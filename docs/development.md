@@ -13,6 +13,8 @@ pnpm dev
 
 WXT reads `src/` as the source directory. Development builds use `public-dev/`; production builds use `public/`, selected by `WXT_ENV`. The background script handles the extension command declared in `wxt.config.ts`.
 
+`TaskStore.initializeStorage()` can seed mock tasks in tests, live development and `pnpm dev` builds. In production builds it does nothing, and the bundler excludes the mock task data. The fixtures stay in `src/mocks/` for development and tests; `WXT_ENV=dev` explicitly enables them even though `pnpm dev` uses `wxt build`.
+
 ## Checks
 
 ```bash

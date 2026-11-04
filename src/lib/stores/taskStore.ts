@@ -18,9 +18,13 @@ export class TaskStore {
   }
 
   /**
-   * Initialize storage with mock data if no tasks exist
+   * Initialize empty storage with mock data in development and tests only.
    */
   async initializeStorage(): Promise<void> {
+    // `pnpm dev` uses a production-mode build with an explicit dev environment.
+    // This constant guard lets the bundler exclude the fixtures from releases.
+    if (import.meta.env.PROD && import.meta.env.WXT_ENV !== "dev") return;
+
     const existingTasks = await this.getTasks();
     if (existingTasks.length === 0) {
       await storage.setItem(this.storageKey, mockTasks);
@@ -164,12 +168,15 @@ export class TaskStore {
     let previousEndTime: string | null = null;
 
     for (const task of normalizedTasks) {
-      if (foundAbnormalTime && previousEndTime && dayjs(task.start).isBefore(dayjs(previousEndTime))) {
+      if (
+        foundAbnormalTime &&
+        previousEndTime &&
+        dayjs(task.start).isBefore(dayjs(previousEndTime))
+      ) {
         task.start = previousEndTime;
       }
 
-      const hasInvalidEndTime =
-        task.end !== null && !dayjs(task.end).isAfter(dayjs(task.start));
+      const hasInvalidEndTime = task.end !== null && !dayjs(task.end).isAfter(dayjs(task.start));
 
       if (hasInvalidEndTime) {
         task.end = dayjs(task.start).add(1, "minute").toISOString();
@@ -449,27 +456,27 @@ export class TaskStore {
     maxDaysBack: number = 30
   ): Promise<Date | null> {
     const allTasks = await this.getTasks();
-    
+
     if (allTasks.length === 0) {
       return null;
     }
 
     // Start from the given date and go backwards
-    let currentDate = dayjs(startDate).startOf('day');
-    
+    let currentDate = dayjs(startDate).startOf("day");
+
     for (let i = 0; i < maxDaysBack; i++) {
       const tasksForDay = allTasks.filter((task) => {
-        const taskDate = dayjs(task.start).startOf('day');
-        return taskDate.isSame(currentDate, 'day');
+        const taskDate = dayjs(task.start).startOf("day");
+        return taskDate.isSame(currentDate, "day");
       });
-      
+
       if (tasksForDay.length > 0) {
         return currentDate.toDate();
       }
-      
-      currentDate = currentDate.subtract(1, 'day');
+
+      currentDate = currentDate.subtract(1, "day");
     }
-    
+
     return null;
   }
 

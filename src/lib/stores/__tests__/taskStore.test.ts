@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach, vi } from "vitest";
+import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
 import { fakeBrowser } from "wxt/testing/fake-browser";
 import { TaskStore } from "../taskStore";
 import { mockTasks } from "../../../mocks/tasks";
@@ -50,6 +50,10 @@ describe("TaskStore", () => {
   });
 
   describe("initializeStorage", () => {
+    afterEach(() => {
+      vi.unstubAllEnvs();
+    });
+
     it("should initialize with mock data when no tasks exist", async () => {
       await taskStore.initializeStorage();
       const tasks = await taskStore.getTasks();
@@ -72,6 +76,30 @@ describe("TaskStore", () => {
 
       const tasks = await taskStore.getTasks();
       expect(tasks).toEqual([existingTask]);
+    });
+
+    it("leaves storage untouched in production", async () => {
+      vi.stubEnv("PROD", true);
+      vi.stubEnv("WXT_ENV", "prod");
+      const setItem = vi.spyOn(fakeBrowser.storage.local, "set");
+
+      try {
+        await taskStore.initializeStorage();
+
+        expect(await taskStore.getTasks()).toEqual([]);
+        expect(setItem).not.toHaveBeenCalled();
+      } finally {
+        setItem.mockRestore();
+      }
+    });
+
+    it("keeps mock initialization available in development builds", async () => {
+      vi.stubEnv("PROD", true);
+      vi.stubEnv("WXT_ENV", "dev");
+
+      await taskStore.initializeStorage();
+
+      expect(await taskStore.getTasks()).toEqual(mockTasks);
     });
   });
 
@@ -616,7 +644,7 @@ describe("TaskStore", () => {
 
     it("should return the most recent date with tasks within 30 days", async () => {
       const today = dayjs();
-      
+
       // Create tasks on different dates
       const task1: ITrackedTask = {
         id: "task-1",
@@ -651,13 +679,13 @@ describe("TaskStore", () => {
       await taskStore.saveTasks([task1, task2, task3]);
 
       const result = await taskStore.findMostRecentDateWithTasks();
-      
+
       expect(result).not.toBeNull();
-      
+
       // The most recent date should be 3 days ago
       const expectedDate = today.subtract(3, "days").startOf("day");
       const resultDate = dayjs(result).startOf("day");
-      
+
       expect(resultDate.isSame(expectedDate, "day")).toBe(true);
     });
   });
