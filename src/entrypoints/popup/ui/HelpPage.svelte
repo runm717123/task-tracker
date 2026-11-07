@@ -53,7 +53,7 @@
         <dt>s / ?</dt>
         <dd>settings / help (popup)</dd>
         <dt>Tab Tab</dt>
-        <dd>focus Sidepanel in the popup task list (within 300 ms); Enter opens it</dd>
+        <dd>open sidepanel and close popup</dd>
         <dt>Esc</dt>
         <dd>back / cancel / close popup or sidepanel</dd>
       </dl>

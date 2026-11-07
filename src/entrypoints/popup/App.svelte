@@ -17,7 +17,6 @@
   let selected = $state(0);
   let loading = $state(true);
   let error = $state("");
-  let sidepanelButton = $state<HTMLButtonElement>();
   let lastTabAt: number | null = null;
   const total = $derived(totalDuration(tasks));
 
@@ -85,7 +84,7 @@
       const now = performance.now();
       if (previousTabAt !== null && now - previousTabAt <= 300) {
         event.preventDefault();
-        sidepanelButton?.focus();
+        void openSidepanel();
       } else {
         lastTabAt = now;
       }
@@ -216,8 +215,7 @@
       <button
         type="button"
         class="text-button push"
-        bind:this={sidepanelButton}
-        title="Focus with two Tab presses within 300 ms"
+        title="Open with two Tab presses within 300 ms"
         onclick={openSidepanel}>sidepanel ⇥</button
       >
       <button

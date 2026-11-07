@@ -1,13 +1,27 @@
 // @vitest-environment happy-dom
 import { afterEach, beforeEach, expect, it, vi } from "vitest";
-import { cleanup, fireEvent, render, screen } from "@testing-library/svelte";
+import { cleanup, fireEvent, render, screen, waitFor } from "@testing-library/svelte";
 import { fakeBrowser } from "wxt/testing/fake-browser";
+import { browser } from "wxt/browser";
 import Popup from "../../../../entrypoints/popup/App.svelte";
+
+vi.mock("wxt/browser", async (importOriginal) => {
+  const original = await importOriginal<typeof import("wxt/browser")>();
+  return {
+    ...original,
+    browser: {
+      ...original.browser,
+      windows: { ...original.browser.windows, getCurrent: vi.fn() },
+      sidePanel: { open: vi.fn() },
+    },
+  };
+});
 
 beforeEach(() => fakeBrowser.reset());
 afterEach(() => {
   cleanup();
   vi.restoreAllMocks();
+  vi.resetAllMocks();
 });
 
 function tab(options: KeyboardEventInit = {}) {
@@ -21,18 +35,34 @@ function tab(options: KeyboardEventInit = {}) {
   return event;
 }
 
-it("focuses Sidepanel on double Tab within 300 ms without opening it", async () => {
+it("opens Sidepanel on double Tab within 300 ms and closes the popup after opening", async () => {
+  vi.mocked(browser.windows.getCurrent).mockImplementation(async () => ({
+    id: 1,
+    focused: true,
+    alwaysOnTop: false,
+    incognito: false,
+  }));
+  let finishOpen!: () => void;
+  const open = vi.mocked(browser.sidePanel.open).mockImplementation(
+    () =>
+      new Promise<void>((resolve) => {
+        finishOpen = resolve;
+      })
+  );
+  const close = vi.spyOn(window, "close").mockImplementation(() => {});
   render(Popup);
   await screen.findByText("nothing logged today");
   const settings = screen.getByRole("button", { name: "Settings" });
-  const sidepanel = screen.getByRole("button", { name: "sidepanel ⇥" });
   settings.focus();
   let now = 1000;
   vi.spyOn(performance, "now").mockImplementation(() => now);
   expect(tab().defaultPrevented).toBe(false);
   now += 300;
   expect(tab().defaultPrevented).toBe(true);
-  expect(document.activeElement).toBe(sidepanel);
+  await waitFor(() => expect(open).toHaveBeenCalledWith({ windowId: 1 }));
+  expect(close).not.toHaveBeenCalled();
+  finishOpen();
+  await waitFor(() => expect(close).toHaveBeenCalledOnce());
   expect(tab().defaultPrevented).toBe(false);
 });
 
@@ -67,4 +97,22 @@ it("keeps double Tab inactive in settings", async () => {
   tab();
   expect(tab().defaultPrevented).toBe(false);
   expect(document.activeElement).toBe(input);
+});
+
+it("keeps the popup open and reports an error if the sidepanel cannot open", async () => {
+  vi.mocked(browser.windows.getCurrent).mockImplementation(async () => ({
+    id: 1,
+    focused: true,
+    alwaysOnTop: false,
+    incognito: false,
+  }));
+  vi.mocked(browser.sidePanel.open).mockRejectedValue(new Error("Unavailable"));
+  const close = vi.spyOn(window, "close").mockImplementation(() => {});
+  render(Popup);
+  await screen.findByText("nothing logged today");
+  vi.spyOn(performance, "now").mockReturnValue(1000);
+  tab();
+  tab();
+  expect((await screen.findByRole("alert")).textContent).toContain("Could not open sidepanel.");
+  expect(close).not.toHaveBeenCalled();
 });
