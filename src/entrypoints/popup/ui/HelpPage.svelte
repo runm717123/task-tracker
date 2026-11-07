@@ -68,8 +68,8 @@
 - Review database migration</pre>
       <p class="muted"># Enter saves task forms; Shift+Enter adds a line</p>
       <p>
-        In the task editor, when no field is focused: <kbd>t</kbd> focuses title,
-        <kbd>d</kbd> description, <kbd>s</kbd> start, and <kbd>e</kbd> end.
+        In the task editor, when no field is focused: <kbd>s</kbd> focuses start and
+        <kbd>e</kbd> focuses end.
       </p>
     </section>
     <section>

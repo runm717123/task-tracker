@@ -37,12 +37,11 @@ afterEach(() => {
 
 describe("shared terminal form behavior", () => {
   it.each([
-    ["t", "title *"],
-    ["d", "description"],
     ["s", "start"],
     ["e", "end"],
   ])("focuses %s's field from a focused action button", async (key, label) => {
     render(TaskForm, { task, onSave: vi.fn(), onCancel: vi.fn() });
+    await waitFor(() => expect(document.activeElement).toBe(screen.getByLabelText("title *")));
     const cancel = screen.getByRole("button", { name: "[esc] cancel" });
     cancel.focus();
     await fireEvent.keyDown(cancel, { key });
@@ -53,6 +52,7 @@ describe("shared terminal form behavior", () => {
     "keeps focus in %s when an edit-field letter is typed",
     async (label) => {
       render(TaskForm, { task, onSave: vi.fn(), onCancel: vi.fn() });
+      await waitFor(() => expect(document.activeElement).toBe(screen.getByLabelText("title *")));
       const input = screen.getByLabelText(label);
       input.focus();
       for (const key of ["t", "d", "s", "e"]) {
@@ -66,6 +66,7 @@ describe("shared terminal form behavior", () => {
 
   it("does not focus task fields for modified, composing or held keys", async () => {
     render(TaskForm, { task, onSave: vi.fn(), onCancel: vi.fn() });
+    await waitFor(() => expect(document.activeElement).toBe(screen.getByLabelText("title *")));
     const cancel = screen.getByRole("button", { name: "[esc] cancel" });
     cancel.focus();
     for (const options of [
@@ -75,19 +76,22 @@ describe("shared terminal form behavior", () => {
       { isComposing: true },
       { repeat: true },
     ]) {
-      await fireEvent.keyDown(cancel, { key: "t", ...options });
+      await fireEvent.keyDown(cancel, { key: "s", ...options });
       expect(document.activeElement).toBe(cancel);
     }
   });
 
-  it("uses field shortcuts in the popup editor without running list actions", async () => {
+  it("ignores removed title and description shortcuts without running list actions", async () => {
     await taskStore.saveTasks([{ ...task, start: new Date().toISOString() }]);
     render(Popup);
     await fireEvent.click(await screen.findByText("Project"));
+    await waitFor(() => expect(document.activeElement).toBe(screen.getByLabelText("title *")));
     const cancel = screen.getByRole("button", { name: "[esc] cancel" });
     cancel.focus();
-    await fireEvent.keyDown(cancel, { key: "d" });
-    expect(document.activeElement).toBe(screen.getByLabelText("description"));
+    for (const key of ["t", "d"]) {
+      await fireEvent.keyDown(cancel, { key });
+      expect(document.activeElement).toBe(cancel);
+    }
     expect(await taskStore.getTasks()).toHaveLength(1);
   });
 
@@ -272,6 +276,36 @@ describe("Markdown descriptions", () => {
         screen.getByRole("textbox", { name: "description" }).querySelector("li")?.textContent
       ).toBe("Default fragment")
     );
+  });
+
+  it.each(["Last paragraph", "- Parent\n  - Last child", ""])(
+    "focuses the end of an existing description when configured: %j",
+    async (description) => {
+      await settingsStore.saveSettings({
+        ...settingsStore.getDefaultSettings(),
+        autoFocusDescription: true,
+        taskCreateDefaultValue: { title: "Do not use", description: "Do not use" },
+      });
+      const onSave = vi.fn();
+      render(TaskForm, { task: { ...task, description }, onSave, onCancel: vi.fn() });
+      const input = screen.getByRole("textbox", { name: "description" });
+      await waitFor(() => expect(document.activeElement).toBe(input));
+      const selection = window.getSelection()!;
+      const range = document.createRange();
+      range.selectNodeContents(input);
+      range.setEnd(selection.anchorNode!, selection.anchorOffset);
+      expect(range.toString()).toBe(input.textContent);
+      expect(selection.isCollapsed).toBe(true);
+      await fireEvent.click(screen.getByRole("button", { name: "[⏎] save" }));
+      expect(onSave).toHaveBeenCalledWith(
+        expect.objectContaining({ title: task.title, description })
+      );
+    }
+  );
+
+  it("focuses the title when description autofocus is off for editing", async () => {
+    render(TaskForm, { task, onSave: vi.fn(), onCancel: vi.fn() });
+    await waitFor(() => expect(document.activeElement).toBe(screen.getByLabelText("title *")));
   });
 
   it("focuses the description editor when configured for new tasks", async () => {

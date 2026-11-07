@@ -37,26 +37,24 @@
 
   onMount(() => {
     let active = true;
-    if (isNewTask) {
-      settingsStore
-        .getSettings()
-        .then((settings) => {
-          if (!active) return;
-          if (settings.autoFocusDescription) {
-            title = settings.taskCreateDefaultValue?.title ?? "";
-            descriptionInput?.focus();
-          } else {
-            description = settings.taskCreateDefaultValue?.description ?? "";
-            titleInput?.focus();
-          }
-        })
-        .catch(() => {
-          if (active) titleInput?.focus();
-        })
-        .finally(() => {
-          if (active) loading = false;
-        });
-    }
+    settingsStore
+      .getSettings()
+      .then((settings) => {
+        if (!active) return;
+        if (settings.autoFocusDescription) {
+          if (isNewTask) title = settings.taskCreateDefaultValue?.title ?? "";
+          descriptionInput?.focus();
+        } else {
+          if (isNewTask) description = settings.taskCreateDefaultValue?.description ?? "";
+          titleInput?.focus();
+        }
+      })
+      .catch(() => {
+        if (active) titleInput?.focus();
+      })
+      .finally(() => {
+        if (active) loading = false;
+      });
     return () => {
       active = false;
     };
@@ -72,8 +70,6 @@
     )
       return;
     const fields: Record<string, { focus: () => void }> = {
-      t: titleInput,
-      d: descriptionInput,
       s: startInput,
       e: endInput,
     };
@@ -114,7 +110,6 @@
   <label class="field"
     ><span>title *</span><input
       id="title"
-      aria-keyshortcuts="t"
       bind:this={titleInput}
       bind:value={title}
       required

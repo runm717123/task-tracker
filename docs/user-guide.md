@@ -28,13 +28,13 @@ Summary groups combine tasks with the same normalized title and remove near-dupl
 
 Open Settings from the popup:
 
-| Setting                  | Behavior                                                                                                                                                           |
-| ------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `work_start`             | Start time used for the first automatically timed task of a day.                                                                                                   |
-| `auto_focus_description` | Focuses the description when creating a task and prefills the configured default title. When off, creation focuses the title and prefills the default description. |
-| `defaults`               | Title/description values used according to the focus preference above.                                                                                             |
-| `default_to_recent_day`  | Uses the most recent day containing tasks within the last 30 days when opening the daily sidepanel view.                                                           |
-| Reset                    | Resets the settings draft; Save persists it.                                                                                                                       |
+| Setting                  | Behavior                                                                                                                                                                                      |
+| ------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `work_start`             | Start time used for the first automatically timed task of a day.                                                                                                                              |
+| `auto_focus_description` | Focuses the description at the end when creating or editing a task. When off, focuses the title. Creation prefills the configured default title when on, or the default description when off. |
+| `defaults`               | Title/description values used according to the focus preference above.                                                                                                                        |
+| `default_to_recent_day`  | Uses the most recent day containing tasks within the last 30 days when opening the daily sidepanel view.                                                                                      |
+| Reset                    | Resets the settings draft; Save persists it.                                                                                                                                                  |
 
 The global shortcut can be changed in your browser's extension-shortcut settings.
 
@@ -55,7 +55,7 @@ The global shortcut can be changed in your browser's extension-shortcut settings
 | Sidepanel                     | `Ctrl+n`                      | Create a task.                               |
 | Sidepanel                     | `Ctrl+i`                      | Open the import file chooser.                |
 | Sidepanel                     | `Ctrl+p`                      | Focus the time-range selector.               |
-| Task editor, no field focused | `t` / `d` / `s` / `e`         | Focus title / description / start / end.     |
+| Task editor, no field focused | `s` / `e`                     | Focus start / end.                           |
 | Sidepanel                     | `w`                           | Toggle daily / weekly.                       |
 | Sidepanel                     | `v`                           | Toggle list / summary.                       |
 | Sidepanel                     | `y` / `x`                     | Copy summary / export JSON.                  |

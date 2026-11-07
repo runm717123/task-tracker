@@ -27,7 +27,7 @@
   let lastValue = "";
 
   export function focus() {
-    editor?.view.dom.focus();
+    editor?.commands.focus("end");
   }
 
   onMount(() => {
@@ -43,7 +43,7 @@
           role: "textbox",
           "aria-labelledby": labelId,
           "aria-multiline": "true",
-          "aria-keyshortcuts": "d Control+Enter Meta+Enter",
+          "aria-keyshortcuts": "Control+Enter Meta+Enter",
         },
         handleKeyDown: (_view, event) => {
           if (
