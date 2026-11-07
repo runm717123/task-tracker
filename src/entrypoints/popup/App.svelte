@@ -17,6 +17,8 @@
   let selected = $state(0);
   let loading = $state(true);
   let error = $state("");
+  let sidepanelButton = $state<HTMLButtonElement>();
+  let lastTabAt: number | null = null;
   const total = $derived(totalDuration(tasks));
 
   onMount(() => {
@@ -71,12 +73,24 @@
     }
   }
   async function handleKey(event: KeyboardEvent) {
+    const previousTabAt = lastTabAt;
+    lastTabAt = null;
     if (view === "edit" || view === "settings" || event.defaultPrevented) return;
     if (event.key === "Escape") {
       view === "list" ? window.close() : back();
       return;
     }
     if (view !== "list" || shouldIgnoreListShortcut(event)) return;
+    if (event.key === "Tab" && !event.shiftKey && !event.repeat) {
+      const now = performance.now();
+      if (previousTabAt !== null && now - previousTabAt <= 300) {
+        event.preventDefault();
+        sidepanelButton?.focus();
+      } else {
+        lastTabAt = now;
+      }
+      return;
+    }
     switch (event.key) {
       case "j":
       case "ArrowDown":
@@ -110,7 +124,11 @@
   }
 </script>
 
-<svelte:window onkeydown={handleKey} />
+<svelte:window
+  onkeydown={handleKey}
+  onblur={() => (lastTabAt = null)}
+  onpointerdown={() => (lastTabAt = null)}
+/>
 {#if view === "edit" && editing}
   <TaskForm
     task={editing}
@@ -195,7 +213,13 @@
       <span class="mode">NORMAL</span><span class="count">{tasks.length} tasks</span><span
         class="duration">{total}</span
       >
-      <button type="button" class="text-button push" onclick={openSidepanel}>sidepanel ⇥</button>
+      <button
+        type="button"
+        class="text-button push"
+        bind:this={sidepanelButton}
+        title="Focus with two Tab presses within 300 ms"
+        onclick={openSidepanel}>sidepanel ⇥</button
+      >
       <button
         type="button"
         class="text-button"

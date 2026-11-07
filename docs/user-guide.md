@@ -73,3 +73,5 @@ Export downloads the selected filter's tasks as JSON. Choose All time to back up
 Tasks and settings stay in the extension's local browser storage. Keep an export before removing the extension or clearing its data.
 
 Task start and end use a date field and a combined native time field. Tab skips dates and enters the time fields; the browser controls navigation between time segments and their display format. Click a date to edit it, or press Alt+Left Arrow from its time field. The `s` and `e` editor shortcuts focus the corresponding time. Entering a time without a date uses today; leave both fields empty for automatic task timing.
+
+In the popup task list, press Tab twice within 300 ms to focus the Sidepanel button, then Enter to open it. Single Tab and Shift+Tab keep their normal navigation.
