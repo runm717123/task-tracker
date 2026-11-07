@@ -71,3 +71,5 @@ Unmodified list shortcuts do not run while typing into controls. The sidepanel C
 Export downloads the selected filter's tasks as JSON. Choose All time to back up all tasks. Import accepts a task JSON array, validates required task fields and adds tasks whose IDs are not already stored. Import does not overwrite existing IDs. Settings are not included in task exports.
 
 Tasks and settings stay in the extension's local browser storage. Keep an export before removing the extension or clearing its data.
+
+Task start and end use a date field and a combined native time field. Tab skips dates and enters the time fields; the browser controls navigation between time segments and their display format. Click a date to edit it, or press Alt+Left Arrow from its time field. The `s` and `e` editor shortcuts focus the corresponding time. Entering a time without a date uses today; leave both fields empty for automatic task timing.

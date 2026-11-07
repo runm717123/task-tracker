@@ -1,6 +1,7 @@
 <script lang="ts">
   import dayjs from "dayjs";
   import { onMount } from "svelte";
+  import DateTime from "./DateTime.svelte";
   import DescriptionEditor from "./DescriptionEditor.svelte";
   import TerminalForm from "../terminal/TerminalForm.svelte";
   import { settingsStore } from "../../stores/settingsStore";
@@ -30,8 +31,8 @@
   let error = $state("");
   let titleInput: HTMLInputElement;
   let descriptionInput: DescriptionEditor;
-  let startInput: HTMLInputElement;
-  let endInput: HTMLInputElement;
+  let startInput: DateTime;
+  let endInput: DateTime;
   const invalidTime = $derived(!!start && !!end && !dayjs(end).isAfter(dayjs(start)));
   const duration = $derived(formatDuration(taskMinutes({ start, end })));
 
@@ -123,22 +124,8 @@
     onSave={() => void save()}
   />
   <div class="form-grid">
-    <label class="field"
-      ><span>start</span><input
-        type="datetime-local"
-        bind:this={startInput}
-        bind:value={start}
-        aria-keyshortcuts="s"
-      /></label
-    >
-    <label class="field"
-      ><span>end</span><input
-        type="datetime-local"
-        bind:this={endInput}
-        bind:value={end}
-        aria-keyshortcuts="e"
-      /></label
-    >
+    <DateTime label="start" shortcut="s" bind:this={startInput} bind:value={start} />
+    <DateTime label="end" shortcut="e" bind:this={endInput} bind:value={end} />
   </div>
   <div class="subtle">
     {#if invalidTime}<span class="error">! end must be after start</span
